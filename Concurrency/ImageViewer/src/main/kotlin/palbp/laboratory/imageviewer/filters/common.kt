@@ -1,7 +1,10 @@
 package palbp.laboratory.imageviewer.filters
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.toComposeImageBitmap
+import org.jetbrains.skia.Image
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
@@ -30,14 +33,13 @@ fun BufferedImage.applyTransform(
     return this
 }
 
-
 /**
- * Extension function that converts this [BufferedImage] instance to a [ByteArray]
+ * Extension function that converts this [BufferedImage] instance to an [ImageBitmap]
  */
-fun BufferedImage.toByteArray(formatName: String = "png") : ByteArray {
+fun BufferedImage.toImageBitmap(formatName: String = "png"): ImageBitmap {
     val outputStream = ByteArrayOutputStream()
     ImageIO.write(this, formatName, outputStream)
-    return outputStream.toByteArray()
+    return Image.makeFromEncoded(outputStream.toByteArray()).toComposeImageBitmap()
 }
 
 /**
@@ -57,13 +59,12 @@ fun computePartitionBounds(width: Int, height: Int, partitionCount: Int, partiti
     require(width >= partitionCount / rowCount && height >= rowCount) { "Space to partition isn't large enough" }
 
     val blockHeight = height / rowCount
-    val yLowerBound: Int = (partitionIndex/columnCount) * blockHeight
-    val yUpperBound: Int =  kotlin.math.min(yLowerBound + blockHeight, height)
+    val yLowerBound: Int = (partitionIndex / columnCount) * blockHeight
+    val yUpperBound: Int = kotlin.math.min(yLowerBound + blockHeight, height)
 
     val blockWidth = width / columnCount
-    val xLowerBound: Int = (partitionIndex%columnCount) * blockWidth
-    val xUpperBound: Int =  kotlin.math.min(xLowerBound + blockWidth, width)
+    val xLowerBound: Int = (partitionIndex % columnCount) * blockWidth
+    val xUpperBound: Int = kotlin.math.min(xLowerBound + blockWidth, width)
 
     return Pair(xLowerBound until xUpperBound, yLowerBound until yUpperBound)
 }
-

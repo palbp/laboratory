@@ -2,8 +2,11 @@
 
 package palbp.laboratory.imageviewer.filters
 
-import androidx.compose.ui.graphics.*
-import org.jetbrains.skia.Image
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toAwtImage
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import java.awt.image.BufferedImage
 import java.util.concurrent.CountDownLatch
 import kotlin.system.measureTimeMillis
@@ -34,7 +37,7 @@ fun convertToGrayScaleMT(imageBitmap: ImageBitmap): ImageBitmap {
                     partitionCount = EXPECTED_CORE_COUNT,
                     partitionIndex = it
                 )
-                bufferedImage.applyTransform(xBounds = xBounds, yBounds = yBounds ) {
+                bufferedImage.applyTransform(xBounds = xBounds, yBounds = yBounds) {
                     val grayscaleValue = it.luminance()
                     Color(
                         red = grayscaleValue,
@@ -50,8 +53,9 @@ fun convertToGrayScaleMT(imageBitmap: ImageBitmap): ImageBitmap {
         latch.await()
     }
 
+    val result = bufferedImage.toComposeImageBitmap()
     println("Converted to gray scale in $elapsed ms")
-    return Image.makeFromEncoded(bufferedImage.toByteArray()).toComposeImageBitmap()
+    return result
 }
 
 /**
@@ -93,6 +97,7 @@ fun adjustBrightnessMT(imageBitmap: ImageBitmap, delta: Float): ImageBitmap {
         }
         latch.await()
     }
+    val result = bufferedImage.toComposeImageBitmap()
     println("Adjusted brightness in $elapsedMillis ms")
-    return Image.makeFromEncoded(bufferedImage.toByteArray()).toComposeImageBitmap()
+    return result
 }

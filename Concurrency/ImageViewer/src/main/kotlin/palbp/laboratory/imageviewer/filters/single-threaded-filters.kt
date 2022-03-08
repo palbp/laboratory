@@ -2,8 +2,11 @@
 
 package palbp.laboratory.imageviewer.filters
 
-import androidx.compose.ui.graphics.*
-import org.jetbrains.skia.Image
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toAwtImage
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import java.awt.image.BufferedImage
 import kotlin.system.measureTimeMillis
 
@@ -28,8 +31,9 @@ fun convertToGrayScaleST(imageBitmap: ImageBitmap): ImageBitmap {
             )
         }
     }
+    val result = bufferedImage.toComposeImageBitmap()
     println("Converted to gray scale in $elapsed ms")
-    return Image.makeFromEncoded(bufferedImage.toByteArray()).toComposeImageBitmap()
+    return result
 }
 
 /**
@@ -54,6 +58,7 @@ fun adjustBrightnessST(imageBitmap: ImageBitmap, delta: Float): ImageBitmap {
             )
         }
     }
+    val result = bufferedImage.toComposeImageBitmap()
     println("Adjusted brightness in $elapsedMillis ms")
-    return Image.makeFromEncoded(bufferedImage.toByteArray()).toComposeImageBitmap()
+    return result
 }

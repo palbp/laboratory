@@ -1,19 +1,28 @@
 package palbp.laboratory.imageviewer
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.Window
-import palbp.laboratory.imageviewer.filters.*
+import palbp.laboratory.imageviewer.filters.adjustBrightnessMT
+import palbp.laboratory.imageviewer.filters.convertToGrayScaleST
 import java.io.File
 
 /**
@@ -36,7 +45,6 @@ fun MainWindow(onCloseRequested: () -> Unit) = Window(onCloseRequest = onCloseRe
             imageBitmap.value = loadImageBitmap(it)
             println("done!")
         }
-
     }
 
     MaterialTheme {
@@ -48,18 +56,12 @@ fun MainWindow(onCloseRequested: () -> Unit) = Window(onCloseRequest = onCloseRe
             isBrightnessEnabled = adjustBrightness.value,
             onBrightnessChanged = { adjustBrightness.value = it },
         )
-        Box(modifier = Modifier.fillMaxSize()) {
-            val currentImage = imageBitmap.value
-            if (currentImage != null) {
-                // IMPORTANT NOTE: This is wrong too!
-                // Intensive compute bound work should be off-loaded to other threads. In this case, we are delaying
-                // composition, which can happen many times. This is true in both versions, ST and MT.
-                // We will fix this before the semester ends! =)
-                val imageToDisplay = if (isGrayScale.value) convertToGrayScaleMT(currentImage) else currentImage
-                val finalImage = if (adjustBrightness.value) adjustBrightnessMT(imageToDisplay, 0.2f) else imageToDisplay
-                Image(finalImage, "", modifier = Modifier.fillMaxSize())
-            }
-        }
+
+        MainWindowContent(
+            imageBitmap = imageBitmap.value,
+            convertToGrayscale = isGrayScale.value,
+            adjustBrightness = adjustBrightness.value
+        )
     }
 }
 
@@ -84,4 +86,51 @@ fun FrameWindowScope.MainWindowMenu(
         CheckboxItem(text = "Grayscale", checked = isGrayScaleEnabled, onCheckedChange = onGrayScaleChanged)
         CheckboxItem(text = "Brightness", checked = isBrightnessEnabled, onCheckedChange = onBrightnessChanged)
     }
+}
+
+@Composable
+fun MainWindowContent(
+    imageBitmap: ImageBitmap?,
+    convertToGrayscale: Boolean,
+    adjustBrightness: Boolean
+) = Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+
+    // IMPORTANT NOTE:
+    // Intensive compute bound work should be off-loaded to other threads. In this case, we are delaying
+    // composition, which can happen many times. This is true for both single threaded and multithreaded
+    // versions (ST and MT). We will fix this before the semester ends! =)
+
+    println("Composing MainWindowContent with non-null imageBitmap? ${imageBitmap != null}")
+    val rememberKey = Pair(imageBitmap, convertToGrayscale)
+    val currentImage = remember(rememberKey) {
+        println("Running block to remember with key = $rememberKey")
+        imageBitmap?.let {
+            if (convertToGrayscale) convertToGrayScaleST(imageBitmap) else imageBitmap
+        }
+    }
+
+    val brightness = remember { mutableStateOf(Pair(0.0f, false)) }
+    if (currentImage != null) {
+
+        val (current, isFinalValue) = brightness.value
+        val imageToDisplay = if (isFinalValue) adjustBrightnessMT(currentImage, current) else currentImage
+        println("Composition of Image starts")
+        Image(imageToDisplay, "", modifier = Modifier.weight(1.0f).align(Alignment.CenterHorizontally))
+        println("Composition of Image ends")
+
+        if (adjustBrightness) {
+            Row(modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp)) {
+                Text("${(current * 100).toInt()}%", modifier = Modifier.align(Alignment.CenterVertically))
+                Spacer(modifier = Modifier.width(32.dp))
+                Slider(
+                    value = current,
+                    valueRange = 0.0f..0.5f,
+                    modifier = Modifier.weight(0.1f),
+                    onValueChange = { brightness.value = Pair(it, false) },
+                    onValueChangeFinished = { brightness.value = Pair(current, true) }
+                )
+            }
+        }
+    }
+    println("Composition of MainWindowContent ends")
 }
