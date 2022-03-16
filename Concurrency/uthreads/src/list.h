@@ -30,6 +30,7 @@ typedef struct list_entry {
  * @brief Initializes the list, so that it's an empty list.
  * @param head  The list's head
  */
+// The attribute always_inline forces inline even without compilation optimizations
 __attribute__((always_inline))
 inline void init_list(list_entry_t* head) {
     head->next = head->prev = head;
@@ -40,20 +41,18 @@ inline void init_list(list_entry_t* head) {
  * @param head   The list's head
  * @return A bool value indicating if the list starting at head is empty or not.
  */
+// The attribute always_inline forces inline even without compilation optimizations
 __attribute__((always_inline))
 inline bool is_empty(list_entry_t* head) {
     return head->next == head;
 }
-
-// Inserts the specified entry at the head of the list.
-//
-// The attribute always_inline force inline even without compiling with optimizations
 
 /**
  * @brief Inserts the given entry to the head of the list.
  * @param head   The list's head
  * @param entry  The entry to be added
  */
+// The attribute always_inline forces inline even without compilation optimizations
 __attribute__((always_inline))
 inline void insert_at_list_head(list_entry_t * head, list_entry_t * entry) {
     entry->next = head->next;
