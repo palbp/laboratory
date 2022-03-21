@@ -14,18 +14,32 @@ int_list_node_t* create_int_list_node(int value) {
     return pnode;
 }
 
+void print_list(list_entry_t * plist) {
+    for (list_entry_t* pcurrent = plist->next; pcurrent != plist; pcurrent = pcurrent->next) {
+        int_list_node_t * pint_list_node = container_of(pcurrent, int_list_node_t, links);
+		printf("value = %d; ", pint_list_node->value);
+    }
+    putchar('\n');
+}
+
 int main() {
 
     list_entry_t list;
     init_list(&list);
 
+    insert_at_list_tail(&list, &create_int_list_node(1)->links);
+    insert_at_list_tail(&list, &create_int_list_node(2)->links);
+    insert_at_list_tail(&list, &create_int_list_node(3)->links);
+    print_list(&list);
+
+    remove_from_list_head(&list);
+    print_list(&list);
+
     insert_at_list_head(&list, &create_int_list_node(1)->links);
     insert_at_list_head(&list, &create_int_list_node(2)->links);
     insert_at_list_head(&list, &create_int_list_node(3)->links);
+    print_list(&list);
 
-    for (list_entry_t* pcurrent = list.next; pcurrent != &list; pcurrent = pcurrent->next) {
-        int_list_node_t * pint_list_node = container_of(pcurrent, int_list_node_t, links);
-		printf("value = %d\n", pint_list_node->value);
-    }
-    
+    remove_from_list_head(&list);
+    print_list(&list);    
 }
