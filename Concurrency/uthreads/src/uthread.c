@@ -13,7 +13,8 @@
  */
 typedef struct uthread {
     uint64_t rsp;
-    void (*entry_point)();
+    void (*entry_point)(void*);
+    void *args;
     list_entry_t links;
 } uthread_t;
 
@@ -65,6 +66,14 @@ uthread_t* remove_next_ready_thread() {
 }
 
 /**
+ * @brief the actual uthread's entry point.
+ */
+void start_uthread() {
+    running_uthread->entry_point(running_uthread->args);
+    ut_exit();
+}
+
+/**
  * @brief Releases the uthread's allocated memory.
  */
 void cleanup_uthread(uthread_t* puthread) {
@@ -74,12 +83,14 @@ void cleanup_uthread(uthread_t* puthread) {
 
 //////////// Implementation of the public functions
 
-uthread_t* ut_create(void (*thread_code)()) {
+uthread_t* ut_create(void (*thread_code)(), void * args) {
     uthread_t* pthread = malloc(STACK_SIZE);
+    pthread->entry_point = thread_code;
+    pthread->args = args;
     uthread_context_t* pctx = (uthread_context_t*)
         (((uint8_t*)pthread + STACK_SIZE) - sizeof(uthread_context_t));
     pctx->rbp = 0;
-    pctx->ret_address = thread_code;
+    pctx->ret_address = start_uthread;
     pthread->rsp = (uint64_t) pctx;
 
     insert_at_list_tail(&ready_queue, &pthread->links);

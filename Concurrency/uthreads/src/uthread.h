@@ -15,9 +15,10 @@ typedef struct uthread uthread_t;
 /**
  * @brief Creates a uthread with the specified behaviour.
  * @param thread_code   The uthread's behaviour (its code)
+ * @param args          The uthread's arguments
  * @return the descriptor of the created uthread
  */
-uthread_t* ut_create(void (*thread_code)());
+uthread_t* ut_create(void (*thread_code)(), void *args);
 
 /**
  * @brief Terminates the calling uthread.

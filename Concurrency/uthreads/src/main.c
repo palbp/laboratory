@@ -4,27 +4,18 @@
 
 #include "uthread.h"
 
-void thread1_code() {
-    puts("T1: step 1");
+void do_steps(void * args) {
+    char * id = (char*) args;
+    printf("%s: step 1\n", id);
     ut_yield();
-    puts("T1: step 2");
+    printf("%s: step 2\n", id);
     ut_yield();
-    puts("T1: step 3");
-    ut_exit();
+    printf("%s: step 3\n", id);
 }
 
-void thread2_code() {
-    puts("T2: step 1");
-    ut_yield();
-    puts("T2: step 2");
-    ut_yield();
-    puts("T2: step 3");
-    ut_exit();
-}
-
-void thread3_code() {
-    puts("T3: single step");
-    ut_exit();
+void say_hi(void *args) {
+    char * id = (char*) args;
+    printf("%s: Hi all! 1\n", id);
 }
 
 int main() {
@@ -32,9 +23,9 @@ int main() {
     puts("main: DEMO STARTS");
     ut_init();
 
-    ut_create(thread1_code);
-    ut_create(thread2_code);
-    ut_create(thread3_code);
+    ut_create(do_steps, "T1");
+    ut_create(do_steps, "T2");
+    ut_create(say_hi, "T3");
     ut_run();
     
     ut_end();

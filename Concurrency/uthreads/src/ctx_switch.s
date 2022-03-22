@@ -34,7 +34,6 @@ context_switch:
 	
 	ret
 
-
 # rdi - pointer for the "switching in" uthread
 internal_exit:
 
