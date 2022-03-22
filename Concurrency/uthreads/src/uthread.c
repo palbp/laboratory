@@ -13,6 +13,7 @@
  */
 typedef struct uthread {
     uint64_t rsp;
+    void (*entry_point)();
     list_entry_t links;
 } uthread_t;
 
@@ -33,6 +34,11 @@ typedef struct uthread_context {
  * Switches execution from pthread1 to pthread2.
  */
 extern void context_switch(uthread_t* pthread1, uthread_t* pthread2);
+
+/**
+ * Terminates the current uthread and switches execution to pthread.
+ */
+extern void internal_exit(uthread_t* pthread);
 
 /**
  * @brief The list of uthreads that are READY to execute.
@@ -62,6 +68,7 @@ uthread_t* remove_next_ready_thread() {
  * @brief Releases the uthread's allocated memory.
  */
 void cleanup_uthread(uthread_t* puthread) {
+    puts("Freeing up uthread's resources");
     free(puthread);
 }
 
@@ -80,8 +87,7 @@ uthread_t* ut_create(void (*thread_code)()) {
 }
 
 void ut_exit() {
-    puts("Freeing up uthread's resources");
-    context_switch(running_uthread, remove_next_ready_thread());
+    internal_exit(remove_next_ready_thread());
 }
 
 void ut_yield() {
