@@ -1,5 +1,6 @@
 
     .extern running_uthread
+    .extern cleanup_uthread
 
     .text
     .global context_switch
@@ -33,4 +34,23 @@ context_switch:
 	
 	ret
 
+
+# rdi - pointer for the "switching in" uthread
 internal_exit:
+
+    movq running_uthread(%rip), %rsi
+    movq %rdi, running_uthread(%rip)
+
+    movq (%rdi), %rsp
+
+    movq %rsi, %rdi
+    call cleanup_uthread
+	
+	popq %r15
+	popq %r14
+	popq %r13
+	popq %r12
+	popq %rbx
+	popq %rbp
+	
+	ret

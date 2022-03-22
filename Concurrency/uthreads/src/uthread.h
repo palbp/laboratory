@@ -10,15 +10,7 @@
 
 #define STACK_SIZE (8*4096)
 
-typedef struct uthread {
-    uint64_t rsp;
-    list_entry_t links;
-} uthread_t;
-
-/**
- * Switches execution from pthread1 to pthread2.
- */
-extern void context_switch(uthread_t* pthread1, uthread_t* pthread2);
+typedef struct uthread uthread_t;
 
 /**
  * @brief Creates a uthread with the specified behaviour.

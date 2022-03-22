@@ -6,6 +6,19 @@
 #include "uthread.h"
 #include "list.h"
 
+#define STACK_SIZE (8*4096)
+
+/**
+ * Defines the constitution of uthreads.
+ */
+typedef struct uthread {
+    uint64_t rsp;
+    list_entry_t links;
+} uthread_t;
+
+/**
+ * The uthreads context, stored at and restored from their stack each time they are switched.
+ */
 typedef struct uthread_context {
     uint64_t r15;
     uint64_t r14;
@@ -15,6 +28,11 @@ typedef struct uthread_context {
     uint64_t rbp;
     void (*ret_address)();
 } uthread_context_t;
+
+/**
+ * Switches execution from pthread1 to pthread2.
+ */
+extern void context_switch(uthread_t* pthread1, uthread_t* pthread2);
 
 /**
  * @brief The list of uthreads that are READY to execute.
@@ -40,6 +58,13 @@ uthread_t* remove_next_ready_thread() {
         container_of(remove_from_list_head(&ready_queue), uthread_t, links);
 }
 
+/**
+ * @brief Releases the uthread's allocated memory.
+ */
+void cleanup_uthread(uthread_t* puthread) {
+    free(puthread);
+}
+
 //////////// Implementation of the public functions
 
 uthread_t* ut_create(void (*thread_code)()) {
@@ -55,7 +80,7 @@ uthread_t* ut_create(void (*thread_code)()) {
 }
 
 void ut_exit() {
-    // TODO: Fix memory leak
+    puts("Freeing up uthread's resources");
     context_switch(running_uthread, remove_next_ready_thread());
 }
 
