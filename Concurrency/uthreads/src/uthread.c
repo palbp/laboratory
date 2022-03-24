@@ -3,10 +3,17 @@
  */
 
 #include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
 #include "uthread.h"
 #include "list.h"
 
 #define STACK_SIZE (8*4096)
+
+typedef union wait_data_block {
+    uint64_t value;
+    void * block;
+} wait_data_t;
 
 /**
  * Defines the constitution of uthreads.
@@ -15,6 +22,7 @@ typedef struct uthread {
     uint64_t rsp;
     void (*entry_point)(void*);
     void *args;
+    wait_data_t wait_data;
     list_entry_t links;
 } uthread_t;
 
@@ -52,6 +60,16 @@ list_entry_t ready_queue;
 uthread_t * running_uthread;
 
 /**
+ * @brief The number of existing threads, regardless of their current state.
+ */
+uint32_t uthread_count;
+
+/**
+ * @brief The list of uthreads that are at SLEEP.
+ */
+list_entry_t sleep_queue;
+
+/**
  * @brief The uthread used to represent the special case of termination. When this uthread
  * finally runs it means that all uthreads have terminated, and therefore the execution will end.
  */
@@ -81,6 +99,49 @@ void cleanup_uthread(uthread_t* puthread) {
     free(puthread);
 }
 
+/**
+ * @brief Helper function used to retrieve the current timestamp
+ */
+uint32_t get_time() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ts.tv_sec;
+}
+
+/**
+ * @brief Helper function used to compare two uthread_t nodes based on their sleep 
+ * timestamp value. This presumes that the uthread is in the sleep queue.
+ */
+int compare_timestamps(list_entry_t *first, list_entry_t *second) {
+    uint32_t firstTimeStamp = container_of(first, uthread_t, links)->wait_data.value;
+    uint32_t secondTimeStamp = container_of(second, uthread_t, links)->wait_data.value;
+    return firstTimeStamp - secondTimeStamp;
+}
+
+/**
+ * @brief Move all uthreads that should awake from the sleep queue to the ready queue.
+ */
+void awake_sleepers() {
+    while (!is_empty(&sleep_queue)) {
+        list_entry_t * first = get_first_from_list(&sleep_queue);
+        uint32_t now = get_time();
+        uint32_t awake_at = container_of(first, uthread_t, links)->wait_data.value;
+        if (now < awake_at) {
+            break;
+        } 
+        insert_at_list_tail(&ready_queue, remove_from_list_head(&sleep_queue));
+    }
+}
+
+/**
+ * @brief Schedules the next READY uthread for execution.
+ */
+void schedule() {
+    awake_sleepers();
+    uthread_t * next_to_run = remove_next_ready_thread();
+    context_switch(running_uthread, next_to_run);
+}
+
 //////////// Implementation of the public functions
 
 uthread_t* ut_create(void (*thread_code)(), void * args) {
@@ -94,30 +155,43 @@ uthread_t* ut_create(void (*thread_code)(), void * args) {
     pthread->rsp = (uint64_t) pctx;
 
     insert_at_list_tail(&ready_queue, &pthread->links);
+    uthread_count += 1;
+
     return pthread;
 }
 
 void ut_exit() {
+    uthread_count -= 1;
+    awake_sleepers();
     internal_exit(remove_next_ready_thread());
 }
 
 void ut_yield() {
-    if (!is_empty(&ready_queue)) {
-        insert_at_list_tail(&ready_queue, &(running_uthread->links));
-        context_switch(running_uthread, remove_next_ready_thread());
-    }
+    insert_at_list_tail(&ready_queue, &(running_uthread->links));
+    schedule();
+}
+
+void ut_sleep(uint8_t delay) {
+    uint32_t sleep_end = get_time() + delay;
+    running_uthread->wait_data.value = sleep_end;
+    insert_at_list_sorted_by(&sleep_queue, &running_uthread->links, compare_timestamps);
+    schedule();
 }
 
 void ut_init() {
     init_list(&ready_queue);
+    init_list(&sleep_queue);
+    uthread_count = 0;
 }
 
 void ut_run() {
     running_uthread = &main_thread;
-    context_switch(running_uthread, remove_next_ready_thread());
+    while (uthread_count != 0) {
+        schedule();
+        sleep(1);
+    }
 }
 
 void ut_end() {
-    printf("Is ready-queue empty? %s\n", is_empty(&ready_queue) ? "true" : "false");
-    // No cleanup needed for now
+    // No cleanup needed
 }

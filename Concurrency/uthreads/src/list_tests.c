@@ -22,7 +22,27 @@ void print_list(list_entry_t * plist) {
     putchar('\n');
 }
 
+int compare_int_list_nodes(list_entry_t *first, list_entry_t *second) {
+    return container_of(first, int_list_node_t, links)->value - 
+        container_of(second, int_list_node_t, links)->value;
+}
+
+void test_sorted() {
+    list_entry_t sorted_list;
+    init_list(&sorted_list);
+
+    insert_at_list_sorted_by(&sorted_list, &create_int_list_node(3)->links, compare_int_list_nodes);
+    insert_at_list_sorted_by(&sorted_list, &create_int_list_node(1)->links, compare_int_list_nodes);
+    insert_at_list_sorted_by(&sorted_list, &create_int_list_node(4)->links, compare_int_list_nodes);
+    insert_at_list_sorted_by(&sorted_list, &create_int_list_node(2)->links, compare_int_list_nodes);
+    insert_at_list_sorted_by(&sorted_list, &create_int_list_node(5)->links, compare_int_list_nodes);
+
+    print_list(&sorted_list);
+}
+
 int main() {
+
+    test_sorted();
 
     list_entry_t list;
     init_list(&list);
@@ -41,5 +61,5 @@ int main() {
     print_list(&list);
 
     remove_from_list_head(&list);
-    print_list(&list);    
+    print_list(&list);
 }

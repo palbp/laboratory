@@ -8,8 +8,6 @@
 #include <stdint.h>
 #include "list.h"
 
-#define STACK_SIZE (8*4096)
-
 typedef struct uthread uthread_t;
 
 /**
@@ -29,6 +27,11 @@ void ut_exit();
  * @brief Hands over the "processor" (the right to execute) to another uthread.
  */
 void ut_yield();
+
+/**
+ * @brief Suspends execution of the calling uthread for at least delay seconds.
+ */
+void ut_sleep(uint8_t delay);
 
 /**
  * @brief Initializes the uthread runtime.
