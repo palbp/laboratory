@@ -8,6 +8,7 @@
         "stdint.h": "c",
         "stddef.h": "c",
         "stdio.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "uthread.h": "c"
     }
 }

@@ -50,4 +50,30 @@ void ut_run();
  */
 void ut_end();
 
+//////////////////////// The supported synchronizers
+
+/**
+ * @brief A couwnt down latch.
+ */
+typedef struct ut_latch {
+    uint32_t units;
+    list_entry_t wait_queue;
+} ut_latch_t;
+
+/**
+ * @brief Initializes the count down latch with the given initial units.
+ */
+void ut_latch_init(ut_latch_t* latch, uint32_t initial_units);
+
+/**
+ * @brief Blocks the calling uthread until the count reaches 0.
+ */
+void ut_latch_await(ut_latch_t* latch);
+
+/**
+ * @brief Decrements the number of units held by the latch. If the count reaches 0, unblocks 
+ * all waiting uthreads.
+ */
+void ut_latch_count_down(ut_latch_t* latch);
+
 #endif

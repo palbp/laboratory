@@ -195,3 +195,40 @@ void ut_run() {
 void ut_end() {
     // No cleanup needed
 }
+
+//////////// Implementation of the supported synchronizers
+
+/**
+ * @brief Initializes the count down latch with the given initial units.
+ */
+void ut_latch_init(ut_latch_t* latch, uint32_t initial_units) {
+    latch->units = initial_units;
+    init_list(&latch->wait_queue);
+}
+
+/**
+ * @brief Blocks the calling uthread until the count reaches 0.
+ */
+void ut_latch_await(ut_latch_t* latch) {
+    if (latch->units != 0) {
+        insert_at_list_tail(&latch->wait_queue, &running_uthread->links);
+        schedule();
+    }
+}
+
+/**
+ * @brief Decrements the number of units held by the latch. If the count reaches 0, unblocks 
+ * all waiting uthreads.
+ */
+void ut_latch_count_down(ut_latch_t* latch) {
+    if (latch->units > 0) {
+        latch->units -= 1;
+        if (latch->units == 0) {
+            while (!is_empty(&latch->wait_queue)) {
+                list_entry_t *unblocked = remove_from_list_head(&latch->wait_queue);
+                insert_at_list_tail(&ready_queue, unblocked);
+            }
+        }
+    }    
+}
+

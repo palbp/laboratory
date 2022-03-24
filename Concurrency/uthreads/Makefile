@@ -1,4 +1,4 @@
-main: src/main.c src/uthread.c src/ctx_switch.s	
+main: src/main.c src/uthread.c src/ctx_switch.s
 	mkdir -p bin
 	gcc -Wall -pedantic -g -o bin/main src/main.c src/uthread.c src/ctx_switch.s
 
