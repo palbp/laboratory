@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage
 import java.util.concurrent.CountDownLatch
 import kotlin.system.measureTimeMillis
 
-private const val EXPECTED_CORE_COUNT = 6
-
 /**
  * Converts the given image to its grayscale version (multithreaded version - MT)
  * (It uses the Luminosity method)
@@ -24,8 +22,8 @@ private const val EXPECTED_CORE_COUNT = 6
 fun convertToGrayScaleMT(imageBitmap: ImageBitmap): ImageBitmap {
 
     val bufferedImage: BufferedImage = imageBitmap.toAwtImage()
-    println("Converting to gray scale (Single threaded approach)")
-    println("Image size is: width = ${bufferedImage.width}; height = ${bufferedImage.height}")
+    filtersLogger.info("Converting to gray scale (Single threaded approach)")
+    filtersLogger.info("Image size is: width = ${bufferedImage.width}; height = ${bufferedImage.height}")
 
     val elapsed = measureTimeMillis {
         val latch = CountDownLatch(EXPECTED_CORE_COUNT)
@@ -54,7 +52,7 @@ fun convertToGrayScaleMT(imageBitmap: ImageBitmap): ImageBitmap {
     }
 
     val result = bufferedImage.toComposeImageBitmap()
-    println("Converted to gray scale in $elapsed ms")
+    filtersLogger.info("Converted to gray scale in $elapsed ms")
     return result
 }
 
@@ -71,8 +69,8 @@ fun convertToGrayScaleMT(imageBitmap: ImageBitmap): ImageBitmap {
 fun adjustBrightnessMT(imageBitmap: ImageBitmap, delta: Float): ImageBitmap {
 
     val bufferedImage: BufferedImage = imageBitmap.toAwtImage()
-    println("Adjusting brightness (Single threaded approach): ")
-    println("Image size is: width = ${bufferedImage.width}; height = ${bufferedImage.height}")
+    filtersLogger.info("Adjusting brightness (Single threaded approach): ")
+    filtersLogger.info("Image size is: width = ${bufferedImage.width}; height = ${bufferedImage.height}")
     val elapsedMillis = measureTimeMillis {
         val latch = CountDownLatch(EXPECTED_CORE_COUNT)
         repeat(EXPECTED_CORE_COUNT) {
@@ -98,6 +96,6 @@ fun adjustBrightnessMT(imageBitmap: ImageBitmap, delta: Float): ImageBitmap {
         latch.await()
     }
     val result = bufferedImage.toComposeImageBitmap()
-    println("Adjusted brightness in $elapsedMillis ms")
+    filtersLogger.info("Adjusted brightness in $elapsedMillis ms")
     return result
 }
