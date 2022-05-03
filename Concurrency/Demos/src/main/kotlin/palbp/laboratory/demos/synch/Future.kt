@@ -43,7 +43,7 @@ interface AFuture<T> {
 class AFutureImpl<T> : AFuture<T> {
 
     // The future's possible results
-    private var result: T? = null
+    @Volatile private var result: T? = null
     private var error: Throwable? = null
 
     // The monitor's lock and condition

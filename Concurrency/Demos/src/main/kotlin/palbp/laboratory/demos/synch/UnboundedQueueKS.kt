@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.synch
 
+import java.util.LinkedList
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.Lock
@@ -24,10 +25,10 @@ class UnboundedQueueKS<T> {
     /**
      * The actual queue.
      */
-    private val items = mutableListOf<T>()
+    private val items = LinkedList<T>()
 
     private class Request<T>(var item: T? = null)
-    private val pendingRequests = mutableListOf<Request<T>>()
+    private val pendingRequests = LinkedList<Request<T>>()
 
     // The monitor's lock and condition
     private val mLock: Lock = ReentrantLock()
@@ -48,7 +49,7 @@ class UnboundedQueueKS<T> {
      */
     fun put(item: T) {
         mLock.withLock {
-            items.add(item)
+            items.addLast(item)
             notifyConsumer()
         }
     }
@@ -69,7 +70,7 @@ class UnboundedQueueKS<T> {
                 return items.removeFirst()
 
             val myRequest = Request<T>()
-            pendingRequests.add(myRequest)
+            pendingRequests.addLast(myRequest)
 
             var remainingTime = unit.toNanos(timeout)
             while (true) {
@@ -78,13 +79,16 @@ class UnboundedQueueKS<T> {
                 }
                 catch (ie: InterruptedException) {
                     pendingRequests.remove(myRequest)
+                    throw ie
                 }
 
                 if (myRequest.item != null)
                     return myRequest.item
 
-                if (remainingTime <= 0)
+                if (remainingTime <= 0) {
+                    pendingRequests.remove(myRequest)
                     return null
+                }
             }
         }
     }

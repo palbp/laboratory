@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.synch
 
+import java.util.LinkedList
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.Lock
@@ -24,7 +25,7 @@ class UnboundedQueue<T> {
     /**
      * The actual queue.
      */
-    private val items = mutableListOf<T>()
+    private val items = LinkedList<T>()
 
     private class Request<T>(var item: T? = null, val privateCondition: Condition)
     private val pendingRequests = mutableListOf<Request<T>>()
