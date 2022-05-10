@@ -5,17 +5,19 @@ import java.net.InetSocketAddress
 import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
+import java.nio.channels.AsynchronousChannelGroup
 import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.AsynchronousSocketChannel
 import java.nio.channels.CompletionHandler
 import java.nio.charset.CharsetDecoder
 import java.nio.charset.CharsetEncoder
+import java.util.concurrent.ThreadFactory
 
 private const val EXIT = "exit"
 private val logger = LoggerFactory.getLogger("MultiThreaded With NIO2 Echo Server")
 
-val encoder: CharsetEncoder = Charsets.UTF_8.newEncoder()
-val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
+private val encoder: CharsetEncoder = Charsets.UTF_8.newEncoder()
+private val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
 
 /**
  * The server's entry point.
@@ -26,11 +28,22 @@ fun main(args: Array<String>) {
     serverSocket.bind(InetSocketAddress("localhost", port))
 
     logger.info("Process id is = ${ProcessHandle.current().pid()}. Starting echo server at port $port")
-    while (true) {
+
+    fun acceptConnection() {
         logger.info("Ready to accept connections")
-        val sessionSocket = serverSocket.accept().get()
-        handleEchoSession(sessionSocket)
+        serverSocket.accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
+            override fun completed(sessionSocket: AsynchronousSocketChannel, attachment: Any?) {
+                handleEchoSession(sessionSocket)
+                acceptConnection()
+            }
+
+            override fun failed(exc: Throwable?, attachment: Any?) {
+                logger.error("Failed to accept.")
+            }
+        })
     }
+    acceptConnection()
+    readln()
 }
 
 /**
@@ -120,7 +133,6 @@ private fun handleEchoesInternal(sessionSocket: AsynchronousSocketChannel, buffe
             cleanup(sessionSocket)
         }
     })
-
 }
 
 /**
@@ -139,6 +151,10 @@ private fun sayGoodbye(sessionSocket: AsynchronousSocketChannel) {
     })
 }
 
+/**
+ * Ends the echo session.
+ * @param   sessionSocket   the socket connected to the client
+ */
 private fun cleanup(sessionSocket: AsynchronousSocketChannel) {
     SessionInfo.endSession()
     sessionSocket.close()
