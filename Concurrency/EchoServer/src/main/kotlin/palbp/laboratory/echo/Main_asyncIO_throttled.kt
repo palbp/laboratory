@@ -11,10 +11,11 @@ import java.nio.channels.AsynchronousSocketChannel
 import java.nio.channels.CompletionHandler
 import java.nio.charset.CharsetDecoder
 import java.nio.charset.CharsetEncoder
-import java.util.concurrent.ThreadFactory
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 private const val EXIT = "exit"
-private val logger = LoggerFactory.getLogger("MultiThreaded With NIO2 Echo Server")
+private val logger = LoggerFactory.getLogger("Async callback based NIO2 Echo Server")
 
 private val encoder: CharsetEncoder = Charsets.UTF_8.newEncoder()
 private val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
@@ -23,9 +24,16 @@ private val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
  * The server's entry point.
  */
 fun main(args: Array<String>) {
+
     val port = if (args.isEmpty() || args[0].toIntOrNull() == null) 8000 else args[0].toInt()
-    val serverSocket = AsynchronousServerSocketChannel.open()
+
+    val singleThreadedGroup = AsynchronousChannelGroup.withThreadPool(Executors.newSingleThreadExecutor())
+    val serverSocket = AsynchronousServerSocketChannel.open(singleThreadedGroup)
+    // val serverSocket = AsynchronousServerSocketChannel.open()
     serverSocket.bind(InetSocketAddress("localhost", port))
+
+    val concurrentSessions = AtomicInteger(0)
+    val MAX_SESSIONS = 2
 
     logger.info("Process id is = ${ProcessHandle.current().pid()}. Starting echo server at port $port")
 
@@ -33,6 +41,7 @@ fun main(args: Array<String>) {
         logger.info("Ready to accept connections")
         serverSocket.accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
             override fun completed(sessionSocket: AsynchronousSocketChannel, attachment: Any?) {
+
                 handleEchoSession(sessionSocket)
                 acceptConnection()
             }
@@ -42,6 +51,7 @@ fun main(args: Array<String>) {
             }
         })
     }
+
     acceptConnection()
     readln()
 }
