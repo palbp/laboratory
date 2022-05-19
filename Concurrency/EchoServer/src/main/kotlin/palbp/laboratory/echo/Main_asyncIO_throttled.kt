@@ -31,7 +31,7 @@ class AsyncSemaphore(initialUnits: Int) {
 
     private class Request : CompletableFuture<Unit>()
 
-    fun acquireAsync(): CompletableFuture<Unit> {
+    fun acquire(): CompletableFuture<Unit> {
         guard.withLock {
             if (units != 0) {
                 units -= 1
@@ -75,7 +75,7 @@ fun main(args: Array<String>) {
 
     fun acceptConnection() {
 
-        throttle.acquireAsync()
+        throttle.acquire()
             .thenRun {
                 logger.info("Ready to accept connections")
                 serverSocket.accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
