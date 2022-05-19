@@ -1,27 +1,33 @@
 package palbp.laboratory.demos.coroutines
 
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val log = LoggerFactory.getLogger("Coroutines")
+private val logger: Logger = LoggerFactory.getLogger("Coroutines")
+
 
 fun main() {
     runBlocking {
-        val count = 6
-        log.info("Inside runBlocking: starting $count coroutines ")
-
+        val count = 2
+        logger.info("Inside runBlocking: starting $count coroutines ")
         repeat(count) {
-            launch(CoroutineName("${it+1}")) {
-                log.info("Running coroutine ${this.coroutineContext[CoroutineName]}")
-                delay(5000)
-                log.info("Coroutine ${it+1} ends")
+            launch(CoroutineName("${it+1}"), start = CoroutineStart.DEFAULT) {
+                val name = this.coroutineContext[CoroutineName]?.name
+                logger.info("Running coroutine $name")
             }
         }
-        log.info("Inside runBlocking: started $count coroutines ")
+        logger.info("Inside runBlocking: started $count coroutines.")
+
+        delay(10000)
+        logger.info("Cancelling scope.")
+        this.cancel()
     }
 
-    log.info("Bye!")
+    logger.info("Bye!")
 }

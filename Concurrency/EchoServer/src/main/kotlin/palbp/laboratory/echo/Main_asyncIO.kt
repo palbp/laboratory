@@ -11,50 +11,14 @@ import java.nio.channels.AsynchronousSocketChannel
 import java.nio.channels.CompletionHandler
 import java.nio.charset.CharsetDecoder
 import java.nio.charset.CharsetEncoder
-import java.util.LinkedList
-import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
+import java.util.concurrent.atomic.AtomicInteger
 
 private const val EXIT = "exit"
 private val logger = LoggerFactory.getLogger("Async callback based NIO2 Echo Server")
 
 private val encoder: CharsetEncoder = Charsets.UTF_8.newEncoder()
 private val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
-
-class AsyncSemaphore(initialUnits: Int) {
-
-    private var units = initialUnits
-    private val guard = ReentrantLock()
-    private val queue = LinkedList<Request>()
-
-    private class Request : CompletableFuture<Unit>()
-
-    fun acquireAsync(): CompletableFuture<Unit> {
-        guard.withLock {
-            if (units != 0) {
-                units -= 1
-                return CompletableFuture.completedFuture(Unit)
-            }
-
-            val request = Request()
-            queue.addLast(request)
-            return request
-        }
-    }
-
-    fun release() {
-        guard.withLock {
-            if (queue.isEmpty()) {
-                units += 1
-            }
-            else {
-                queue.removeFirst().complete(Unit)
-            }
-        }
-    }
-}
 
 /**
  * The server's entry point.
@@ -69,24 +33,19 @@ fun main(args: Array<String>) {
     serverSocket.bind(InetSocketAddress("localhost", port))
 
     logger.info("Process id is = ${ProcessHandle.current().pid()}. Starting echo server at port $port")
-    val throttle = AsyncSemaphore(2)
 
     fun acceptConnection() {
-
-        throttle.acquireAsync()
-            .thenRun {
-                logger.info("Ready to accept connections")
-                serverSocket.accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
-                    override fun completed(sessionSocket: AsynchronousSocketChannel, attachment: Any?) {
-                        handleEchoSession(sessionSocket, throttle)
-                        acceptConnection()
-                    }
-
-                    override fun failed(exc: Throwable?, attachment: Any?) {
-                        logger.error("Failed to accept.")
-                    }
-                })
+        logger.info("Ready to accept connections")
+        serverSocket.accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
+            override fun completed(sessionSocket: AsynchronousSocketChannel, attachment: Any?) {
+                handleEchoSession(sessionSocket)
+                acceptConnection()
             }
+
+            override fun failed(exc: Throwable?, attachment: Any?) {
+                logger.error("Failed to accept.")
+            }
+        })
     }
 
     acceptConnection()
@@ -96,13 +55,13 @@ fun main(args: Array<String>) {
 /**
  * Serves the client connected to the given [Socket] instance
  */
-private fun handleEchoSession(sessionSocket: AsynchronousSocketChannel, throttle: AsyncSemaphore) {
+private fun handleEchoSession(sessionSocket: AsynchronousSocketChannel) {
     val sessionId = SessionInfo.createSession()
     logger.info("Accepted client connection. Number of open sessions is ${SessionInfo.currentSessions}")
 
-    greet(sessionSocket, sessionId, throttle) {
-        handleEchoes(sessionSocket, throttle) {
-            sayGoodbye(sessionSocket, throttle)
+    greet(sessionSocket, sessionId) {
+        handleEchoes(sessionSocket) {
+            sayGoodbye(sessionSocket)
         }
     }
 }
@@ -114,7 +73,7 @@ private fun handleEchoSession(sessionSocket: AsynchronousSocketChannel, throttle
  * @param   sessionId       the session identifier
  * @param   andThen         the continuation code, to be executed after the greeting is sent
  */
-private fun greet(sessionSocket: AsynchronousSocketChannel, sessionId: Int, throttle: AsyncSemaphore, andThen: (AsynchronousSocketChannel) -> Unit) {
+private fun greet(sessionSocket: AsynchronousSocketChannel, sessionId: Int, andThen: (AsynchronousSocketChannel) -> Unit) {
 
     val greet = CharBuffer.wrap("Welcome client number $sessionId!\n" +
             "I'll echo everything you send me. Finish with '$EXIT'. Ready when you are!\n")
@@ -126,7 +85,7 @@ private fun greet(sessionSocket: AsynchronousSocketChannel, sessionId: Int, thro
         }
         override fun failed(exc: Throwable, attachment: Any?) {
             logger.error("Could not send greeting to client. Terminating.", exc)
-            cleanup(sessionSocket, throttle)
+            cleanup(sessionSocket)
         }
     })
 }
@@ -137,9 +96,9 @@ private fun greet(sessionSocket: AsynchronousSocketChannel, sessionId: Int, thro
  * @param   sessionSocket   the socket connected to the client
  * @param   andThen         the continuation code, to be executed after when the 'exit' message is received.
  */
-private fun handleEchoes(sessionSocket: AsynchronousSocketChannel, throttle: AsyncSemaphore, andThen: (AsynchronousSocketChannel) -> Unit) {
+private fun handleEchoes(sessionSocket: AsynchronousSocketChannel, andThen: (AsynchronousSocketChannel) -> Unit) {
     val buffer = ByteBuffer.allocate(1024)
-    handleEchoesInternal(sessionSocket, buffer, 1, throttle, andThen)
+    handleEchoesInternal(sessionSocket, buffer, 1, andThen)
 }
 
 /**
@@ -150,7 +109,7 @@ private fun handleEchoes(sessionSocket: AsynchronousSocketChannel, throttle: Asy
  * @param   echoCount       the number of echoes produced in the current session
  * @param   andThen         the continuation code, to be executed after when the 'exit' message is received.
  */
-private fun handleEchoesInternal(sessionSocket: AsynchronousSocketChannel, buffer: ByteBuffer, echoCount: Int, throttle: AsyncSemaphore, andThen: (AsynchronousSocketChannel) -> Unit) {
+private fun handleEchoesInternal(sessionSocket: AsynchronousSocketChannel, buffer: ByteBuffer, echoCount: Int, andThen: (AsynchronousSocketChannel) -> Unit) {
     sessionSocket.read(buffer, null, object : CompletionHandler<Int, Any?> {
         override fun completed(result: Int, attachment: Any?) {
             val message = decoder.decode(buffer.flip()).toString().trim()
@@ -164,12 +123,12 @@ private fun handleEchoesInternal(sessionSocket: AsynchronousSocketChannel, buffe
                 sessionSocket.write(encoder.encode(echo), null, object : CompletionHandler<Int, Any?> {
                     override fun completed(result: Int, attachment: Any?) {
                         buffer.clear()
-                        handleEchoesInternal(sessionSocket, buffer, echoCount + 1, throttle, andThen)
+                        handleEchoesInternal(sessionSocket, buffer, echoCount + 1, andThen)
                     }
 
                     override fun failed(exc: Throwable, attachment: Any?) {
                         logger.error("Could not send echo to the client. Terminating.", exc)
-                        cleanup(sessionSocket, throttle)
+                        cleanup(sessionSocket)
                     }
                 })
             }
@@ -177,7 +136,7 @@ private fun handleEchoesInternal(sessionSocket: AsynchronousSocketChannel, buffe
 
         override fun failed(exc: Throwable, attachment: Any?) {
             logger.error("Could not receive message from client. Terminating.", exc)
-            cleanup(sessionSocket, throttle)
+            cleanup(sessionSocket)
         }
     })
 }
@@ -186,14 +145,14 @@ private fun handleEchoesInternal(sessionSocket: AsynchronousSocketChannel, buffe
  * Ends the echo session.
  * @param   sessionSocket   the socket connected to the client
  */
-private fun sayGoodbye(sessionSocket: AsynchronousSocketChannel, throttle: AsyncSemaphore,) {
-    sessionSocket.write(encoder.encode(CharBuffer.wrap("Bye!\n")), null, object : CompletionHandler<Int, Any?> {
+private fun sayGoodbye(sessionSocket: AsynchronousSocketChannel) {
+    sessionSocket.write(encoder.encode(CharBuffer.wrap("Bye!")), null, object : CompletionHandler<Int, Any?> {
         override fun completed(result: Int?, attachment: Any?) {
-            cleanup(sessionSocket, throttle)
+            cleanup(sessionSocket)
         }
 
         override fun failed(exc: Throwable?, attachment: Any?) {
-            cleanup(sessionSocket, throttle)
+            cleanup(sessionSocket)
         }
     })
 }
@@ -202,8 +161,7 @@ private fun sayGoodbye(sessionSocket: AsynchronousSocketChannel, throttle: Async
  * Ends the echo session.
  * @param   sessionSocket   the socket connected to the client
  */
-private fun cleanup(sessionSocket: AsynchronousSocketChannel, throttle: AsyncSemaphore) {
+private fun cleanup(sessionSocket: AsynchronousSocketChannel) {
     SessionInfo.endSession()
     sessionSocket.close()
-    throttle.release()
 }
