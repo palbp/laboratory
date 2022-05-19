@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import org.slf4j.LoggerFactory
 import palbp.laboratory.echo.AsyncSemaphore
 import java.net.Socket
@@ -15,6 +14,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 private const val EXIT = "exit"
 private val logger = LoggerFactory.getLogger("Coroutine and NIO2 based Echo Server")
@@ -94,7 +94,7 @@ private suspend fun handleEchoSession(sessionSocket: AsynchronousSocketChannel) 
 }
 
 suspend fun <T> CompletableFuture<T>.await(): T {
-    return suspendCancellableCoroutine { continuation ->
+    return suspendCoroutine { continuation ->
         whenComplete { result, error ->
             if (error != null)
                 continuation.resumeWithException(error)
