@@ -48,11 +48,12 @@ class AsyncSemaphore(initialUnits: Int) {
         guard.withLock {
             if (queue.isEmpty()) {
                 units += 1
+                null
             }
             else {
-                queue.removeFirst().complete(Unit)
+                queue.removeFirst()
             }
-        }
+        }?.complete(Unit)
     }
 }
 
