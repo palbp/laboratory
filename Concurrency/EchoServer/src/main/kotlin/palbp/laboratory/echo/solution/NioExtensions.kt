@@ -1,15 +1,11 @@
-package palbp.laboratory.echo.coroutines
+package palbp.laboratory.echo.solution
 
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
-import org.slf4j.LoggerFactory
 import java.net.InetSocketAddress
-import java.net.SocketOptions
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.channels.AsynchronousChannelGroup
-import java.nio.channels.AsynchronousCloseException
 import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.AsynchronousSocketChannel
 import java.nio.channels.CompletionHandler
@@ -20,37 +16,45 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
-private val logger = LoggerFactory.getLogger("NIO extensions")
 private val encoder: CharsetEncoder = Charsets.UTF_8.newEncoder()
 private val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
 
-
-fun createServerChannel(hostname: String, port: Int, executor: ExecutorService): AsynchronousServerSocketChannel {
+/**
+ * Creates a server channel, binding it to the given [address].
+ * @param address   the address on which the server will be accepting connection requests
+ * @param executor  the executor to where IO completion work is scheduled to execute
+ */
+fun createServerChannel(address: InetSocketAddress, executor: ExecutorService): AsynchronousServerSocketChannel {
     val group = AsynchronousChannelGroup.withThreadPool(executor)
     val serverSocket = AsynchronousServerSocketChannel.open(group)
-    serverSocket.bind(InetSocketAddress(hostname, port))
+    serverSocket.bind(address)
     return serverSocket
 }
 
+/**
+ * Accepts connection requests in this server channel.
+ * @return  the socket channel connected to the client for which the connection request was accepted
+ */
 suspend fun AsynchronousServerSocketChannel.suspendingAccept(): AsynchronousSocketChannel {
     return suspendCancellableCoroutine { continuation ->
         accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
             override fun completed(socketChannel: AsynchronousSocketChannel, attachment: Any?) {
-                //logger.info("Accept completed. Cancelled = ${continuation.isCancelled}")
                 continuation.resume(socketChannel)
             }
 
             override fun failed(error: Throwable, attachment: Any?) {
-                //logger.info("Accept failed. Cancelled = ${continuation.isCancelled}")
                 continuation.resumeWithException(error)
             }
         })
     }
 }
 
-
+/**
+ * Writes the given text to this socket channel.
+ * @param text  The text to be written
+ * @return the number of written bytes.
+ */
 suspend fun AsynchronousSocketChannel.suspendingWriteLine(text: String): Int {
     return suspendCancellableCoroutine { continuation ->
         val toSend = CharBuffer.wrap(text + "\r\n")
@@ -73,7 +77,6 @@ suspend fun AsynchronousSocketChannel.suspendingWriteLine(text: String): Int {
 
 /**
  * Reads a line from this socket channel.
- *
  * @param timeout   The maximum time for the I/O operation to complete
  * @param unit      The time unit of the {@code timeout} argument
  * @return the read line, or null if the operation timed out

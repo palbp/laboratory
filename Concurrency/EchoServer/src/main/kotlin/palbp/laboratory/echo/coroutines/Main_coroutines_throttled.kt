@@ -12,6 +12,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import palbp.laboratory.echo.AsyncSemaphore
+import palbp.laboratory.echo.solution.await
 import java.net.Socket
 import java.nio.channels.AsynchronousSocketChannel
 import java.util.concurrent.CompletableFuture
