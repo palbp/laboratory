@@ -1,13 +1,19 @@
 package palbp.laboratory.echo.solution
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
+import java.io.IOException
 import java.net.InetSocketAddress
+import java.nio.channels.AsynchronousCloseException
+import java.nio.channels.AsynchronousServerSocketChannel
+import java.nio.channels.ClosedChannelException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -35,6 +41,7 @@ class Server(
     private val guard = Mutex()
     private val throttle = AsyncSemaphore(maxSessions)
     private lateinit var serverLoopJob: Job
+    private lateinit var serverSocketChannel: AsynchronousServerSocketChannel
 
     suspend fun isStarted() = guard.withLock { state == State.STARTED }
 
@@ -49,32 +56,41 @@ class Server(
             if (state != State.NOT_STARTED)
                 throw IllegalStateException("Server has already been started")
 
-            val serverSocket = createServerChannel(address, executor)
+            serverSocketChannel = createServerChannel(address, executor)
             serverLoopJob = CoroutineScope(executor.asCoroutineDispatcher()).launch {
-                while(true) {
-                    throttle.acquire().await()
-                    logger.info("Ready to accept connections")
-                    val sessionSocket = serverSocket.suspendingAccept()
-                    sessionManager.createSession(sessionSocket, this)
-                        .start()
-                        .onStop {
-                            sessionManager.removeSession(it.id)
+                try {
+                    while(isStarted()) {
+                        throttle.acquire().await()
+                        logger.info("Ready to accept connections")
+                        val sessionSocket = serverSocketChannel.suspendingAccept()
+                        if (!isStarted()) {
                             throttle.release()
+                            break
                         }
+
+                        sessionManager.createSession(sessionSocket, this)
+                            .start()
+                            .onStop {
+                                sessionManager.removeSession(it.id)
+                                throttle.release()
+                            }
+                    }
+                }
+                catch (ex: ClosedChannelException) {
+                    logger.info("Server is shutting down")
                 }
             }
 
             state = State.STARTED
         }
-
     }
 
     /**
-     * Shuts down the server.
+     * Shuts down the server and synchronizes with the termination of the shutdown sequence
      * @param message   the message to send to all connected clients
      * @throws  IllegalStateException if the server is not started
      */
-    suspend fun shutdown(message: String) {
+    suspend fun shutdownAndJoin(message: String) {
         guard.withLock {
             if (state != State.STARTED)
                 throw IllegalStateException("Server is not started")
@@ -82,26 +98,11 @@ class Server(
             state = State.STOPPED
         }
 
+        // TODO: close can actually throw an exception. Must deal with it
+        serverSocketChannel.close()
         sessionManager.roaster.forEach { it.stop(message) }
-
-        // TODO: fix me!
-        serverLoopJob.cancel()
-        executor.shutdown()
-    }
-
-    /**
-     * Synchronizes with the termination of the shutdown sequence.
-     */
-    suspend fun join() {
         serverLoopJob.join()
-    }
 
-    /**
-     * Shuts down the server, synchronizing with the termination of the shutdown sequence.
-     * @param message   the message to send to all connected clients
-     */
-    suspend fun shutdownAndJoin(message: String) {
-        shutdown(message)
-        join()
+        executor.shutdown()
     }
 }

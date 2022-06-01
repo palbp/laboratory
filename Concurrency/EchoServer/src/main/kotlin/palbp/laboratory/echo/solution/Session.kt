@@ -2,14 +2,16 @@ package palbp.laboratory.echo.solution
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.slf4j.LoggerFactory
-import palbp.laboratory.echo.coroutines.suspendingWriteLine
+import java.io.IOException
 import java.nio.channels.AsynchronousSocketChannel
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.cancellation.CancellationException
 
 private const val EXIT = "exit"
 
@@ -28,12 +30,19 @@ class Session(val id: Int, private val socket: AsynchronousSocketChannel, privat
     enum class State { NOT_STARTED, STARTED, STOPPED }
 
     private val guard = Mutex()
+
+    // Shared mutable state, guarded by [guard]
     private var state = State.NOT_STARTED
-    private val ctrlChannel = Channel<ControlMessage>()
     private var stopHandler: ((Session) -> Unit)? = null
 
+    // Immutable data
+    private val ctrlChannel = Channel<ControlMessage>()
     private lateinit var rxJob: Job
     private lateinit var txJob: Job
+
+    private suspend fun notifyOnStop() {
+        guard.withLock { stopHandler } ?.invoke(this@Session)
+    }
 
     /**
      * Starts this session mobilizing the required resources.
@@ -82,34 +91,42 @@ class Session(val id: Int, private val socket: AsynchronousSocketChannel, privat
     }
 
     /**
-     * Starts the coroutine that is responsible for receiving messages from the client
+     * Starts the coroutine that is responsible for receiving messages from the client. When the session ends, this
+     * coroutine always ends prior to the TX coroutine, even if any errors occurred.
      * @return  the [Job] instance that represents the started coroutine
      */
     private fun startRxCoroutine(): Job =
         scope.launch {
             var echoCount = 0
-            while (true) {
-                when (val line = socket.suspendingReadLine(5, TimeUnit.MINUTES)) {
-                    EXIT -> {
-                        logger.info("Session $id terminated by user")
-                        ctrlChannel.send(EndSession("Bye!"))
-                        break
-                    }
-                    null -> {
-                        logger.info("Session $id timed out")
-                        ctrlChannel.send(EndSession("Session has been idle for too long. Terminating."))
-                        break
-                    }
-                    else -> {
-                        logger.info("Received line number '${++echoCount}'. Echoing it.")
-                        ctrlChannel.send(Echo("($echoCount) Echo: $line"))
+            try {
+                while (true) {
+                    when (val line = socket.suspendingReadLine(5, TimeUnit.MINUTES)) {
+                        EXIT -> {
+                            logger.info("Session $id terminated by user")
+                            ctrlChannel.send(EndSession("Bye!"))
+                            break
+                        }
+                        null -> {
+                            logger.info("Session $id timed out")
+                            ctrlChannel.send(EndSession("Session has been idle for too long. Terminating."))
+                            break
+                        }
+                        else -> {
+                            logger.info("Received line number '${++echoCount}'. Echoing it.")
+                            ctrlChannel.send(Echo("($echoCount) Echo: $line"))
+                        }
                     }
                 }
+            }
+            catch (e: IOException) {
+                logger.warn("Exception caught in RX coroutine for session $id. Session will end.", e)
+                txJob.cancel(CancellationException("An error occurred while reading from the session socket"))
             }
         }
 
     /**
-     * Starts the coroutine that is responsible for controlling the session and sending messages to the client
+     * Starts the coroutine that is responsible for controlling the session and sending messages to the client. This
+     * coroutine will always finish after RX coroutine.
      * @return  the [Job] instance that represents the started coroutine
      */
     private fun startTxCoroutine(): Job =
@@ -126,9 +143,12 @@ class Session(val id: Int, private val socket: AsynchronousSocketChannel, privat
                     }
                 }
             }
+            catch (e: Exception) {
+                logger.warn("Exception caught in TX coroutine for session $id. Session will end.", e)
+                rxJob.cancelAndJoin()
+            }
             finally {
-                val handler = guard.withLock { stopHandler }
-                handler?.invoke(this@Session)
+                notifyOnStop()
             }
         }
 }

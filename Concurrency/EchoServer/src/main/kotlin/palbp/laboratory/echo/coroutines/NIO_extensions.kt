@@ -50,7 +50,6 @@ suspend fun AsynchronousServerSocketChannel.suspendingAccept(): AsynchronousSock
     }
 }
 
-
 suspend fun AsynchronousSocketChannel.suspendingWriteLine(text: String): Int {
     return suspendCancellableCoroutine { continuation ->
         val toSend = CharBuffer.wrap(text + "\r\n")
