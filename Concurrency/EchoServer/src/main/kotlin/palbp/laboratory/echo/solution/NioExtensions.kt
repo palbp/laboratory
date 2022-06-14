@@ -2,6 +2,7 @@ package palbp.laboratory.echo.solution
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.suspendCancellableCoroutine
+import org.slf4j.LoggerFactory
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
@@ -19,6 +20,8 @@ import kotlin.coroutines.resumeWithException
 
 private val encoder: CharsetEncoder = Charsets.UTF_8.newEncoder()
 private val decoder: CharsetDecoder = Charsets.UTF_8.newDecoder()
+
+private val logger = LoggerFactory.getLogger("NIO Extensions")
 
 /**
  * Creates a server channel, binding it to the given [address].
@@ -40,10 +43,12 @@ suspend fun AsynchronousServerSocketChannel.suspendingAccept(): AsynchronousSock
     return suspendCancellableCoroutine { continuation ->
         accept(null, object : CompletionHandler<AsynchronousSocketChannel, Any?> {
             override fun completed(socketChannel: AsynchronousSocketChannel, attachment: Any?) {
+                logger.info("suspendingAccept completed")
                 continuation.resume(socketChannel)
             }
 
             override fun failed(error: Throwable, attachment: Any?) {
+                logger.error("suspendingAccept failed", error)
                 continuation.resumeWithException(error)
             }
         })
@@ -88,6 +93,7 @@ suspend fun AsynchronousSocketChannel.suspendingReadLine(timeout: Long = 0, unit
         // E.g. We would need to deal with the case when read does not contain the whole line
         read(buffer, timeout, unit, null, object : CompletionHandler<Int, Any?> {
             override fun completed(result: Int, attachment: Any?) {
+                logger.info("read completed and coroutine is cancelled = ${continuation.isCancelled}")
                 if (continuation.isCancelled)
                     continuation.resumeWithException(CancellationException())
                 else {
@@ -97,6 +103,7 @@ suspend fun AsynchronousSocketChannel.suspendingReadLine(timeout: Long = 0, unit
             }
 
             override fun failed(error: Throwable, attachment: Any?) {
+                logger.error("read failed and coroutine is cancelled = ${continuation.isCancelled}", error)
                 if (error is InterruptedByTimeoutException) {
                     continuation.resume(null)
                 }
