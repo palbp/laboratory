@@ -4,6 +4,8 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
@@ -15,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import palbp.laboratory.codelabs.composebasics.ui.theme.ComposeBasicsCodelabTheme
 
 @Composable
-fun Greetings(names: List<String> = listOf("World", "Compose")) {
+fun Greetings(names: List<String> = List(1000) { "$it" } ) {
     // A surface container using the 'background' color from the theme
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.padding(vertical = 4.dp)
     ) {
-        Column {
-            names.forEach {
+        LazyColumn {
+            items(names) {
                 Greeting(it)
             }
         }
