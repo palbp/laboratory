@@ -82,11 +82,11 @@ fun AlignYourBodyElementPreview() {
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
 fun AlignYourBodyRowPreview() {
-    BasicLayoutsCodelabTheme { AlignYourBodyRow(data = alignYourBodyData) }
+    BasicLayoutsCodelabTheme { AlignYourBodyRow(data = alignYourBodyPreviewData) }
 }
 
 
-private val alignYourBodyData = listOf(
+val alignYourBodyPreviewData = listOf(
     R.drawable.ab1_inversions to R.string.ab1_inversions,
     R.drawable.ab2_quick_yoga to R.string.ab2_quick_yoga,
     R.drawable.ab3_stretching to R.string.ab3_stretching,

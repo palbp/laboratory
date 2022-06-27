@@ -1,8 +1,9 @@
 package palbp.laboratory.codelabs.basiclayouts
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import AlignYourBodyRow
+import alignYourBodyPreviewData
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -12,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import palbp.laboratory.codelabs.basiclayouts.ui.theme.BasicLayoutsCodelabTheme
+import java.util.*
 
 @Composable
 fun HomeScreen() {
@@ -40,10 +42,38 @@ fun SearchBar(
     )
 }
 
+@Composable
+fun HomeSection(
+    @StringRes title: Int,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(id = title).uppercase(Locale.getDefault()),
+            style = MaterialTheme.typography.h2,
+            modifier = Modifier
+                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
+                .padding(horizontal = 16.dp)
+        )
+        content()
+    }
+}
+
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
 fun SearchBarPreview() {
     BasicLayoutsCodelabTheme {
         SearchBar(Modifier.padding(8.dp))
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+@Composable
+fun HomeSectionPreview() {
+    BasicLayoutsCodelabTheme {
+        HomeSection(title = R.string.align_your_body) {
+            AlignYourBodyRow(data = alignYourBodyPreviewData)
+        }
     }
 }
