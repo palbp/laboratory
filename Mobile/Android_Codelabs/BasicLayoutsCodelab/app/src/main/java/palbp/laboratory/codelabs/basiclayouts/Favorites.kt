@@ -88,11 +88,11 @@ fun FavoriteCollectionCardPreview() {
 @Composable
 fun FavoriteCollectionsGridPreview() {
     BasicLayoutsCodelabTheme {
-        FavoriteCollectionsGrid(data = favoriteCollectionsData)
+        FavoriteCollectionsGrid(data = favoriteCollectionsPreviewData)
     }
 }
 
-private val favoriteCollectionsData = listOf(
+val favoriteCollectionsPreviewData = listOf(
     R.drawable.fc1_short_mantras to R.string.fc1_short_mantras,
     R.drawable.fc2_nature_meditations to R.string.fc2_nature_meditations,
     R.drawable.fc3_stress_and_anxiety to R.string.fc3_stress_and_anxiety,
