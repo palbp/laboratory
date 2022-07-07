@@ -18,7 +18,7 @@ import kotlin.concurrent.withLock
  * (i.e. Lock and Condition implementations).
  */
 @Suppress("UNCHECKED_CAST")
-fun <A, B, C> f(f0: () -> A, f1: () -> B, f2: (A, B) -> C, executor: Executor): C {
+fun <A, B, C> run(f0: () -> A, f1: () -> B, f2: (A, B) -> C, executor: Executor): C {
 
     /**
      * The implementation of this synchronizer relies on it being local to the function.
