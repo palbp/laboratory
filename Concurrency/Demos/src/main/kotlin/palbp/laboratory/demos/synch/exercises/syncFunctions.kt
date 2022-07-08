@@ -36,6 +36,7 @@ fun <A, B, C> run(f0: () -> A, f1: () -> B, f2: (A, B) -> C, executor: Executor)
         fun putResultAt(index: Int, value: Any?) {
             guard.withLock {
                 results[index] = value
+                publishedResults += 1
                 if (publishedResults == expectedResults)
                     hasAllResults.signalAll()
             }
