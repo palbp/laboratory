@@ -1,7 +1,6 @@
 package palbp.laboratory.demos.coroutines.exercises
 
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -9,6 +8,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+
 /**
  * A possible solution for the following exercise.
  *
@@ -25,8 +25,17 @@ import kotlin.coroutines.suspendCoroutine
  * want to deliver to the partner coroutine (value). The exchange method ends up returning the exchanged value,
  * when the exchange is performed with another coroutine.
  */
-@Suppress("Unused")
-class SuspendingExchangerAsPerMyClasses<T> {
+
+interface ISuspendingExchanger<T> {
+    suspend fun exchange(value: T): T
+}
+
+/**
+ * In this implementation we start with an "asynchronizer" base in a [CompletableFuture] (see [internalExchange]) and
+ * then we extend the solution to expose a suspending function that suspends the calling coroutine until the underlying
+ * future becomes completed.
+ */
+class SuspendingExchangerAsPerMyClasses<T> : ISuspendingExchanger<T> {
 
     private data class Request<T>(val value: T, val result: CompletableFuture<T>)
 
@@ -51,7 +60,7 @@ class SuspendingExchangerAsPerMyClasses<T> {
         }
     }
 
-    suspend fun exchange(value: T): T {
+    override suspend fun exchange(value: T): T {
         return suspendCoroutine { continuation ->
             internalExchange(value).whenComplete { value, error ->
                 if (error != null)
@@ -63,14 +72,36 @@ class SuspendingExchangerAsPerMyClasses<T> {
     }
 }
 
-class SuspendingExchange<T> {
+/**
+ * In this implementation we only make use of constructs that belong to the coroutines' concurrency model, namely,
+ * [Mutex] and [suspendCoroutine].
+ */
+class SuspendingExchanger<T> : ISuspendingExchanger<T> {
 
     private data class Request<T>(val value: T, val continuation: Continuation<T>)
 
     private val guard = Mutex()
     private var waiting: Request<T>? = null
 
-    suspend fun exchange(value: T): T {
-        TODO()
+    override suspend fun exchange(value: T): T {
+        try {
+            guard.lock()
+            val other = waiting
+            return if (other == null) {
+                suspendCoroutine { continuation ->
+                    waiting = Request(value, continuation)
+                    guard.unlock()
+                }
+            } else {
+                waiting = null
+                guard.unlock()
+                other.continuation.resume(value)
+                other.value
+            }
+        }
+        finally {
+            if (guard.isLocked)
+                guard.unlock()
+        }
     }
 }
