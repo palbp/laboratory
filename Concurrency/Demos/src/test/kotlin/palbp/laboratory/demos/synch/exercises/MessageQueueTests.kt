@@ -1,14 +1,11 @@
 package palbp.laboratory.demos.synch.exercises
 
-import org.slf4j.LoggerFactory
 import java.util.concurrent.CountDownLatch
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.time.Duration.Companion.seconds
-
-private val logger = LoggerFactory.getLogger(MessageQueueTests::class.java)
 
 class MessageQueueTests {
 
