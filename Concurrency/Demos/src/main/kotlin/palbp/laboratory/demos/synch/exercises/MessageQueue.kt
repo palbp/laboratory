@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.synch.exercises
 
+import java.lang.Thread.currentThread
 import java.util.LinkedList
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.ReentrantLock
@@ -29,7 +30,6 @@ import kotlin.time.Duration
  * regardless of the values [nOfMessages]. Be aware of the consequences of giving up (either through cancellation
  * or timeout) on a [tryDequeue] operation.
  */
-@Suppress("Unused")
 class MessageQueue<T> {
 
     private class DequeueRequest<T>(
@@ -74,9 +74,12 @@ class MessageQueue<T> {
                 }
             }
             catch (ie: InterruptedException) {
-                dequeueRequests.remove(myRequest)
-                tryCompletePendingDequeues()
-                throw ie
+                if(dequeueRequests.remove(myRequest)) {
+                    tryCompletePendingDequeues()
+                    throw ie
+                }
+                currentThread().interrupt()
+                return myRequest.messages
             }
         }
     }

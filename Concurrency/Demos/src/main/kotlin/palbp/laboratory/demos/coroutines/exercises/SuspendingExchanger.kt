@@ -31,7 +31,7 @@ interface ISuspendingExchanger<T> {
 }
 
 /**
- * In this implementation we start with an "asynchronizer" base in a [CompletableFuture] (see [internalExchange]) and
+ * In this implementation we start with an "asynchronizer" based in a [CompletableFuture] (see [internalExchange]) and
  * then we extend the solution to expose a suspending function that suspends the calling coroutine until the underlying
  * future becomes completed.
  */

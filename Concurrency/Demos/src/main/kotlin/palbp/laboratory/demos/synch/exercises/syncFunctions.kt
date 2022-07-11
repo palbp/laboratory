@@ -57,10 +57,11 @@ fun <A, B, C> run(f0: () -> A, f1: () -> B, f2: (A, B) -> C, executor: Executor)
     executor.execute { pairHolder.putResultAt(aIndex, value = f0()) }
     executor.execute { pairHolder.putResultAt(bIndex, value = f1()) }
 
+    val inputPair = pairHolder.waitForResults()
+
     val resultHolder = ResultsHolder(expectedResults = 1)
     val cIndex = 0
     executor.execute {
-        val inputPair = pairHolder.waitForResults()
         val cResult = f2(inputPair[aIndex] as A, inputPair[bIndex] as B)
         resultHolder.putResultAt(cIndex, cResult)
     }
