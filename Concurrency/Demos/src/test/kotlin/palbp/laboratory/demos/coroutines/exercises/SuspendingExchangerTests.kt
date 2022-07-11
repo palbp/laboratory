@@ -50,5 +50,4 @@ class SuspendingExchangerTests {
     fun `exchanging elements with SuspendingExchanger succeeds`() {
         twoCoroutinesExchangingWith(SuspendingExchanger())
     }
-
 }
