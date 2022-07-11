@@ -57,6 +57,7 @@ class MessageQueue<T> {
                 return takeMessages(nOfMessages)
 
             val myRequest = DequeueRequest<T>(nOfMessages, guard.newCondition())
+            dequeueRequests.addLast(myRequest)
             var remainingTime = timeout.inWholeNanoseconds
 
             try {
@@ -89,7 +90,7 @@ class MessageQueue<T> {
     }
 
     private fun tryCompletePendingDequeues() {
-        while(messages.size >= dequeueRequests.first.nOfMessages) {
+        while(dequeueRequests.isNotEmpty() && messages.size >= dequeueRequests.first.nOfMessages) {
             val completedRequest = dequeueRequests.removeFirst()
             completedRequest.messages = takeMessages(completedRequest.nOfMessages)
             completedRequest.condition.signal()
