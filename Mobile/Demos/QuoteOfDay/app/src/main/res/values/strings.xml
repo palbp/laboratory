@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">QuoteOfDay</string>
+    <string name="fetch_button_text_idle">Fetch Quote</string>
+    <string name="fetch_button_text_loading">Fetching …</string>
+</resources>
