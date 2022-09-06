@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.quoteofday
 
+import android.util.Log
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ fun LoadingButton(
     modifier: Modifier = Modifier,
     state: LoadingState = LoadingState.Idle,
 ) {
+    Log.i(TAG, "LoadingButton: composing")
     Button(onClick = onClick, modifier = modifier) {
         val buttonTextId =
             if (state == LoadingState.Idle) R.string.fetch_button_text_idle
