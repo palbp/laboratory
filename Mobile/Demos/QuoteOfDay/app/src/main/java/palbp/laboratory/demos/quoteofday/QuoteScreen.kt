@@ -44,7 +44,7 @@ fun QuoteOfDayScreen(
 @Composable
 fun QuoteView(quote: Quote) {
     Log.i(TAG, "QuoteView: composing")
-    Column(modifier = Modifier.padding(64.dp)) {
+    Column(modifier = Modifier.padding(64.dp).testTag("QuoteView")) {
         Text(
             text = quote.text,
             style = MaterialTheme.typography.h6,
@@ -56,7 +56,7 @@ fun QuoteView(quote: Quote) {
         Text(
             text = quote.author,
             style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.fillMaxWidth().testTag("author"),
+            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.End
         )
     }

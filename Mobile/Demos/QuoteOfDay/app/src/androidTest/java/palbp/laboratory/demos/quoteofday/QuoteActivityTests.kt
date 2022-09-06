@@ -28,18 +28,18 @@ class QuoteActivityTests {
     val quoteActivityRule = createAndroidComposeRule<QuoteActivity>()
 
     @Test
-    fun fetched_quote_survives_reconfiguration() {
+    fun displayed_quote_survives_reconfiguration() {
         // Arrange
-        quoteActivityRule.onNodeWithTag("author").assertDoesNotExist()
-        quoteActivityRule.onNodeWithText("Fetch Quote").performClick()
+        quoteActivityRule.onNodeWithTag("QuoteView").assertDoesNotExist()
+        quoteActivityRule.onNodeWithTag("LoadingButton").performClick()
         Thread.sleep(FAKE_FETCH_DELAY * 2)
-        quoteActivityRule.onNodeWithTag("author").assertExists()
+        quoteActivityRule.onNodeWithTag("QuoteView").assertExists()
 
         // Act
         quoteActivityRule.activityRule.scenario.recreate()
         quoteActivityRule.waitForIdle()
 
         // Assert
-        quoteActivityRule.onNodeWithTag("author").assertExists()
+        quoteActivityRule.onNodeWithTag("QuoteView").assertExists()
     }
 }
