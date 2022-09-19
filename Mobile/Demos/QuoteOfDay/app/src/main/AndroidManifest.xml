@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="palbp.laboratory.demos.quoteofday">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -15,7 +14,7 @@
         android:theme="@style/Theme.QuoteOfDay"
         tools:targetApi="31">
         <activity
-            android:name=".QuoteActivity"
+            android:name=".main.QuoteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

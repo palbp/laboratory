@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday
+package palbp.laboratory.demos.quoteofday.main
 
 data class Quote(val text: String, val author: String) {
     init {

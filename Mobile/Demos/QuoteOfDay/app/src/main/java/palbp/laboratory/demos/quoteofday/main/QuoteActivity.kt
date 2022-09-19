@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday
+package palbp.laboratory.demos.quoteofday.main
 
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +11,9 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-const val TAG = "QuoteOfDayDemo"
+import palbp.laboratory.demos.quoteofday.DependenciesContainer
+import palbp.laboratory.demos.quoteofday.TAG
+import palbp.laboratory.demos.quoteofday.main.views.LoadingState
 
 class QuoteActivity : ComponentActivity() {
 

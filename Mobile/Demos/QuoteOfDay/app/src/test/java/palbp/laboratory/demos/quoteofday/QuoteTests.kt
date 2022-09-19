@@ -1,7 +1,7 @@
 package palbp.laboratory.demos.quoteofday
 
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import org.junit.Test
+import palbp.laboratory.demos.quoteofday.main.Quote
 
 class QuoteTests {
 
