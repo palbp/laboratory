@@ -4,13 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import palbp.laboratory.demos.quoteofday.DependenciesContainer
 import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.main.views.LoadingState
@@ -21,27 +17,30 @@ class QuoteActivity : ComponentActivity() {
         (application as DependenciesContainer).quoteService
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private val viewModel: QuoteScreenViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return QuoteScreenViewModel(quoteService) as T
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.v(TAG, "application: ${application.javaClass.name}")
         Log.v(TAG, "applicationContext: ${applicationContext.javaClass.name}")
         setContent {
-            var loadingState by remember { mutableStateOf(LoadingState.Idle) }
-            var quote by remember { mutableStateOf<Quote?>(null) }
+            val loadingState: LoadingState =
+                if (viewModel.isLoading) LoadingState.Loading
+                else LoadingState.Idle
 
             QuoteOfDayScreen(
-                quote = quote,
+                quote = viewModel.quote,
                 loadingState = loadingState,
                 onUpdateRequest = {
                     Log.v(TAG, "QuoteActivity.onUpdateRequest()")
-                    CoroutineScope(Dispatchers.Main).launch {
-                        quote = null
-                        loadingState = LoadingState.Loading
-                        Log.v(TAG, "QuoteActivity.onUpdateRequest().before fetch")
-                        quote = quoteService.fetchQuote()
-                        Log.v(TAG, "QuoteActivity.onUpdateRequest().after fetch with ${quote?.author}")
-                        loadingState = LoadingState.Idle
-                    }
+                    viewModel.fetchQuote()
                 }
             )
         }

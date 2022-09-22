@@ -20,7 +20,11 @@ fun LoadingButton(
     state: LoadingState = LoadingState.Idle,
 ) {
     Log.i(TAG, "LoadingButton: composing")
-    Button(onClick = onClick, modifier = modifier.testTag("LoadingButton")) {
+    Button(
+        onClick = onClick,
+        enabled = state == LoadingState.Idle,
+        modifier = modifier.testTag("LoadingButton")
+    ) {
         val buttonTextId =
             if (state == LoadingState.Idle) R.string.fetch_button_text_idle
             else R.string.fetch_button_text_loading

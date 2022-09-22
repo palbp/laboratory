@@ -28,6 +28,7 @@ fun QuoteOfDayScreen(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background,
         ) {
+            Log.i(TAG, "QuoteOfDayScreen content: composing")
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
