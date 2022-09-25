@@ -1,5 +1,6 @@
-package palbp.laboratory.demos.quoteofday.main
+package palbp.laboratory.demos.quoteofday.daily
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,7 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import palbp.laboratory.demos.quoteofday.DependenciesContainer
 import palbp.laboratory.demos.quoteofday.TAG
-import palbp.laboratory.demos.quoteofday.main.views.LoadingState
+import palbp.laboratory.demos.quoteofday.daily.views.LoadingState
+import palbp.laboratory.demos.quoteofday.info.InfoActivity
 
 class QuoteActivity : ComponentActivity() {
 
@@ -41,8 +43,15 @@ class QuoteActivity : ComponentActivity() {
                 onUpdateRequest = {
                     Log.v(TAG, "QuoteActivity.onUpdateRequest()")
                     viewModel.fetchQuote()
-                }
+                },
+                onInfoRequest = { navigateToInfoScreen() }
             )
         }
     }
+
+    private fun navigateToInfoScreen() {
+        val intent = Intent(this, InfoActivity::class.java)
+        startActivity(intent)
+    }
 }
+

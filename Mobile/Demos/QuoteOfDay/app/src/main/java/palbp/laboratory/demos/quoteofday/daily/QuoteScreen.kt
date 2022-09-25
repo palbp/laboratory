@@ -1,38 +1,46 @@
-package palbp.laboratory.demos.quoteofday.main
+package palbp.laboratory.demos.quoteofday.daily
 
 import android.content.res.Configuration
 import android.util.Log
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import palbp.laboratory.demos.quoteofday.TAG
-import palbp.laboratory.demos.quoteofday.main.views.LoadingButton
-import palbp.laboratory.demos.quoteofday.main.views.LoadingState
-import palbp.laboratory.demos.quoteofday.main.views.QuoteView
+import palbp.laboratory.demos.quoteofday.daily.views.LoadingButton
+import palbp.laboratory.demos.quoteofday.daily.views.LoadingState
+import palbp.laboratory.demos.quoteofday.daily.views.QuoteView
+import palbp.laboratory.demos.quoteofday.ui.TopBar
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 
 @Composable
 fun QuoteOfDayScreen(
     quote: Quote? = null,
     loadingState: LoadingState = LoadingState.Idle,
-    onUpdateRequest: () -> Unit = { }
+    onUpdateRequest: () -> Unit = { },
+    onInfoRequest: () -> Unit = { }
 ) {
     Log.i(TAG, "QuoteOfDayScreen: composing")
     QuoteOfDayTheme {
-        Surface(
+        Scaffold(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background,
-        ) {
+            backgroundColor = MaterialTheme.colors.background,
+            topBar = { TopBar(onInfoRequested = onInfoRequest) }
+        ) { innerPadding ->
             Log.i(TAG, "QuoteOfDayScreen content: composing")
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
             ) {
                 if (quote != null)
                     QuoteView(quote = quote)

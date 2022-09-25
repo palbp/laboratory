@@ -2,8 +2,8 @@ package palbp.laboratory.demos.quoteofday
 
 import android.app.Application
 import kotlinx.coroutines.delay
-import palbp.laboratory.demos.quoteofday.main.Quote
-import palbp.laboratory.demos.quoteofday.main.QuoteService
+import palbp.laboratory.demos.quoteofday.daily.Quote
+import palbp.laboratory.demos.quoteofday.daily.QuoteService
 
 const val TAG = "QuoteOfDayDemo"
 

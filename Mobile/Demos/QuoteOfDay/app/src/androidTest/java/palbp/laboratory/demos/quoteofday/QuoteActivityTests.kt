@@ -9,7 +9,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import palbp.laboratory.demos.quoteofday.main.QuoteActivity
+import palbp.laboratory.demos.quoteofday.daily.QuoteActivity
 
 /**
  * Instrumented test, which will execute on an Android device.

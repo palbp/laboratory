@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.main.views
+package palbp.laboratory.demos.quoteofday.daily.views
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import palbp.laboratory.demos.quoteofday.main.Quote
+import palbp.laboratory.demos.quoteofday.daily.Quote
 import palbp.laboratory.demos.quoteofday.TAG
 
 @Composable

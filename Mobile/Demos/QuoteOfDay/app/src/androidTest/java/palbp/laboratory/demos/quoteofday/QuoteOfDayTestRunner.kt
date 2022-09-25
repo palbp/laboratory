@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
 import kotlinx.coroutines.delay
-import palbp.laboratory.demos.quoteofday.main.Quote
-import palbp.laboratory.demos.quoteofday.main.QuoteService
+import palbp.laboratory.demos.quoteofday.daily.Quote
+import palbp.laboratory.demos.quoteofday.daily.QuoteService
 
 const val FAKE_FETCH_DELAY = 2000L
 

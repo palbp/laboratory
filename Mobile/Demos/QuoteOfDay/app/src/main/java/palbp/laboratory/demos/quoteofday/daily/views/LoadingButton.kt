@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.main.views
+package palbp.laboratory.demos.quoteofday.daily.views
 
 import android.util.Log
 import androidx.compose.material.Button
@@ -26,8 +26,8 @@ fun LoadingButton(
         modifier = modifier.testTag("LoadingButton")
     ) {
         val buttonTextId =
-            if (state == LoadingState.Idle) R.string.fetch_button_text_idle
-            else R.string.fetch_button_text_loading
+            if (state == LoadingState.Idle) R.string.activity_quote_fetch_button_text_idle
+            else R.string.activity_quote_fetch_button_text_loading
         Text(text = stringResource(id = buttonTextId))
     }
 }
