@@ -28,10 +28,11 @@ class QuoteActivityTests {
 
     @Test
     fun displayed_quote_survives_reconfiguration() {
+
         // Arrange
         quoteActivityRule.onNodeWithTag("QuoteView").assertDoesNotExist()
         quoteActivityRule.onNodeWithTag("LoadingButton").performClick()
-        Thread.sleep(FAKE_FETCH_DELAY * 2)
+        quoteActivityRule.waitForIdle()
         quoteActivityRule.onNodeWithTag("QuoteView").assertExists()
 
         // Act
