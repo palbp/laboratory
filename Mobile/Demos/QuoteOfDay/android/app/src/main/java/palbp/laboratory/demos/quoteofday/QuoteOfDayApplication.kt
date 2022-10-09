@@ -1,6 +1,8 @@
 package palbp.laboratory.demos.quoteofday
 
 import android.app.Application
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
 import palbp.laboratory.demos.quoteofday.daily.Quote
 import palbp.laboratory.demos.quoteofday.daily.QuoteService
@@ -11,12 +13,19 @@ const val TAG = "QuoteOfDayDemo"
 
 interface DependenciesContainer {
     val quoteService: QuoteService
+    val jsonEncoder: Gson
 }
 
-private val quoteAPIHome = URL("https://184b-2001-690-2008-df53-d4d7-fc3e-10c4-b7b2.ngrok.io")
+private val quoteAPIHome = URL("https://212a-194-210-190-193.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
-    override val quoteService: QuoteService by lazy { RealQuoteService(quoteAPIHome) }
+
+    override val jsonEncoder: Gson
+        get() = GsonBuilder().create()
+
+    override val quoteService: QuoteService by lazy {
+        RealQuoteService(quoteAPIHome, jsonEncoder)
+    }
 }
 
 private class FakeQuoteService : QuoteService {

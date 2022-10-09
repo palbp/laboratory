@@ -13,9 +13,10 @@ repositories {
 }
 
 dependencies {
-    implementation("com.sparkjava:spark-core:2.9.3")
-    implementation("org.slf4j:slf4j-simple:1.7.32")
-    testImplementation(kotlin("test"))
+    implementation("com.sparkjava:spark-core:2.9.4")
+    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("com.google.code.gson:gson:2.9.0")
+    testImplementation("junit:junit:4.13.2")
 }
 
 tasks.test {

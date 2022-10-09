@@ -1,8 +1,10 @@
 package palbp.laboratory.demos.quoteofday.daily
 
 import android.util.Log
+import com.google.gson.Gson
 import okhttp3.*
 import palbp.laboratory.demos.quoteofday.TAG
+import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenMediaType
 import java.io.IOException
 import java.net.URL
 import kotlin.coroutines.resume
@@ -13,7 +15,10 @@ interface QuoteService {
     suspend fun fetchQuote(): Quote
 }
 
-class RealQuoteService(private val quoteHome: URL) : QuoteService {
+class RealQuoteService(
+    private val quoteHome: URL,
+    private val gson: Gson
+) : QuoteService {
 
     private val client by lazy { OkHttpClient() }
 
@@ -33,10 +38,19 @@ class RealQuoteService(private val quoteHome: URL) : QuoteService {
 
                 override fun onResponse(call: Call, response: Response) {
                     Log.v(TAG, "fetchQuote: onResponse in Thread = ${Thread.currentThread().name}")
-                    continuation.resume(Quote("Yeahh", "Cool Kid"))
+                    val contentType = response.body?.contentType()
+                    if (response.isSuccessful && contentType != null && contentType == SirenMediaType) {
+                        val quoteDto = gson.fromJson<QuoteDto>(
+                            response.body?.string(),
+                            QuoteDtoType.type
+                        )
+                        continuation.resume(Quote(quoteDto))
+                    }
+                    else {
+                        TODO()
+                    }
                 }
             })
-
         }
 
         Log.v(TAG, "fetchQuote: after suspendCoroutine in Thread = ${Thread.currentThread().name}")
