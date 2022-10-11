@@ -6,8 +6,7 @@ import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteService
-import palbp.laboratory.demos.quoteofday.quotes.daily.RealQuoteService
+import palbp.laboratory.demos.quoteofday.quotes.QuoteService
 import java.net.URL
 
 const val TAG = "QuoteOfDayDemo"
@@ -36,11 +35,20 @@ class QuoteOfDayApplication : DependenciesContainer, Application() {
 private class FakeQuoteService : QuoteService {
     override suspend fun fetchQuote(): Quote {
         delay(3000)
-        val quoteText = "O poeta é um fingidor.\n" +
-                "Finge tão completamente\n" +
-                "Que chega a fingir que é dor\n" +
-                "A dor que deveras sente."
+        return aQuote
+    }
 
-        return Quote(quoteText, "Fernando Pessoa")
+    override suspend fun fetchWeekQuotes(): List<Quote> {
+        delay(3000)
+        return buildList { repeat(5) { add(aQuote) } }
     }
 }
+
+private val aQuote = Quote(
+    text = "O poeta é um fingidor.\n" +
+            "Finge tão completamente\n" +
+            "Que chega a fingir que é dor\n" +
+            "A dor que deveras sente.",
+    author = "Fernando Pessoa"
+)
+

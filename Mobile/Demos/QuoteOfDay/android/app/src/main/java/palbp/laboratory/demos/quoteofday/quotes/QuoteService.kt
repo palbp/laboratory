@@ -1,12 +1,10 @@
-package palbp.laboratory.demos.quoteofday.quotes.daily
+package palbp.laboratory.demos.quoteofday.quotes
 
 import android.util.Log
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import okhttp3.*
 import palbp.laboratory.demos.quoteofday.TAG
-import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.quotes.QuoteDto
-import palbp.laboratory.demos.quoteofday.quotes.QuoteDtoType
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenMediaType
 import java.io.IOException
 import java.net.URL
@@ -16,6 +14,7 @@ import kotlin.coroutines.suspendCoroutine
 
 interface QuoteService {
     suspend fun fetchQuote(): Quote
+    suspend fun fetchWeekQuotes(): List<Quote>
 }
 
 class RealQuoteService(
@@ -57,5 +56,11 @@ class RealQuoteService(
 
         Log.v(TAG, "fetchQuote: after suspendCoroutine in Thread = ${Thread.currentThread().name}")
         return quote
+    }
+
+    override suspend fun fetchWeekQuotes(): List<Quote> {
+        // TODO
+        delay(3000)
+        return emptyList()
     }
 }

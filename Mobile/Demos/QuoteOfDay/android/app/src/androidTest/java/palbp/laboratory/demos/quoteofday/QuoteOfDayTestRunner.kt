@@ -4,11 +4,25 @@ import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
 import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteService
+import palbp.laboratory.demos.quoteofday.quotes.QuoteService
 
 private class TestFakeQuoteService : QuoteService {
+
     override suspend fun fetchQuote(): Quote {
-        return Quote("Test text", "Test author")
+        return Quote(text = "Test text", author = "Test author")
+    }
+
+    override suspend fun fetchWeekQuotes(): List<Quote> {
+        return buildList {
+            for (count in 1..5) {
+                add(
+                    Quote(
+                        text = "Test text $count",
+                        author = "Test author $count"
+                    )
+                )
+            }
+        }
     }
 }
 
