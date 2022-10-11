@@ -89,19 +89,19 @@ private fun StatelessExpandableQuoteView(
 
 @Preview(showBackground = true)
 @Composable
-fun ExpandedQuoteViewPreview() {
+private fun ExpandedQuoteViewPreview() {
     StatelessExpandableQuoteView(quote = aQuote, isExpanded = true)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun CollapsedQuoteViewPreview() {
+private fun CollapsedQuoteViewPreview() {
     StatelessExpandableQuoteView(quote = aQuote, isExpanded = false)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ExpandableQuoteViewPreview() {
+private fun ExpandableQuoteViewPreview() {
     ExpandableQuoteView(quote = aQuote)
 }
 
@@ -112,5 +112,3 @@ private val aQuote = Quote(
             "A dor que deveras sente.",
     author = "Fernando Pessoa"
 )
-
-

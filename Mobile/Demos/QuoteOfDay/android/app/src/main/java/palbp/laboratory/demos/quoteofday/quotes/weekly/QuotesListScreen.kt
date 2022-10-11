@@ -60,6 +60,6 @@ fun QuotesListScreen(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(showBackground = true)
 @Composable
-fun QuotesListScreenPreview() {
+private fun QuotesListScreenPreview() {
     QuotesListScreen(QuotesListScreenState())
 }

@@ -86,24 +86,24 @@ fun RefreshFab(onClick: () -> Unit, state: RefreshingState = RefreshingState.Idl
 
 @Preview(showBackground = true)
 @Composable
-fun IdleRefreshButtonPreview() {
+private fun IdleRefreshButtonPreview() {
     RefreshButton(onClick = { }, state = RefreshingState.Idle)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun RefreshingRefreshButtonPreview() {
+private fun RefreshingRefreshButtonPreview() {
     RefreshButton(onClick = { }, state = RefreshingState.Refreshing)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun IdleRefreshFabPreview() {
+private fun IdleRefreshFabPreview() {
     RefreshFab(onClick = { }, state = RefreshingState.Idle)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun RefreshingRefreshFabPreview() {
+private fun RefreshingRefreshFabPreview() {
     RefreshFab(onClick = { }, state = RefreshingState.Refreshing)
 }

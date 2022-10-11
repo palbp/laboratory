@@ -38,7 +38,7 @@ fun QuoteView(quote: Quote) {
 
 @Preview(showBackground = true)
 @Composable
-fun QuoteViewPreview() {
+private fun QuoteViewPreview() {
     QuoteView(aQuote)
 }
 

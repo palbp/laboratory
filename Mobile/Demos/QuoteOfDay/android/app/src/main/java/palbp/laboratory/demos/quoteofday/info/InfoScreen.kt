@@ -95,7 +95,7 @@ fun Social(@DrawableRes id: Int, onClick: () -> Unit) {
 
 @Preview
 @Composable
-fun InfoScreenPreview() {
+private fun InfoScreenPreview() {
     val socialsPreview = listOf(
         SocialInfo(
             link = Uri.parse("https://www.linkedin.com/in/palbp/"),
