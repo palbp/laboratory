@@ -1,6 +1,5 @@
 package palbp.laboratory.demos.quoteofday.quotes.daily
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -44,20 +43,10 @@ class QuoteActivity : ComponentActivity() {
                     Log.v(TAG, "QuoteActivity.onUpdateRequest()")
                     viewModel.fetchQuote()
                 },
-                onInfoRequest = { navigateToInfoScreen() },
-                onHistoryRequested = { navigateToQuotesListScreen() }
+                onInfoRequest = { InfoActivity.navigate(origin = this) },
+                onHistoryRequested = { QuotesListActivity.navigate(origin = this) }
             )
         }
-    }
-
-    private fun navigateToInfoScreen() {
-        val intent = Intent(this, InfoActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun navigateToQuotesListScreen() {
-        val intent = Intent(this, QuotesListActivity::class.java)
-        startActivity(intent)
     }
 }
 
