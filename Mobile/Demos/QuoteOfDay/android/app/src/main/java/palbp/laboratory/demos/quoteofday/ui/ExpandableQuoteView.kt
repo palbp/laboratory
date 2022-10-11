@@ -1,14 +1,11 @@
 package palbp.laboratory.demos.quoteofday.ui
 
-import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -23,16 +20,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.quotes.Quote
 
 @Composable
-fun ExpandableQuoteView(quote: Quote) {
+fun ExpandableQuoteView(quote: Quote, onSelected: () -> Unit) {
     var isExpanded by remember { mutableStateOf(false) }
     StatelessExpandableQuoteView(
         quote = quote,
         isExpanded = isExpanded,
-        onExpandedToggleRequest = { isExpanded = !isExpanded }
+        onExpandedToggleRequest = { isExpanded = !isExpanded },
+        onSelected = onSelected
     )
 }
 
@@ -40,50 +37,62 @@ fun ExpandableQuoteView(quote: Quote) {
 private fun StatelessExpandableQuoteView(
     quote: Quote,
     isExpanded: Boolean,
-    onExpandedToggleRequest: () -> Unit = { }
+    onExpandedToggleRequest: () -> Unit = { },
+    onSelected: () -> Unit = { }
 ) {
-    Log.i(TAG, "ExpandableQuoteView: composing")
-    Column(modifier = Modifier
-        .padding(64.dp)
-        .testTag("ExpandableQuoteView")
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        elevation = 4.dp,
+        modifier = Modifier.testTag("ExpandableQuoteView")
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onExpandedToggleRequest)
+                .clickable(onClick = onSelected)
+                .padding(8.dp)
         ) {
-            val maxLines: Int by animateIntAsState(
-                targetValue = if (isExpanded) 10 else 1,
-                animationSpec = tween(
-                    delayMillis = 50,
-                    durationMillis = 800,
-                    easing = FastOutSlowInEasing
-                )
-            )
-            Text(
-                text = quote.text,
-                style = MaterialTheme.typography.subtitle1,
-                textAlign = TextAlign.Start,
-                maxLines = maxLines,
-                overflow = TextOverflow.Ellipsis,
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.0f)
-                    .align(Alignment.CenterVertically),
+            ) {
+                val maxLines: Int by animateIntAsState(
+                    targetValue = if (isExpanded) 10 else 1,
+                    animationSpec = tween(
+                        delayMillis = 50,
+                        durationMillis = 800,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+                Text(
+                    text = quote.text,
+                    style = MaterialTheme.typography.subtitle1,
+                    textAlign = TextAlign.Start,
+                    maxLines = maxLines,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1.0f)
+                        .align(Alignment.CenterVertically),
+                )
+                val icon =
+                    if (isExpanded) Icons.Default.ArrowDropUp
+                    else Icons.Default.ArrowDropDown
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clickable(onClick = onExpandedToggleRequest)
+                )
+            }
+            Text(
+                text = quote.author,
+                style = MaterialTheme.typography.subtitle2,
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, end = 8.dp),
             )
-            val icon =
-                if (isExpanded) Icons.Default.ArrowDropUp
-                else Icons.Default.ArrowDropDown
-            Icon(icon, contentDescription = null)
         }
-        Text(
-            text = quote.author,
-            style = MaterialTheme.typography.subtitle2,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp, end = 8.dp),
-        )
     }
 }
 
@@ -102,7 +111,7 @@ private fun CollapsedQuoteViewPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ExpandableQuoteViewPreview() {
-    ExpandableQuoteView(quote = aQuote)
+    ExpandableQuoteView(quote = aQuote, onSelected = { })
 }
 
 private val aQuote = Quote(
