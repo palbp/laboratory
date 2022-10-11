@@ -15,6 +15,7 @@ import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 @Composable
 fun TopBar(
     onBackRequested: (() -> Unit)? = null,
+    onHistoryRequested: (() -> Unit)? = null,
     onInfoRequested: (() -> Unit)? = null,
 ) {
     TopAppBar(
@@ -27,6 +28,11 @@ fun TopBar(
             }
         },
         actions = {
+            if (onHistoryRequested != null) {
+                IconButton(onClick = onHistoryRequested) {
+                    Icon(Icons.Default.List, contentDescription = "Localized description")
+                }
+            }
             if (onInfoRequested != null) {
                 IconButton(onClick = onInfoRequested) {
                     Icon(Icons.Default.Info, contentDescription = "Localized description")

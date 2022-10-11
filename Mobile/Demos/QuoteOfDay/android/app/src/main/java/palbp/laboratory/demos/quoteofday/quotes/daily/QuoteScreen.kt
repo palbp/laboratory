@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.daily
+package palbp.laboratory.demos.quoteofday.quotes.daily
 
 import android.content.res.Configuration
 import android.util.Log
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FabPosition
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -14,25 +15,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import palbp.laboratory.demos.quoteofday.TAG
-import palbp.laboratory.demos.quoteofday.daily.views.LoadingButton
-import palbp.laboratory.demos.quoteofday.daily.views.LoadingState
-import palbp.laboratory.demos.quoteofday.daily.views.QuoteView
-import palbp.laboratory.demos.quoteofday.ui.TopBar
+import palbp.laboratory.demos.quoteofday.quotes.Quote
+import palbp.laboratory.demos.quoteofday.ui.*
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
+
+data class QuoteOfDayScreenState(
+    val quote: Quote? = null,
+    val loadingState: RefreshingState = RefreshingState.Idle
+)
 
 @Composable
 fun QuoteOfDayScreen(
-    quote: Quote? = null,
-    loadingState: LoadingState = LoadingState.Idle,
-    onUpdateRequest: () -> Unit = { },
-    onInfoRequest: () -> Unit = { }
+    state: QuoteOfDayScreenState = QuoteOfDayScreenState(),
+    onUpdateRequest: (() -> Unit)? = null,
+    onInfoRequest: (() -> Unit)? = null,
+    onHistoryRequested: (() -> Unit)? = null
 ) {
     Log.i(TAG, "QuoteOfDayScreen: composing")
     QuoteOfDayTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             backgroundColor = MaterialTheme.colors.background,
-            topBar = { TopBar(onInfoRequested = onInfoRequest) }
+            floatingActionButton = {
+                RefreshFab(
+                    onClick = onUpdateRequest ?: { },
+                    state = state.loadingState
+                )
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+            topBar = {
+                TopBar(
+                    onInfoRequested = onInfoRequest,
+                    onHistoryRequested = onHistoryRequested
+                )
+            }
         ) { innerPadding ->
             Log.i(TAG, "QuoteOfDayScreen content: composing")
             Column(
@@ -42,9 +58,8 @@ fun QuoteOfDayScreen(
                     .fillMaxSize()
                     .padding(innerPadding),
             ) {
-                if (quote != null)
-                    QuoteView(quote = quote)
-                LoadingButton(state = loadingState, onClick = onUpdateRequest)
+                if (state.quote != null)
+                    QuoteView(quote = state.quote)
             }
         }
     }
@@ -61,5 +76,5 @@ private val loremIpsumQuote = Quote(
 @Preview(showBackground = true)
 @Composable
 fun QuoteOfDayScreenPreview() {
-    QuoteOfDayScreen(loremIpsumQuote)
+    QuoteOfDayScreen(QuoteOfDayScreenState(quote = loremIpsumQuote))
 }

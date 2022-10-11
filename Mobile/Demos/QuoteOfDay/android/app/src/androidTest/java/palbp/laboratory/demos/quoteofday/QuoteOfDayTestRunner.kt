@@ -3,24 +3,17 @@ package palbp.laboratory.demos.quoteofday
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
-import com.google.gson.Gson
-import kotlinx.coroutines.delay
-import palbp.laboratory.demos.quoteofday.daily.Quote
-import palbp.laboratory.demos.quoteofday.daily.QuoteService
-
-const val FAKE_FETCH_DELAY = 2000L
+import palbp.laboratory.demos.quoteofday.quotes.Quote
+import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteService
 
 private class TestFakeQuoteService : QuoteService {
     override suspend fun fetchQuote(): Quote {
-        delay(FAKE_FETCH_DELAY)
         return Quote("Test text", "Test author")
     }
 }
 
 class QuoteOfDayTestApplication : DependenciesContainer, Application() {
     override val quoteService: QuoteService by lazy { TestFakeQuoteService() }
-    override val jsonEncoder: Gson
-        get() = Gson()
 }
 
 @Suppress("unused")

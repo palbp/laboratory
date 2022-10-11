@@ -17,16 +17,19 @@
         android:theme="@style/Theme.QuoteOfDay"
         tools:targetApi="31">
         <activity
-            android:name=".info.InfoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".daily.QuoteActivity"
+            android:name=".quotes.daily.QuoteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".info.InfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".quotes.weekly.QuotesListActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

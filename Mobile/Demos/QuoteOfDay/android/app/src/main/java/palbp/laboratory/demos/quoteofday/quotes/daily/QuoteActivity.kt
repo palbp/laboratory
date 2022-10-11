@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.daily
+package palbp.laboratory.demos.quoteofday.quotes.daily
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import palbp.laboratory.demos.quoteofday.DependenciesContainer
 import palbp.laboratory.demos.quoteofday.TAG
-import palbp.laboratory.demos.quoteofday.daily.views.LoadingState
 import palbp.laboratory.demos.quoteofday.info.InfoActivity
+import palbp.laboratory.demos.quoteofday.quotes.weekly.QuotesListActivity
+import palbp.laboratory.demos.quoteofday.ui.RefreshingState
 
 class QuoteActivity : ComponentActivity() {
 
@@ -33,24 +34,29 @@ class QuoteActivity : ComponentActivity() {
         Log.v(TAG, "application: ${application.javaClass.name}")
         Log.v(TAG, "applicationContext: ${applicationContext.javaClass.name}")
         setContent {
-            val loadingState: LoadingState =
-                if (viewModel.isLoading) LoadingState.Loading
-                else LoadingState.Idle
+            val loadingState: RefreshingState =
+                if (viewModel.isLoading) RefreshingState.Refreshing
+                else RefreshingState.Idle
 
             QuoteOfDayScreen(
-                quote = viewModel.quote,
-                loadingState = loadingState,
+                state = QuoteOfDayScreenState(viewModel.quote, loadingState),
                 onUpdateRequest = {
                     Log.v(TAG, "QuoteActivity.onUpdateRequest()")
                     viewModel.fetchQuote()
                 },
-                onInfoRequest = { navigateToInfoScreen() }
+                onInfoRequest = { navigateToInfoScreen() },
+                onHistoryRequested = { navigateToQuotesListScreen() }
             )
         }
     }
 
     private fun navigateToInfoScreen() {
         val intent = Intent(this, InfoActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToQuotesListScreen() {
+        val intent = Intent(this, QuotesListActivity::class.java)
         startActivity(intent)
     }
 }

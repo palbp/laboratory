@@ -4,27 +4,32 @@ import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
-import palbp.laboratory.demos.quoteofday.daily.Quote
-import palbp.laboratory.demos.quoteofday.daily.QuoteService
-import palbp.laboratory.demos.quoteofday.daily.RealQuoteService
+import okhttp3.OkHttpClient
+import palbp.laboratory.demos.quoteofday.quotes.Quote
+import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteService
+import palbp.laboratory.demos.quoteofday.quotes.daily.RealQuoteService
 import java.net.URL
 
 const val TAG = "QuoteOfDayDemo"
 
 interface DependenciesContainer {
     val quoteService: QuoteService
-    val jsonEncoder: Gson
 }
 
-private val quoteAPIHome = URL("https://212a-194-210-190-193.ngrok.io")
+private val quoteAPIHome = URL("https://bb34-2001-818-e22f-ee00-b977-a076-2120-8ac.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 
-    override val jsonEncoder: Gson
-        get() = GsonBuilder().create()
+    private val httpClient: OkHttpClient by lazy { OkHttpClient() }
+    private val jsonEncoder: Gson by lazy { GsonBuilder().create() }
 
     override val quoteService: QuoteService by lazy {
-        RealQuoteService(quoteAPIHome, jsonEncoder)
+        FakeQuoteService()
+//        RealQuoteService(
+//            httpClient = httpClient,
+//            jsonEncoder = jsonEncoder,
+//            quoteHome = quoteAPIHome
+//        )
     }
 }
 

@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.daily
+package palbp.laboratory.demos.quoteofday.quotes
 
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenEntity
 

@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.daily
+package palbp.laboratory.demos.quoteofday.quotes.daily
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import palbp.laboratory.demos.quoteofday.TAG
+import palbp.laboratory.demos.quoteofday.quotes.Quote
 import palbp.laboratory.demos.quoteofday.utils.loggableMutableStateOf
 
 class QuoteScreenViewModel(private val quoteService: QuoteService): ViewModel() {

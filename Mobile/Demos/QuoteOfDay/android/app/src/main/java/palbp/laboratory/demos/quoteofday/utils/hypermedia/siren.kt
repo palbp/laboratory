@@ -73,7 +73,6 @@ data class SirenEntity<T>(
     }
 }
 
-
 /**
  * Base class for admissible sub entities, namely, [EmbeddedLink] and [EmbeddedEntity].
  * Notice that this is a closed class hierarchy.

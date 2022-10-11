@@ -9,7 +9,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import palbp.laboratory.demos.quoteofday.daily.QuoteActivity
+import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteActivity
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -31,7 +31,7 @@ class QuoteActivityTests {
 
         // Arrange
         quoteActivityRule.onNodeWithTag("QuoteView").assertDoesNotExist()
-        quoteActivityRule.onNodeWithTag("LoadingButton").performClick()
+        quoteActivityRule.onNodeWithTag("RefreshFab").performClick()
         quoteActivityRule.waitForIdle()
         quoteActivityRule.onNodeWithTag("QuoteView").assertExists()
 

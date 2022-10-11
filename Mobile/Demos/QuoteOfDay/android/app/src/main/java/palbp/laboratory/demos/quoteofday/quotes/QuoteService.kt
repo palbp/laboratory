@@ -1,9 +1,12 @@
-package palbp.laboratory.demos.quoteofday.daily
+package palbp.laboratory.demos.quoteofday.quotes.daily
 
 import android.util.Log
 import com.google.gson.Gson
 import okhttp3.*
 import palbp.laboratory.demos.quoteofday.TAG
+import palbp.laboratory.demos.quoteofday.quotes.Quote
+import palbp.laboratory.demos.quoteofday.quotes.QuoteDto
+import palbp.laboratory.demos.quoteofday.quotes.QuoteDtoType
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenMediaType
 import java.io.IOException
 import java.net.URL
@@ -16,11 +19,10 @@ interface QuoteService {
 }
 
 class RealQuoteService(
+    private val httpClient: OkHttpClient,
     private val quoteHome: URL,
-    private val gson: Gson
+    private val jsonEncoder: Gson
 ) : QuoteService {
-
-    private val client by lazy { OkHttpClient() }
 
     override suspend fun fetchQuote(): Quote {
         val request = Request.Builder()
@@ -29,8 +31,7 @@ class RealQuoteService(
 
         Log.v(TAG, "fetchQuote: before suspendCoroutine in Thread = ${Thread.currentThread().name}")
         val quote = suspendCoroutine { continuation ->
-
-            client.newCall(request).enqueue(object : Callback {
+            httpClient.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.v(TAG, "fetchQuote: onFailure in Thread = ${Thread.currentThread().name}")
                     continuation.resumeWithException(e)
@@ -40,13 +41,14 @@ class RealQuoteService(
                     Log.v(TAG, "fetchQuote: onResponse in Thread = ${Thread.currentThread().name}")
                     val contentType = response.body?.contentType()
                     if (response.isSuccessful && contentType != null && contentType == SirenMediaType) {
-                        val quoteDto = gson.fromJson<QuoteDto>(
+                        val quoteDto = jsonEncoder.fromJson<QuoteDto>(
                             response.body?.string(),
                             QuoteDtoType.type
                         )
                         continuation.resume(Quote(quoteDto))
                     }
                     else {
+                        Log.e(TAG, "onResponse: got response status ${response.code} from API. Is the home URL correct?")
                         TODO()
                     }
                 }
