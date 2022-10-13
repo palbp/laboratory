@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import palbp.laboratory.demos.quoteofday.DependenciesContainer
 import palbp.laboratory.demos.quoteofday.info.InfoActivity
 import palbp.laboratory.demos.quoteofday.ui.RefreshingState
-import palbp.laboratory.demos.quoteofday.utils.viewModelFactory
+import palbp.laboratory.demos.quoteofday.utils.viewModelInit
 
 class QuotesListActivity : ComponentActivity() {
 
@@ -25,10 +25,9 @@ class QuotesListActivity : ComponentActivity() {
     private val dependencies by lazy { application as DependenciesContainer }
 
     private val viewModel: QuotesListScreenViewModel by viewModels {
-        viewModelFactory(vmInit = {
-            val service = dependencies.quoteService
-            QuotesListScreenViewModel(service)
-        })
+        viewModelInit {
+            QuotesListScreenViewModel(dependencies.quoteService)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

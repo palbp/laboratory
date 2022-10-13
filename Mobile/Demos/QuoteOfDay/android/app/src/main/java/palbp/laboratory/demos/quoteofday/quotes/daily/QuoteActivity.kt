@@ -10,17 +10,16 @@ import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.info.InfoActivity
 import palbp.laboratory.demos.quoteofday.quotes.weekly.QuotesListActivity
 import palbp.laboratory.demos.quoteofday.ui.RefreshingState
-import palbp.laboratory.demos.quoteofday.utils.viewModelFactory
+import palbp.laboratory.demos.quoteofday.utils.viewModelInit
 
 class QuoteActivity : ComponentActivity() {
 
     private val dependencies by lazy { application as DependenciesContainer }
 
     private val viewModel: QuoteScreenViewModel by viewModels {
-        viewModelFactory(vmInit = {
-            val service = dependencies.quoteService
-            QuoteScreenViewModel(service)
-        })
+        viewModelInit {
+            QuoteScreenViewModel(dependencies.quoteService)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
