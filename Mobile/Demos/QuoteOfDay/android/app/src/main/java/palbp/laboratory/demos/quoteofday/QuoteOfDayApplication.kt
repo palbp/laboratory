@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import palbp.laboratory.demos.quoteofday.quotes.Quote
 import palbp.laboratory.demos.quoteofday.quotes.QuoteService
+import palbp.laboratory.demos.quoteofday.quotes.RealQuoteService
 import java.net.URL
 
 const val TAG = "QuoteOfDayDemo"
@@ -15,7 +16,7 @@ interface DependenciesContainer {
     val quoteService: QuoteService
 }
 
-private val quoteAPIHome = URL("https://bb34-2001-818-e22f-ee00-b977-a076-2120-8ac.ngrok.io")
+private val quoteAPIHome = URL("https://4216-2001-690-2008-df53-50eb-1e5c-b012-16d4.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 

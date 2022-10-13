@@ -16,7 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.ui.*
+import palbp.laboratory.demos.quoteofday.ui.QuoteView
+import palbp.laboratory.demos.quoteofday.ui.RefreshFab
+import palbp.laboratory.demos.quoteofday.ui.RefreshingState
+import palbp.laboratory.demos.quoteofday.ui.TopBar
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 
 data class QuoteOfDayScreenState(

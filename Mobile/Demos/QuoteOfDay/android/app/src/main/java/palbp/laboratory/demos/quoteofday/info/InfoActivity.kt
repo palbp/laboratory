@@ -11,7 +11,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import palbp.laboratory.demos.quoteofday.R
 import palbp.laboratory.demos.quoteofday.TAG
-import palbp.laboratory.demos.quoteofday.quotes.weekly.QuotesListActivity
 
 class InfoActivity : ComponentActivity() {
 
