@@ -16,7 +16,7 @@ import kotlin.coroutines.suspendCoroutine
  * @param handler       the handler function, which is called from a IO thread.
  *                      Be mindful of threading issues.
  * @return the result of the response [handler]
- * @throws  [IOException] if a communication error occurs
+ * @throws  [IOException] if a communication error occurs.
  */
 suspend fun <T> Request.send(okHttpClient: OkHttpClient, handler: (Response) -> T): T =
     suspendCoroutine { continuation ->

@@ -2,7 +2,6 @@ package palbp.laboratory.demos.quoteofday.quotes
 
 import android.util.Log
 import com.google.gson.Gson
-import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import palbp.laboratory.demos.quoteofday.TAG
@@ -27,6 +26,7 @@ class RealQuoteService(
             .build()
 
         Log.v(TAG, "fetchQuote: before request.send in Thread = ${Thread.currentThread().name}")
+
         val quoteDto = request.send(httpClient) { response ->
             Log.v(TAG, "fetchQuote: inside response handler in Thread = ${Thread.currentThread().name}")
             val contentType = response.body?.contentType()
@@ -41,13 +41,12 @@ class RealQuoteService(
                 TODO()
             }
         }
+
         Log.v(TAG, "fetchQuote: after request.send in Thread = ${Thread.currentThread().name}")
         return Quote(quoteDto)
     }
 
     override suspend fun fetchWeekQuotes(): List<Quote> {
-        // TODO
-        delay(3000)
-        return emptyList()
+        TODO()
     }
 }
