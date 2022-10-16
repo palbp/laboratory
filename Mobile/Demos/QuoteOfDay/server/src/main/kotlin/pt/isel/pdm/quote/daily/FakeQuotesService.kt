@@ -1,14 +1,22 @@
 package pt.isel.pdm.quote.daily
 
 import java.time.LocalDateTime
+import kotlin.math.max
 
 class FakeQuotesService(private val minutesInADay: Int) : QuotesService {
     init { require(minutesInADay in 1..15) }
 
-    override fun getQuoteForToday(): Quote =
-        with(LocalDateTime.now()) {
-            fakeQuotesDb[(this.hour * 60 + minute) / minutesInADay % fakeQuotesDb.size]
-        }
+    private fun getTodayQuoteIndex(): Int = with(LocalDateTime.now()) {
+        (this.hour * 60 + minute) / minutesInADay % fakeQuotesDb.size
+    }
+
+    override fun getQuoteForToday(): Quote = fakeQuotesDb[getTodayQuoteIndex()]
+
+    override fun getWeeksQuotes(): List<Quote> {
+        val endIndex = getTodayQuoteIndex()
+        val startIndex = max(endIndex - 7, 0)
+        return fakeQuotesDb.subList(startIndex, endIndex)
+    }
 }
 
 private val fakeQuotesDb: List<Quote> = mutableListOf<Quote>().apply {

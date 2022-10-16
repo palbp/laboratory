@@ -10,4 +10,10 @@ interface QuotesService {
      * @return Today's quote
      */
     fun getQuoteForToday(): Quote
+
+    /**
+     * Gets this week's "quotes of the day"
+     * @return The weeks' quotes
+     */
+    fun getWeeksQuotes(): List<Quote>
 }
