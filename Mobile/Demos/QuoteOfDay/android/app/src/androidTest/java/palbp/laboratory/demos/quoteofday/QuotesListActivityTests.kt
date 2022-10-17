@@ -24,10 +24,6 @@ class QuotesListActivityTests {
     fun displayed_quotes_list_survives_reconfiguration() {
 
         // Arrange
-        quoteActivityRule
-            .onAllNodesWithTag("ExpandableQuoteView")
-            .assertEmpty()
-        quoteActivityRule.onNodeWithTag("RefreshFab").performClick()
         quoteActivityRule.waitForIdle()
         quoteActivityRule
             .onAllNodesWithTag("ExpandableQuoteView")
@@ -47,7 +43,6 @@ class QuotesListActivityTests {
     fun expanded_state_of_quotes_is_preserved_on_reconfiguration() {
 
         // Arrange
-        quoteActivityRule.onNodeWithTag("RefreshFab").performClick()
         quoteActivityRule.waitForIdle()
         quoteActivityRule
             .onAllNodesWithTag("ExpandableQuoteView")

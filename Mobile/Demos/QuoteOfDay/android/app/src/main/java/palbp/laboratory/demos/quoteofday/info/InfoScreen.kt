@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import palbp.laboratory.demos.quoteofday.R
+import palbp.laboratory.demos.quoteofday.ui.NavigationHandlers
 import palbp.laboratory.demos.quoteofday.ui.TopBar
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 
@@ -34,7 +35,7 @@ fun InfoScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             backgroundColor = MaterialTheme.colors.background,
-            topBar = { TopBar(onBackRequested = onBackRequested) },
+            topBar = { TopBar(NavigationHandlers(onBackRequested = onBackRequested)) },
         ) { innerPadding ->
             Column(
                 verticalArrangement = Arrangement.SpaceAround,

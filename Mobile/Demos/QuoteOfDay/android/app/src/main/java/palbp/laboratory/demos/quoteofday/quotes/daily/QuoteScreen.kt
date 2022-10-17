@@ -16,10 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.ui.QuoteView
-import palbp.laboratory.demos.quoteofday.ui.RefreshFab
-import palbp.laboratory.demos.quoteofday.ui.RefreshingState
-import palbp.laboratory.demos.quoteofday.ui.TopBar
+import palbp.laboratory.demos.quoteofday.ui.*
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 
 data class QuoteScreenState(
@@ -30,10 +27,8 @@ data class QuoteScreenState(
 @Composable
 fun QuoteScreen(
     state: QuoteScreenState = QuoteScreenState(),
+    onNavigationRequested: NavigationHandlers = NavigationHandlers(),
     onUpdateRequest: (() -> Unit)? = null,
-    onInfoRequest: (() -> Unit)? = null,
-    onHistoryRequested: (() -> Unit)? = null,
-    onBackRequested: (() -> Unit)? = null
 ) {
     Log.i(TAG, "QuoteOfDayScreen: composing")
     QuoteOfDayTheme {
@@ -50,11 +45,7 @@ fun QuoteScreen(
             },
             floatingActionButtonPosition = FabPosition.Center,
             topBar = {
-                TopBar(
-                    onInfoRequested = onInfoRequest,
-                    onHistoryRequested = onHistoryRequested,
-                    onBackRequested = onBackRequested
-                )
+                TopBar(navigation = onNavigationRequested)
             }
         ) { innerPadding ->
             Log.i(TAG, "QuoteOfDayScreen content: composing")

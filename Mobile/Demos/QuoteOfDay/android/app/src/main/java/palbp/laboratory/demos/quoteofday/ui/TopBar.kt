@@ -12,29 +12,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import palbp.laboratory.demos.quoteofday.R
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 
+/**
+ * Used to aggregate [TopBar] navigation handlers.
+ */
+data class NavigationHandlers(
+    val onBackRequested: (() -> Unit)? = null,
+    val onHistoryRequested: (() -> Unit)? = null,
+    val onInfoRequested: (() -> Unit)? = null,
+)
+
 @Composable
-fun TopBar(
-    onBackRequested: (() -> Unit)? = null,
-    onHistoryRequested: (() -> Unit)? = null,
-    onInfoRequested: (() -> Unit)? = null,
-) {
+fun TopBar(navigation: NavigationHandlers = NavigationHandlers()) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         navigationIcon = {
-            if (onBackRequested != null) {
-                IconButton(onClick = onBackRequested) {
+            if (navigation.onBackRequested != null) {
+                IconButton(onClick = navigation.onBackRequested) {
                     Icon(Icons.Default.ArrowBack, contentDescription = null)
                 }
             }
         },
         actions = {
-            if (onHistoryRequested != null) {
-                IconButton(onClick = onHistoryRequested) {
+            if (navigation.onHistoryRequested != null) {
+                IconButton(onClick = navigation.onHistoryRequested) {
                     Icon(Icons.Default.List, contentDescription = "Localized description")
                 }
             }
-            if (onInfoRequested != null) {
-                IconButton(onClick = onInfoRequested) {
+            if (navigation.onInfoRequested != null) {
+                IconButton(onClick = navigation.onInfoRequested) {
                     Icon(Icons.Default.Info, contentDescription = "Localized description")
                 }
             }
@@ -45,7 +50,9 @@ fun TopBar(
 @Composable
 private fun TopBarPreviewInfoAndHistory() {
     QuoteOfDayTheme {
-        TopBar(onInfoRequested = { }, onHistoryRequested = { })
+        TopBar(
+            NavigationHandlers(onInfoRequested = { }, onHistoryRequested = { })
+        )
     }
 }
 
@@ -53,7 +60,9 @@ private fun TopBarPreviewInfoAndHistory() {
 @Composable
 private fun TopBarPreviewBackAndInfo() {
     QuoteOfDayTheme {
-        TopBar(onBackRequested = { }, onInfoRequested = { })
+        TopBar(
+            NavigationHandlers(onBackRequested = { }, onInfoRequested = { })
+        )
     }
 }
 
@@ -61,6 +70,6 @@ private fun TopBarPreviewBackAndInfo() {
 @Composable
 private fun TopBarPreviewBack() {
     QuoteOfDayTheme {
-        TopBar(onBackRequested = { })
+        TopBar(NavigationHandlers(onBackRequested = { }))
     }
 }

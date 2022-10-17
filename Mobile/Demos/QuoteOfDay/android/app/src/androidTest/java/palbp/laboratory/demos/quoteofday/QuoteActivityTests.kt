@@ -30,8 +30,6 @@ class QuoteActivityTests {
     fun displayed_quote_survives_reconfiguration() {
 
         // Arrange
-        quoteActivityRule.onNodeWithTag("QuoteView").assertDoesNotExist()
-        quoteActivityRule.onNodeWithTag("RefreshFab").performClick()
         quoteActivityRule.waitForIdle()
         quoteActivityRule.onNodeWithTag("QuoteView").assertExists()
 

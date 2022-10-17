@@ -16,7 +16,7 @@ interface DependenciesContainer {
     val quoteService: QuoteService
 }
 
-private val quoteAPIHome = URL("https://4216-2001-690-2008-df53-50eb-1e5c-b012-16d4.ngrok.io")
+private val quoteAPIHome = URL("https://992d-2001-690-2008-df53-5022-1527-5050-d281.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 
@@ -24,16 +24,25 @@ class QuoteOfDayApplication : DependenciesContainer, Application() {
     private val jsonEncoder: Gson by lazy { GsonBuilder().create() }
 
     override val quoteService: QuoteService by lazy {
-        FakeQuoteService()
-//        RealQuoteService(
-//            httpClient = httpClient,
-//            jsonEncoder = jsonEncoder,
-//            quoteHome = quoteAPIHome
-//        )
+//        FakeQuoteService()
+        RealQuoteService(
+            httpClient = httpClient,
+            jsonEncoder = jsonEncoder,
+            quoteHome = quoteAPIHome
+        )
     }
 }
 
+@Suppress("unused")
 private class FakeQuoteService : QuoteService {
+    private val aQuote = Quote(
+        text = "O poeta é um fingidor.\n" +
+                "Finge tão completamente\n" +
+                "Que chega a fingir que é dor\n" +
+                "A dor que deveras sente.",
+        author = "Fernando Pessoa"
+    )
+
     override suspend fun fetchQuote(): Quote {
         delay(3000)
         return aQuote
@@ -41,15 +50,7 @@ private class FakeQuoteService : QuoteService {
 
     override suspend fun fetchWeekQuotes(): List<Quote> {
         delay(3000)
-        return buildList { repeat(5) { add(aQuote) } }
+        return buildList { repeat(20) { add(aQuote) } }
     }
 }
-
-private val aQuote = Quote(
-    text = "O poeta é um fingidor.\n" +
-            "Finge tão completamente\n" +
-            "Que chega a fingir que é dor\n" +
-            "A dor que deveras sente.",
-    author = "Fernando Pessoa"
-)
 

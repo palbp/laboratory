@@ -25,8 +25,6 @@ class RealQuoteService(
             .url(quoteHome)
             .build()
 
-        Log.v(TAG, "fetchQuote: before request.send in Thread = ${Thread.currentThread().name}")
-
         val quoteDto = request.send(httpClient) { response ->
             Log.v(TAG, "fetchQuote: inside response handler in Thread = ${Thread.currentThread().name}")
             val contentType = response.body?.contentType()
@@ -42,11 +40,11 @@ class RealQuoteService(
             }
         }
 
-        Log.v(TAG, "fetchQuote: after request.send in Thread = ${Thread.currentThread().name}")
         return Quote(quoteDto)
     }
 
     override suspend fun fetchWeekQuotes(): List<Quote> {
-        TODO()
+        // TODO()
+        return emptyList<Quote>()
     }
 }

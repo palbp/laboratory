@@ -15,10 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.ui.ExpandableQuoteView
-import palbp.laboratory.demos.quoteofday.ui.RefreshFab
-import palbp.laboratory.demos.quoteofday.ui.RefreshingState
-import palbp.laboratory.demos.quoteofday.ui.TopBar
+import palbp.laboratory.demos.quoteofday.ui.*
 import palbp.laboratory.demos.quoteofday.ui.theme.QuoteOfDayTheme
 
 data class QuotesListScreenState(
@@ -29,24 +26,18 @@ data class QuotesListScreenState(
 @Composable
 fun QuotesListScreen(
     state: QuotesListScreenState = QuotesListScreenState(),
+    onNavigationRequested: NavigationHandlers = NavigationHandlers(),
     onQuoteSelected: (Quote) -> Unit = { },
-    onBackRequested: () -> Unit = { },
-    onUpdateRequest: (() -> Unit)? = null,
-    onInfoRequest: (() -> Unit)? = null,
+    onUpdateRequest: () -> Unit = { }
 ) {
     QuoteOfDayTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             backgroundColor = MaterialTheme.colors.background,
-            topBar = {
-                TopBar(
-                    onBackRequested = onBackRequested,
-                    onInfoRequested = onInfoRequest
-                )
-            },
+            topBar = { TopBar(navigation = onNavigationRequested) },
             floatingActionButton = {
                 RefreshFab(
-                    onClick = onUpdateRequest ?: { },
+                    onClick = onUpdateRequest,
                     state = state.isLoading
                 )
             },
@@ -68,6 +59,7 @@ fun QuotesListScreen(
         }
     }
 }
+
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(showBackground = true)

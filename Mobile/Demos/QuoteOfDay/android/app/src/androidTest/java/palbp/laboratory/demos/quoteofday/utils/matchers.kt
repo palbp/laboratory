@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package palbp.laboratory.demos.quoteofday.utils
 
 import androidx.compose.ui.test.SemanticsMatcher
