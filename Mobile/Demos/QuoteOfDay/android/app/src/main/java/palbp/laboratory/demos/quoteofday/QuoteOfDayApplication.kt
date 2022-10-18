@@ -5,9 +5,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
-import palbp.laboratory.demos.quoteofday.quotes.Quote
-import palbp.laboratory.demos.quoteofday.quotes.QuoteService
-import palbp.laboratory.demos.quoteofday.quotes.RealQuoteService
+import palbp.laboratory.demos.quoteofday.quotes.*
+import palbp.laboratory.demos.quoteofday.utils.hypermedia.SubEntity
+import palbp.laboratory.demos.quoteofday.utils.hypermedia.SubEntityDeserializer
 import java.net.URL
 
 const val TAG = "QuoteOfDayDemo"
@@ -16,15 +16,21 @@ interface DependenciesContainer {
     val quoteService: QuoteService
 }
 
-private val quoteAPIHome = URL("https://992d-2001-690-2008-df53-5022-1527-5050-d281.ngrok.io")
+private val quoteAPIHome = URL("https://9bf4-2001-818-e22f-ee00-f000-7b46-eed7-576e.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 
     private val httpClient: OkHttpClient by lazy { OkHttpClient() }
-    private val jsonEncoder: Gson by lazy { GsonBuilder().create() }
+    private val jsonEncoder: Gson by lazy {
+        GsonBuilder()
+            .registerTypeHierarchyAdapter(
+                SubEntity::class.java,
+                SubEntityDeserializer<QuoteDtoProperties>(QuoteDtoProperties::class.java)
+            )
+            .create()
+    }
 
     override val quoteService: QuoteService by lazy {
-//        FakeQuoteService()
         RealQuoteService(
             httpClient = httpClient,
             jsonEncoder = jsonEncoder,

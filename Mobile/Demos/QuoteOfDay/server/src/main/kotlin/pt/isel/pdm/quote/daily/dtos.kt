@@ -3,9 +3,7 @@ package pt.isel.pdm.quote.daily
 import pt.isel.pdm.quote.hypermedia.EmbeddedEntity
 import pt.isel.pdm.quote.hypermedia.SirenEntity
 import pt.isel.pdm.quote.hypermedia.SirenLink
-import pt.isel.pdm.quote.hypermedia.SubEntity
 import pt.isel.pdm.quote.hypermedia.Uris
-import java.net.URI
 
 fun Quote.toSirenEntity(links: List<SirenLink>) = SirenEntity(
     clazz = listOf("Quote"),
