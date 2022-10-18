@@ -12,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import palbp.laboratory.demos.quoteofday.quotes.Quote
@@ -32,7 +33,7 @@ fun QuotesListScreen(
 ) {
     QuoteOfDayTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().testTag("QuotesListScreen"),
             backgroundColor = MaterialTheme.colors.background,
             topBar = { TopBar(navigation = onNavigationRequested) },
             floatingActionButton = {

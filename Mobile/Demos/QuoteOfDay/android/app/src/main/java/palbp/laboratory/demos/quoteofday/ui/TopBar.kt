@@ -7,6 +7,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import palbp.laboratory.demos.quoteofday.R
@@ -21,26 +23,49 @@ data class NavigationHandlers(
     val onInfoRequested: (() -> Unit)? = null,
 )
 
+// Test tags for the TopBar navigation elements
+const val NavigateBackTestTag = "NavigateBack"
+const val NavigateToHistoryTestTag = "NavigateToHistory"
+const val NavigateToInfoTestTag = "NavigateToInfo"
+
 @Composable
 fun TopBar(navigation: NavigationHandlers = NavigationHandlers()) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         navigationIcon = {
             if (navigation.onBackRequested != null) {
-                IconButton(onClick = navigation.onBackRequested) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = null)
+                IconButton(
+                    onClick = navigation.onBackRequested,
+                    modifier = Modifier.testTag(NavigateBackTestTag)
+                ) {
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.top_bar_go_back)
+                    )
                 }
             }
         },
         actions = {
             if (navigation.onHistoryRequested != null) {
-                IconButton(onClick = navigation.onHistoryRequested) {
-                    Icon(Icons.Default.List, contentDescription = "Localized description")
+                IconButton(
+                    onClick = navigation.onHistoryRequested,
+                    modifier = Modifier.testTag(NavigateToHistoryTestTag)
+                ) {
+                    Icon(
+                        Icons.Default.List,
+                        contentDescription = stringResource(id = R.string.top_bar_navigate_to_history)
+                    )
                 }
             }
             if (navigation.onInfoRequested != null) {
-                IconButton(onClick = navigation.onInfoRequested) {
-                    Icon(Icons.Default.Info, contentDescription = "Localized description")
+                IconButton(
+                    onClick = navigation.onInfoRequested,
+                    modifier = Modifier.testTag(NavigateToInfoTestTag)
+                ) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = stringResource(id = R.string.top_bar_navigate_to_info)
+                    )
                 }
             }
         }
