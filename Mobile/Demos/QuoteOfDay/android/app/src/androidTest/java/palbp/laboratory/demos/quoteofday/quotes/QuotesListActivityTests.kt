@@ -104,5 +104,4 @@ class QuotesListActivityTests {
         testRule.onNodeWithTag("QuotesListScreen").assertDoesNotExist()
         assert(testRule.activityRule.scenario.state == Lifecycle.State.DESTROYED)
     }
-
 }

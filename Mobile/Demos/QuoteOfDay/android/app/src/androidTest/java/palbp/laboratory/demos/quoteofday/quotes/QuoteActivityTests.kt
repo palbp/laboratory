@@ -10,6 +10,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteActivity
+import palbp.laboratory.demos.quoteofday.ui.NavigateBackTestTag
 import palbp.laboratory.demos.quoteofday.ui.NavigateToHistoryTestTag
 import palbp.laboratory.demos.quoteofday.ui.NavigateToInfoTestTag
 
@@ -27,6 +28,16 @@ class QuoteActivityTests {
 
     @get:Rule
     val testRule = createAndroidComposeRule<QuoteActivity>()
+
+    @Test
+    fun screen_contains_all_navigation_options_except_back() {
+
+        // Assert
+        testRule.onNodeWithTag(NavigateToHistoryTestTag).assertExists()
+        testRule.onNodeWithTag(NavigateToInfoTestTag).assertExists()
+        testRule.onNodeWithTag(NavigateBackTestTag).assertDoesNotExist()
+    }
+
 
     @Test
     fun displayed_quote_survives_reconfiguration() {

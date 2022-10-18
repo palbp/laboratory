@@ -24,7 +24,7 @@ import palbp.laboratory.demos.quoteofday.utils.viewModelInit
 class QuoteActivity : ComponentActivity() {
 
     companion object {
-        private const val QUOTE_EXTRA = "QUOTE_EXTRA"
+        const val QUOTE_EXTRA = "QUOTE_EXTRA"
         fun navigate(origin: Activity, quote: LocalQuoteDto? = null) {
             with(origin) {
                 val intent = Intent(this, QuoteActivity::class.java)
@@ -75,7 +75,7 @@ class QuoteActivity : ComponentActivity() {
         }
     }
 
-    @Suppress("DEPRECATION")
+    @Suppress("deprecation")
     private val quoteExtra: LocalQuoteDto?
         get() =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
