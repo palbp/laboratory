@@ -15,7 +15,7 @@ class FakeQuotesService(private val minutesInADay: Int) : QuotesService {
     override fun getWeeksQuotes(): List<Quote> {
         val endIndex = getTodayQuoteIndex()
         val startIndex = max(endIndex - 7, 0)
-        return fakeQuotesDb.subList(startIndex, endIndex)
+        return fakeQuotesDb.subList(startIndex, endIndex + 1)
     }
 }
 
