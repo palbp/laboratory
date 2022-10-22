@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.quoteofday.utils
+package palbp.laboratory.demos.quoteofday.testutils
 
 import android.content.Intent
 import androidx.activity.ComponentActivity

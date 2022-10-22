@@ -13,7 +13,7 @@ import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteActivity
 import palbp.laboratory.demos.quoteofday.ui.NavigateBackTestTag
 import palbp.laboratory.demos.quoteofday.ui.NavigateToHistoryTestTag
 import palbp.laboratory.demos.quoteofday.ui.NavigateToInfoTestTag
-import palbp.laboratory.demos.quoteofday.utils.createAndroidComposeRule
+import palbp.laboratory.demos.quoteofday.testutils.createAndroidComposeRule
 
 /**
  * Instrumented test, which will execute on an Android device.

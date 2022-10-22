@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package palbp.laboratory.demos.quoteofday.utils
+package palbp.laboratory.demos.quoteofday.testutils
 
 import androidx.compose.ui.test.SemanticsMatcher
 import palbp.laboratory.demos.quoteofday.ui.expandedPropertyKey

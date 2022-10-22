@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import palbp.laboratory.demos.quoteofday.quotes.*
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SubEntity
@@ -16,11 +17,16 @@ interface DependenciesContainer {
     val quoteService: QuoteService
 }
 
-private val quoteAPIHome = URL("https://aba6-2001-818-e22f-ee00-f000-7b46-eed7-576e.ngrok.io")
+private val quoteAPIHome = URL("https://6c60-2001-818-e22f-ee00-3dac-34e7-1198-e3b5.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 
-    private val httpClient: OkHttpClient by lazy { OkHttpClient() }
+    private val httpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .cache(Cache(directory = cacheDir, maxSize = 50 * 1024 * 1024))
+            .build()
+    }
+
     private val jsonEncoder: Gson by lazy {
         GsonBuilder()
             .registerTypeHierarchyAdapter(

@@ -20,6 +20,7 @@ import kotlin.coroutines.suspendCoroutine
  * @throws  [Throwable] if any error is thrown by the response handler.
  */
 suspend fun <T> Request.send(okHttpClient: OkHttpClient, handler: (Response) -> T): T =
+
     suspendCoroutine { continuation ->
         okHttpClient.newCall(request = this).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {

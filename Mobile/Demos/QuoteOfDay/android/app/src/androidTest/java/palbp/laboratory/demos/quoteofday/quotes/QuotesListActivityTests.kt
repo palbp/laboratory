@@ -11,8 +11,8 @@ import palbp.laboratory.demos.quoteofday.quotes.weekly.QuotesListActivity
 import palbp.laboratory.demos.quoteofday.ui.NavigateBackTestTag
 import palbp.laboratory.demos.quoteofday.ui.NavigateToHistoryTestTag
 import palbp.laboratory.demos.quoteofday.ui.NavigateToInfoTestTag
-import palbp.laboratory.demos.quoteofday.utils.assertNotEmpty
-import palbp.laboratory.demos.quoteofday.utils.isExpanded
+import palbp.laboratory.demos.quoteofday.testutils.assertNotEmpty
+import palbp.laboratory.demos.quoteofday.testutils.isExpanded
 
 /**
  * Instrumented test, which will execute on an Android device.
