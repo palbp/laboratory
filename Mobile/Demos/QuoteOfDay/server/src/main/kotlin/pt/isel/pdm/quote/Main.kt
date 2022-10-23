@@ -112,16 +112,12 @@ fun buildWeekQuotesRoute(service: QuotesService, gson: Gson) = { request: Reques
 
 fun log(request: Request) {
     logger.info("Servicing request ${request.info()}")
-    logger.info("Request headers are ${request.headers()}")
-    logger.info("if-modified-since = ${request.headers("if-modified-since")}")
-    logger.info("cache-control = ${request.headers("cache-control")}")
-
     val header = request.headers("if-modified-since") ?: ""
     if (header.isNotBlank()) {
+        logger.info("if-modified-since = $header")
         val parsed = LocalDateTime.parse(header, DateTimeFormatter.RFC_1123_DATE_TIME)
         logger.info("if-modified-since parsed = $parsed")
     }
-
 }
 
 val Request.baseUrl: String

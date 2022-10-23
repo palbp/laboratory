@@ -1,6 +1,7 @@
 package palbp.laboratory.demos.quoteofday
 
 import android.app.Application
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
@@ -17,7 +18,7 @@ interface DependenciesContainer {
     val quoteService: QuoteService
 }
 
-private val quoteAPIHome = URL("https://6c60-2001-818-e22f-ee00-3dac-34e7-1198-e3b5.ngrok.io")
+private val quoteAPIHome = URL("https://1bbd-2001-818-e22f-ee00-e13e-7fa1-2552-28a.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 
@@ -43,7 +44,13 @@ class QuoteOfDayApplication : DependenciesContainer, Application() {
             quoteHome = quoteAPIHome
         )
     }
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.v(TAG, "QuoteOfDayApplication.onCreate() on process ${android.os.Process.myPid()}")
+    }
 }
+
 
 @Suppress("unused")
 private class FakeQuoteService : QuoteService {
