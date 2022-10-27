@@ -62,12 +62,12 @@ private class FakeQuoteService : QuoteService {
         author = "Fernando Pessoa"
     )
 
-    override suspend fun fetchQuote(): Quote {
+    override suspend fun fetchQuote(mode: QuoteService.Mode): Quote {
         delay(3000)
         return aQuote
     }
 
-    override suspend fun fetchWeekQuotes(): List<Quote> {
+    override suspend fun fetchWeekQuotes(mode: QuoteService.Mode): List<Quote> {
         delay(3000)
         return buildList { repeat(20) { add(aQuote) } }
     }

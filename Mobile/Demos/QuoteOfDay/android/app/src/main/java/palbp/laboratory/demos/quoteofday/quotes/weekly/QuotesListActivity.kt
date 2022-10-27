@@ -44,7 +44,7 @@ class QuotesListActivity : ComponentActivity() {
         Log.v(TAG, "QuotesListActivity.onCreate()")
         setContent {
             if (viewModel.quotes.isEmpty())
-                viewModel.fetchWeekQuotes()
+                viewModel.fetchWeekQuotes(forcedRefresh = false)
 
             val loadingState =
                 if (viewModel.isLoading) RefreshingState.Refreshing
@@ -54,7 +54,7 @@ class QuotesListActivity : ComponentActivity() {
                 onQuoteSelected = {
                     QuoteActivity.navigate(origin = this, quote = it.toLocalDto())
                 },
-                onUpdateRequest = { viewModel.fetchWeekQuotes() },
+                onUpdateRequest = { viewModel.fetchWeekQuotes(forcedRefresh = true) },
                 onNavigationRequested = NavigationHandlers(
                     onBackRequested = { finish() },
                     onInfoRequested = { InfoActivity.navigate(origin = this) }

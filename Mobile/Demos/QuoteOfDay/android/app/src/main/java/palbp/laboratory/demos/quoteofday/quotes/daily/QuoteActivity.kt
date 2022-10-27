@@ -61,14 +61,14 @@ class QuoteActivity : ComponentActivity() {
             }
             else {
                 if (viewModel.quote == null)
-                    viewModel.fetchQuote()
+                    viewModel.fetchQuote(forcedRefresh = false)
 
                 val loadingState: RefreshingState =
                     if (viewModel.isLoading) RefreshingState.Refreshing
                     else RefreshingState.Idle
                 QuoteScreen(
                     state = QuoteScreenState(viewModel.quote, loadingState),
-                    onUpdateRequest = { viewModel.fetchQuote() },
+                    onUpdateRequest = { viewModel.fetchQuote(forcedRefresh = true) },
                     onNavigationRequested = NavigationHandlers(
                         onInfoRequested = { InfoActivity.navigate(origin = this) },
                         onHistoryRequested = { QuotesListActivity.navigate(origin = this) }
