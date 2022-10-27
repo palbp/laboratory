@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import palbp.laboratory.demos.quoteofday.DependenciesContainer
+import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.info.InfoActivity
 import palbp.laboratory.demos.quoteofday.quotes.LocalQuoteDto
 import palbp.laboratory.demos.quoteofday.quotes.Quote
@@ -45,6 +47,7 @@ class QuoteActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.v(TAG, "QuoteActivity.onCreate()")
         setContent {
             val receivedExtra = quoteExtra
             if (receivedExtra != null) {

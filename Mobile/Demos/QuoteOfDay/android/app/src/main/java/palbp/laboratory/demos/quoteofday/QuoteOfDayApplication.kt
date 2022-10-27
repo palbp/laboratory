@@ -12,13 +12,13 @@ import palbp.laboratory.demos.quoteofday.utils.hypermedia.SubEntity
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SubEntityDeserializer
 import java.net.URL
 
-const val TAG = "QuoteOfDayDemo"
+const val TAG = "QuoteOfDayApp"
 
 interface DependenciesContainer {
     val quoteService: QuoteService
 }
 
-private val quoteAPIHome = URL("https://1bbd-2001-818-e22f-ee00-e13e-7fa1-2552-28a.ngrok.io")
+private val quoteAPIHome = URL("https://b22f-2001-818-e22f-ee00-d4a6-efd5-b697-50de.ngrok.io")
 
 class QuoteOfDayApplication : DependenciesContainer, Application() {
 

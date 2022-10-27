@@ -3,10 +3,12 @@ package palbp.laboratory.demos.quoteofday.quotes.weekly
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import palbp.laboratory.demos.quoteofday.DependenciesContainer
+import palbp.laboratory.demos.quoteofday.TAG
 import palbp.laboratory.demos.quoteofday.info.InfoActivity
 import palbp.laboratory.demos.quoteofday.quotes.daily.QuoteActivity
 import palbp.laboratory.demos.quoteofday.quotes.toLocalDto
@@ -39,6 +41,7 @@ class QuotesListActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.v(TAG, "QuotesListActivity.onCreate()")
         setContent {
             if (viewModel.quotes.isEmpty())
                 viewModel.fetchWeekQuotes()
