@@ -2,10 +2,7 @@ package palbp.laboratory.demos.quoteofday.quotes
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import okhttp3.CacheControl
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenLink
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenMediaType
 import palbp.laboratory.demos.quoteofday.utils.send
@@ -144,15 +141,17 @@ class RealQuoteService(
         }.url(url).build()
 }
 
+abstract class ApiException(msg: String) : Exception(msg)
+
 /**
  * Exception throw when a required navigation link could not be found by
  * the service implementation in the APIs responses.
  */
-class UnresolvedLinkException(msg: String = "") : Exception(msg)
+class UnresolvedLinkException(msg: String = "") : ApiException(msg)
 
 /**
  * Exception throw when an unexpected response was received from the API.
  */
 class UnexpectedResponseException(
     val response: Response
-) : Exception("Unexpected ${response.code} response from the API.")
+) : ApiException("Unexpected ${response.code} response from the API.")
