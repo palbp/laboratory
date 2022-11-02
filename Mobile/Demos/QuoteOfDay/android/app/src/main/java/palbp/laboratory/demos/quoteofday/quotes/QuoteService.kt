@@ -6,6 +6,7 @@ import okhttp3.*
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenLink
 import palbp.laboratory.demos.quoteofday.utils.hypermedia.SirenMediaType
 import palbp.laboratory.demos.quoteofday.utils.send
+import java.io.IOException
 import java.lang.reflect.Type
 import java.net.URL
 
@@ -31,6 +32,7 @@ interface QuoteService {
      * @param mode how the operation should behave. @see [Mode]
      * @return the quote for the day
      */
+    @Throws(IOException::class, UnexpectedResponseException::class)
     suspend fun fetchQuote(mode: Mode = Mode.AUTO): Quote
 
     /**
@@ -38,6 +40,7 @@ interface QuoteService {
      * @param mode how the operation should behave. @see [Mode]
      * @return the week's quotes
      */
+    @Throws(IOException::class, UnexpectedResponseException::class, UnresolvedLinkException::class)
     suspend fun fetchWeekQuotes(mode: Mode = Mode.AUTO): List<Quote>
 }
 
@@ -153,5 +156,5 @@ class UnresolvedLinkException(msg: String = "") : ApiException(msg)
  * Exception throw when an unexpected response was received from the API.
  */
 class UnexpectedResponseException(
-    val response: Response
-) : ApiException("Unexpected ${response.code} response from the API.")
+    val response: Response? = null
+) : ApiException("Unexpected ${response?.code} response from the API.")
