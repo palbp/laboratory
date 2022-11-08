@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_tic_tac_toe"
         android:supportsRtl="true"
         android:theme="@style/Theme.TicTacToe"
+        android:name=".TicTacToeApplication"
         tools:targetApi="31">
         <activity
             android:name=".game.LobbyActivity"
