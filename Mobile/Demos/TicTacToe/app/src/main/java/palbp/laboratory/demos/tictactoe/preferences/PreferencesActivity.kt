@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game
+package palbp.laboratory.demos.tictactoe.preferences
 
 import android.app.Activity
 import android.content.Intent
@@ -9,14 +9,15 @@ import androidx.activity.compose.setContent
 import palbp.laboratory.demos.tictactoe.TAG
 
 /**
- * The screen used to display the list of players in the lobby, that is, available to play.
+ * The screen used to display and edit the user information to be used to identify
+ * the player in the lobby.
  */
-class LobbyActivity : ComponentActivity() {
+class PreferencesActivity : ComponentActivity() {
 
     companion object {
         fun navigate(origin: Activity) {
             with(origin) {
-                val intent = Intent(this, LobbyActivity::class.java)
+                val intent = Intent(this, PreferencesActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -24,9 +25,9 @@ class LobbyActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.v(TAG, "LobbyActivity.onCreate()")
+        Log.v(TAG, "PreferencesActivity.onCreate()")
         setContent {
-            LobbyScreen()
+            PreferencesScreen()
         }
     }
 }
