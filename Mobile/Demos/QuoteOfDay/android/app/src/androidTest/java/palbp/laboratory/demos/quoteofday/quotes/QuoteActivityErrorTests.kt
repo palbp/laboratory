@@ -38,7 +38,6 @@ class QuoteActivityErrorTests {
             val expected = application.resources.getString(R.string.error_exit_button_text)
             testRule.onNodeWithText(expected).assertExists()
         }
-
     }
 
     @Test

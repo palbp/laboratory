@@ -76,4 +76,10 @@ class QuoteActivityTests {
         // Assert
         testRule.onNodeWithTag("QuotesListScreen").assertExists()
     }
+
+    @Test
+    fun activity_displays_quote() {
+        // Assert
+        testRule.onNodeWithTag("QuoteView").assertExists()
+    }
 }
