@@ -5,6 +5,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -46,6 +48,9 @@ class MainActivityTests {
             .applicationContext as TicTacToeTestApplication
 
         val defaultUserInfoRepo = testApplication.userInfoRepo
+        testApplication.userInfoRepo = mockk {
+            every { userInfo } returns null
+        }
 
         try {
             // Act
