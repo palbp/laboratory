@@ -16,6 +16,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="532921449">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_4a_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="745904218">
           <value>
             <AndroidTestResultsTableState>
@@ -34,12 +47,12 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
-                  <entry key="Duration" value="90" />
+                  <entry key="Duration" value="149" />
                   <entry key="ECPBBCB740601249" value="120" />
                   <entry key="HUAWEI&#13;&#10; HUAWEI CUN-L01" value="120" />
-                  <entry key="Pixel_4a_API_33" value="120" />
+                  <entry key="Pixel_4a_API_33" value="178" />
                   <entry key="Status" value="80" />
-                  <entry key="Tests" value="360" />
+                  <entry key="Tests" value="450" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
