@@ -1,0 +1,54 @@
+package palbp.laboratory.demos.tictactoe.preferences
+
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.lifecycle.Lifecycle
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class PreferencesActivityDisplayModeTests {
+
+    @get:Rule
+    val testRule = createAndroidComposeRule<PreferencesActivity>()
+
+    @Test
+    fun preferences_screen_is_displayed() {
+        testRule.onNodeWithTag("PreferencesScreen").assertExists()
+    }
+
+    @Test
+    fun pressing_navigate_back_finishes_activity() {
+
+        testRule.onNodeWithTag(NavigateBackTag).assertExists()
+
+        // Act
+        testRule.onNodeWithTag(NavigateBackTag).performClick()
+        testRule.waitForIdle()
+
+        // Assert
+        testRule.onNodeWithTag("PreferencesScreen").assertDoesNotExist()
+        assert(testRule.activityRule.scenario.state == Lifecycle.State.DESTROYED)
+    }
+
+    @Test
+    fun screen_has_edit_button_if_user_info_exists() {
+        testRule.onNodeWithTag(EditButtonTag).assertExists()
+    }
+
+    @Test
+    fun pressing_edit_button_places_screen_in_edit_mode() {
+
+        // Act
+        testRule.onNodeWithTag(EditButtonTag).performClick()
+        testRule.waitForIdle()
+
+        // Assert
+        testRule.onNodeWithTag(EditButtonTag).assertDoesNotExist()
+        testRule.onNodeWithTag(UpdateButtonTag).assertExists()
+    }
+}

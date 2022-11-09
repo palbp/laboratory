@@ -3,7 +3,8 @@ package palbp.laboratory.demos.tictactoe.preferences
 import android.content.Context
 
 /**
- * Contract for user information repository implementations
+ * Contract for user information repository implementations.
+ * TODO: Discuss the adequacy of this abstraction
  */
 interface UserInfoRepository {
 

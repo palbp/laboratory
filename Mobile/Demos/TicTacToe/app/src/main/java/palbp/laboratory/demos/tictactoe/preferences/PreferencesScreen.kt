@@ -8,6 +8,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
+const val EditButtonTag = "EditButton"
+const val UpdateButtonTag = "UpdateButton"
+const val NavigateBackTag = "NavigateBack"
+
+const val NicknameInputTag = "NicknameInput"
+const val MotoInputTag = "MotoInput"
+
 @Composable
 fun PreferencesScreen() {
     TicTacToeTheme {

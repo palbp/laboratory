@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.game.LobbyActivity
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
-import palbp.laboratory.demos.tictactoe.preferences.PreferencesScreen
 
 /**
  * The start screen

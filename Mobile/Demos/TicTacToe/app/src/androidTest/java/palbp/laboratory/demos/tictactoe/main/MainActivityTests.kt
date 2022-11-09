@@ -28,7 +28,7 @@ class MainActivityTests {
     @Test
     fun pressing_play_navigates_to_lobby_if_user_info_exists() {
 
-        // Arrange not required. Default repo always returns a UserInfo instance
+        // Arrange not required. Default testing repo always returns a UserInfo instance
 
         // Act
         testRule.onNodeWithTag("PlayButton").performClick()
@@ -39,7 +39,7 @@ class MainActivityTests {
     }
 
     @Test
-    fun pressing_start_button_navigates_to_preferences_if_user_info_does_not_exist() {
+    fun pressing_play_navigates_to_preferences_if_user_info_does_not_exist() {
 
         // Arrange
         val testApplication: TicTacToeTestApplication = InstrumentationRegistry
