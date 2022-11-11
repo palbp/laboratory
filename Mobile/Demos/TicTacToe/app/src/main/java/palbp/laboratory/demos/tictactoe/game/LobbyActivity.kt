@@ -3,10 +3,8 @@ package palbp.laboratory.demos.tictactoe.game
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import palbp.laboratory.demos.tictactoe.TAG
 
 /**
  * The screen used to display the list of players in the lobby, that is, available to play.
@@ -24,9 +22,8 @@ class LobbyActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.v(TAG, "LobbyActivity.onCreate()")
         setContent {
-            LobbyScreen()
+            LobbyScreen(onBackRequested = { finish() })
         }
     }
 }

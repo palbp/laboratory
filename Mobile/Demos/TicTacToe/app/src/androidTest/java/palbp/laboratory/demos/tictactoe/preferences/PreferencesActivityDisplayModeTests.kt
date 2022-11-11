@@ -1,6 +1,5 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -23,7 +22,7 @@ class PreferencesActivityDisplayModeTests {
 
     @Test
     fun preferences_screen_is_displayed() {
-        testRule.onNodeWithTag("PreferencesScreen").assertExists()
+        testRule.onNodeWithTag(PreferencesScreenTag).assertExists()
     }
 
     @Test
@@ -36,7 +35,7 @@ class PreferencesActivityDisplayModeTests {
         testRule.waitForIdle()
 
         // Assert
-        testRule.onNodeWithTag("PreferencesScreen").assertDoesNotExist()
+        testRule.onNodeWithTag(PreferencesScreenTag).assertDoesNotExist()
         assert(testRule.activityRule.scenario.state == Lifecycle.State.DESTROYED)
     }
 

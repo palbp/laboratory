@@ -1,6 +1,5 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -13,13 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import palbp.laboratory.demos.tictactoe.TAG
+import palbp.laboratory.demos.tictactoe.R
 import palbp.laboratory.demos.tictactoe.ui.*
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
+const val PreferencesScreenTag = "PreferencesScreen"
 const val NicknameInputTag = "NicknameInput"
 const val MotoInputTag = "MotoInput"
 
@@ -39,12 +40,11 @@ fun PreferencesScreen(
             nick = displayedNick,
             moto = displayedMoto.ifBlank { null }
         )
-        Log.v(TAG, "enteredInfo = $enteredInfo")
 
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .testTag("PreferencesScreen"),
+                .testTag(PreferencesScreenTag),
             topBar = { TopBar(NavigationHandlers(onBackRequested)) },
             floatingActionButton = {
                 EditFab(
@@ -68,7 +68,9 @@ fun PreferencesScreen(
                     value = displayedNick,
                     onValueChange = { displayedNick = it },
                     singleLine = true,
-                    label = { Text("Your nickname") },
+                    label = {
+                        Text(stringResource(id = R.string.preferences_screen_nickname_tip))
+                    },
                     leadingIcon = {
                         Icon(Icons.Default.Face, contentDescription = "")
                     },
@@ -83,7 +85,7 @@ fun PreferencesScreen(
                     value = displayedMoto,
                     onValueChange = { displayedMoto = it },
                     maxLines = 3,
-                    label = { Text("Your moto") },
+                    label = { Text(stringResource(id = R.string.preferences_screen_moto_tip)) },
                     leadingIcon = {
                         Icon(Icons.Default.Comment, contentDescription = "")
                     },

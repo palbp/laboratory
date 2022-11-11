@@ -25,6 +25,21 @@ fun <A : ComponentActivity> createAndroidComposeRule(
     }
 )
 
+fun <A : ComponentActivity> createCustomAndroidComposeRule(
+    activityClass: Class<A>,
+    testSetup: () -> Unit,
+    testCleanup: () -> Unit
+): AndroidComposeTestRule<ActivityScenarioRule<A>, A> = AndroidComposeTestRule(
+        activityRule = ActivityScenarioRule(activityClass),
+        activityProvider = { rule ->
+            var activity: A? = null
+            testSetup()
+            rule.scenario.onActivity { activity = it }
+            testCleanup()
+            activity!!
+        }
+    )
+
 /**
  * Test rule that ensures that the default dependencies are preserved after the test is executed.
  *
@@ -52,9 +67,9 @@ class PreserveDefaultDependencies : TestRule {
 }
 
 /**
- * Creates an empty compose rule that saves and restores the default fake quote service
- * implementation. An empty compose rule is useful when the Activity (the compose host)
- * is explicitly launched by the test itself.
+ * Creates an empty compose rule that saves and restores the default dependencies.
+ * An empty compose rule is useful when the Activity (the compose host) is
+ * explicitly launched by the test itself.
  */
 fun createPreserveDefaultDependenciesComposeRule() =
     AndroidComposeTestRule<TestRule, ComponentActivity>(

@@ -1,9 +1,6 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.*
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.every
@@ -13,9 +10,9 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import palbp.laboratory.demos.tictactoe.game.LobbyScreenTag
 import palbp.laboratory.demos.tictactoe.testutils.PreserveDefaultDependencies
 import palbp.laboratory.demos.tictactoe.testutils.assertIsNotReadOnly
-import palbp.laboratory.demos.tictactoe.testutils.assertIsReadOnly
 import palbp.laboratory.demos.tictactoe.testutils.createPreserveDefaultDependenciesComposeRule
 import palbp.laboratory.demos.tictactoe.ui.SaveButtonTag
 
@@ -90,12 +87,11 @@ class PreferencesActivityEditModeTests {
 
             // Assert
             verify { mockRepo.userInfo }
-            testRule.onNodeWithTag("PreferencesScreen").assertDoesNotExist()
-            testRule.onNodeWithTag("LobbyScreen").assertExists()
+            testRule.onNodeWithTag(PreferencesScreenTag).assertDoesNotExist()
+            testRule.onNodeWithTag(LobbyScreenTag).assertExists()
         }
     }
 
-    @OptIn(ExperimentalTestApi::class, ExperimentalComposeUiApi::class)
     @Test
     fun screen_save_button_becomes_enabled_if_moto_is_edited_and_erased() {
 
@@ -113,7 +109,6 @@ class PreferencesActivityEditModeTests {
         }
     }
 
-    @OptIn(ExperimentalTestApi::class, ExperimentalComposeUiApi::class)
     @Test
     fun screen_save_button_becomes_disabled_if_nick_is_edited_and_erased() {
 
