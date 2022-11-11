@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -12,10 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.focused
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import palbp.laboratory.demos.tictactoe.TAG
 import palbp.laboratory.demos.tictactoe.ui.*
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
@@ -31,10 +32,14 @@ fun PreferencesScreen(
     TicTacToeTheme {
 
         var displayedNick by remember { mutableStateOf(userInfo?.nick ?: "") }
-        var displayedMoto by remember { mutableStateOf(userInfo?.moto) }
+        var displayedMoto by remember { mutableStateOf(userInfo?.moto ?: "") }
         var editing by remember { mutableStateOf(userInfo == null) }
 
-        val enteredInfo = userInfoOrNull(displayedNick, displayedMoto)
+        val enteredInfo = userInfoOrNull(
+            nick = displayedNick,
+            moto = displayedMoto.ifBlank { null }
+        )
+        Log.v(TAG, "enteredInfo = $enteredInfo")
 
         Scaffold(
             modifier = Modifier
@@ -75,7 +80,7 @@ fun PreferencesScreen(
                         .semantics { if (!editing) this[IsReadOnly] = Unit }
                 )
                 OutlinedTextField(
-                    value = displayedMoto ?: "",
+                    value = displayedMoto,
                     onValueChange = { displayedMoto = it },
                     maxLines = 3,
                     label = { Text("Your moto") },

@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.TAG
+import palbp.laboratory.demos.tictactoe.game.LobbyActivity
 
 /**
  * The screen used to display and edit the user information to be used to identify
@@ -35,7 +36,10 @@ class PreferencesActivity : ComponentActivity() {
             PreferencesScreen(
                 userInfo = repo.userInfo,
                 onBackRequested = { finish() },
-                onSaveRequested = { repo.userInfo = it; finish() }
+                onSaveRequested = {
+                    repo.userInfo = it
+                    LobbyActivity.navigate(this)
+                }
             )
         }
     }

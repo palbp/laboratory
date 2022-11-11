@@ -1,5 +1,7 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.*
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -52,6 +54,7 @@ class PreferencesActivityEditModeTests {
 
     @Test
     fun screen_save_button_becomes_enabled_if_entered_info_is_valid() {
+
         application.userInfoRepo = mockRepo
 
         ActivityScenario.launch(PreferencesActivity::class.java).use {
@@ -76,7 +79,7 @@ class PreferencesActivityEditModeTests {
     }
 
     @Test
-    fun pressing_save_button_stores_info_and_finishes_activity() {
+    fun pressing_save_button_stores_info_and_navigates_to_lobby() {
 
         application.userInfoRepo = mockRepo
 
@@ -88,8 +91,43 @@ class PreferencesActivityEditModeTests {
             // Assert
             verify { mockRepo.userInfo }
             testRule.onNodeWithTag("PreferencesScreen").assertDoesNotExist()
-            assert(it.state == Lifecycle.State.DESTROYED)
+            testRule.onNodeWithTag("LobbyScreen").assertExists()
         }
+    }
 
+    @OptIn(ExperimentalTestApi::class, ExperimentalComposeUiApi::class)
+    @Test
+    fun screen_save_button_becomes_enabled_if_moto_is_edited_and_erased() {
+
+        application.userInfoRepo = mockRepo
+
+        ActivityScenario.launch(PreferencesActivity::class.java).use {
+            testRule.onNodeWithTag(SaveButtonTag).assertIsNotEnabled()
+
+            testRule.onNodeWithTag(NicknameInputTag).performTextInput("nick")
+            testRule.onNodeWithTag(MotoInputTag).performTextInput(" ")
+            testRule.onNodeWithTag(MotoInputTag).performTextClearance()
+            testRule.waitForIdle()
+
+            testRule.onNodeWithTag(SaveButtonTag).assertIsEnabled()
+        }
+    }
+
+    @OptIn(ExperimentalTestApi::class, ExperimentalComposeUiApi::class)
+    @Test
+    fun screen_save_button_becomes_disabled_if_nick_is_edited_and_erased() {
+
+        application.userInfoRepo = mockRepo
+
+        ActivityScenario.launch(PreferencesActivity::class.java).use {
+            testRule.onNodeWithTag(SaveButtonTag).assertIsNotEnabled()
+
+            testRule.onNodeWithTag(NicknameInputTag).performTextInput("nick")
+            testRule.onNodeWithTag(SaveButtonTag).assertIsEnabled()
+            testRule.onNodeWithTag(NicknameInputTag).performTextClearance()
+            testRule.waitForIdle()
+
+            testRule.onNodeWithTag(SaveButtonTag).assertIsNotEnabled()
+        }
     }
 }
