@@ -25,21 +25,6 @@ fun <A : ComponentActivity> createAndroidComposeRule(
     }
 )
 
-fun <A : ComponentActivity> createCustomAndroidComposeRule(
-    activityClass: Class<A>,
-    testSetup: () -> Unit,
-    testCleanup: () -> Unit
-): AndroidComposeTestRule<ActivityScenarioRule<A>, A> = AndroidComposeTestRule(
-        activityRule = ActivityScenarioRule(activityClass),
-        activityProvider = { rule ->
-            var activity: A? = null
-            testSetup()
-            rule.scenario.onActivity { activity = it }
-            testCleanup()
-            activity!!
-        }
-    )
-
 /**
  * Test rule that ensures that the default dependencies are preserved after the test is executed.
  *
