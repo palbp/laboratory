@@ -1,5 +1,7 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class UserInfoTests {
@@ -19,7 +21,22 @@ class UserInfoTests {
     }
 
     @Test
-    fun `create instance with non empty nick and no moto`() {
+    fun `create instance with non empty nick and no moto succeeds`() {
         UserInfo(nick = "nick")
+    }
+
+    @Test
+    fun `validateUserInfoParts returns false when nick is blank`() {
+        assertFalse(validateUserInfoParts("  \n", null))
+    }
+
+    @Test
+    fun `validateUserInfoParts returns false when moto is blank`() {
+        assertFalse(validateUserInfoParts("nick", " "))
+    }
+
+    @Test
+    fun `validateUserInfoParts returns true when moto is null`() {
+        assertTrue(validateUserInfoParts("nick", null))
     }
 }

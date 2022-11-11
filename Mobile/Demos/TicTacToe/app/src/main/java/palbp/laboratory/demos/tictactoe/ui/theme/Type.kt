@@ -15,7 +15,7 @@ private val TicTacToe = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    subtitle1 = TextStyle(
+    h1 = TextStyle(
         fontFamily = TicTacToe,
         fontWeight = FontWeight.Bold,
         letterSpacing = 2.sp,

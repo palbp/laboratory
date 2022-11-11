@@ -13,7 +13,7 @@ import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
  */
 class TicTacToeTestApplication : DependenciesContainer, Application() {
     override var userInfoRepo: UserInfoRepository =
-        mockk {
+        mockk(relaxed = true) {
             every { userInfo } returns UserInfo("nick", "moto")
         }
 }

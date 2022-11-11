@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.TAG
 
 /**
@@ -13,6 +14,10 @@ import palbp.laboratory.demos.tictactoe.TAG
  * the player in the lobby.
  */
 class PreferencesActivity : ComponentActivity() {
+
+    private val repo by lazy {
+        (application as DependenciesContainer).userInfoRepo
+    }
 
     companion object {
         fun navigate(origin: Activity) {
@@ -27,7 +32,11 @@ class PreferencesActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.v(TAG, "PreferencesActivity.onCreate()")
         setContent {
-            PreferencesScreen()
+            PreferencesScreen(
+                userInfo = repo.userInfo,
+                onBackRequested = { finish() },
+                onSaveRequested = { repo.userInfo = it; finish() }
+            )
         }
     }
 }

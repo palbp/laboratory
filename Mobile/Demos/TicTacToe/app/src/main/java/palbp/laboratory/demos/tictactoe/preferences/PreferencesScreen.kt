@@ -1,35 +1,117 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Comment
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.focused
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import palbp.laboratory.demos.tictactoe.ui.*
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
-
-const val EditButtonTag = "EditButton"
-const val UpdateButtonTag = "UpdateButton"
-const val NavigateBackTag = "NavigateBack"
 
 const val NicknameInputTag = "NicknameInput"
 const val MotoInputTag = "MotoInput"
 
 @Composable
-fun PreferencesScreen() {
+fun PreferencesScreen(
+    userInfo: UserInfo?,
+    onBackRequested: () -> Unit = { },
+    onSaveRequested: (UserInfo) -> Unit
+) {
     TicTacToeTheme {
-        Surface(
+
+        var displayedNick by remember { mutableStateOf(userInfo?.nick ?: "") }
+        var displayedMoto by remember { mutableStateOf(userInfo?.moto) }
+        var editing by remember { mutableStateOf(userInfo == null) }
+
+        val enteredInfo = userInfoOrNull(displayedNick, displayedMoto)
+
+        Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .testTag("PreferencesScreen"),
-        ) {
-            // TODO
+            topBar = { TopBar(NavigationHandlers(onBackRequested)) },
+            floatingActionButton = {
+                EditFab(
+                    onClick =
+                        if (!editing) { { editing = true} }
+                        else if (enteredInfo == null) null
+                        else { { onSaveRequested(enteredInfo) } },
+                    mode = if (editing) FabMode.Save else FabMode.Edit
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+            ) {
+
+                OutlinedTextField(
+                    value = displayedNick,
+                    onValueChange = { displayedNick = it },
+                    singleLine = true,
+                    label = { Text("Your nickname") },
+                    leadingIcon = {
+                        Icon(Icons.Default.Face, contentDescription = "")
+                    },
+                    readOnly = !editing,
+                    modifier = Modifier
+                        .padding(horizontal = 48.dp)
+                        .fillMaxWidth()
+                        .testTag(NicknameInputTag)
+                        .semantics { if (!editing) this[IsReadOnly] = Unit }
+                )
+                OutlinedTextField(
+                    value = displayedMoto ?: "",
+                    onValueChange = { displayedMoto = it },
+                    maxLines = 3,
+                    label = { Text("Your moto") },
+                    leadingIcon = {
+                        Icon(Icons.Default.Comment, contentDescription = "")
+                    },
+                    readOnly = !editing,
+                    modifier = Modifier
+                        .padding(horizontal = 48.dp)
+                        .fillMaxWidth()
+                        .testTag(MotoInputTag)
+                        .semantics { if (!editing) this[IsReadOnly] = Unit }
+                )
+                Spacer(
+                    modifier = Modifier
+                        .sizeIn(minHeight = 128.dp, maxHeight = 256.dp)
+                )
+            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun MainScreenPreview() {
-    PreferencesScreen()
+private fun PreferencesScreenViewModePreview() {
+    PreferencesScreen(
+        userInfo = UserInfo("my nick", "my moto"),
+        onSaveRequested = { }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreferencesScreenEditModePreview() {
+    PreferencesScreen(
+        userInfo = null,
+        onSaveRequested = { }
+    )
 }

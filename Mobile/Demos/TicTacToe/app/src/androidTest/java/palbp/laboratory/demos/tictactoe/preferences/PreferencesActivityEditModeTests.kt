@@ -1,19 +1,21 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
-import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.*
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import palbp.laboratory.demos.tictactoe.testutils.PreserveDefaultDependencies
+import palbp.laboratory.demos.tictactoe.testutils.assertIsNotReadOnly
+import palbp.laboratory.demos.tictactoe.testutils.assertIsReadOnly
 import palbp.laboratory.demos.tictactoe.testutils.createPreserveDefaultDependenciesComposeRule
+import palbp.laboratory.demos.tictactoe.ui.SaveButtonTag
 
 @RunWith(AndroidJUnit4::class)
 class PreferencesActivityEditModeTests {
@@ -25,42 +27,69 @@ class PreferencesActivityEditModeTests {
         (testRule.activityRule as PreserveDefaultDependencies).testApplication
     }
 
-    @Test
-    fun screen_has_update_button_if_user_info_does_not_exist() {
+    private val mockRepo: UserInfoRepository = mockk(relaxed = true) {
+        every { userInfo } returns null
+    }
 
-        application.userInfoRepo = mockk {
-            every { userInfo } returns null
-        }
+    @Test
+    fun screen_has_save_button_if_user_info_does_not_exist() {
+
+        application.userInfoRepo = mockRepo
 
         ActivityScenario.launch(PreferencesActivity::class.java).use {
-            testRule.onNodeWithTag(UpdateButtonTag).assertExists()
+            testRule.onNodeWithTag(SaveButtonTag).assertExists()
         }
     }
 
     @Test
-    fun screen_update_button_is_disabled_if_entered_info_is_not_valid() {
-        application.userInfoRepo = mockk {
-            every { userInfo } returns null
-        }
+    fun screen_save_button_is_disabled_if_entered_info_is_not_valid() {
+        application.userInfoRepo = mockRepo
 
         ActivityScenario.launch(PreferencesActivity::class.java).use {
-            testRule.onNodeWithTag(UpdateButtonTag).assertIsNotEnabled()
+            testRule.onNodeWithTag(SaveButtonTag).assertIsNotEnabled()
         }
     }
 
     @Test
-    fun screen_update_button_becomes_enabled_if_entered_info_is_valid() {
-        application.userInfoRepo = mockk {
-            every { userInfo } returns null
-        }
+    fun screen_save_button_becomes_enabled_if_entered_info_is_valid() {
+        application.userInfoRepo = mockRepo
 
         ActivityScenario.launch(PreferencesActivity::class.java).use {
-            testRule.onNodeWithTag(UpdateButtonTag).assertIsNotEnabled()
+            testRule.onNodeWithTag(SaveButtonTag).assertIsNotEnabled()
 
             testRule.onNodeWithTag(NicknameInputTag).performTextInput("nick")
             testRule.waitForIdle()
 
-            testRule.onNodeWithTag(UpdateButtonTag).assertIsEnabled()
+            testRule.onNodeWithTag(SaveButtonTag).assertIsEnabled()
         }
+    }
+
+    @Test
+    fun screen_textFields_do_accept_user_input() {
+
+        application.userInfoRepo = mockRepo
+
+        ActivityScenario.launch(PreferencesActivity::class.java).use {
+            testRule.onNodeWithTag(NicknameInputTag).assertIsNotReadOnly()
+            testRule.onNodeWithTag(MotoInputTag).assertIsNotReadOnly()
+        }
+    }
+
+    @Test
+    fun pressing_save_button_stores_info_and_finishes_activity() {
+
+        application.userInfoRepo = mockRepo
+
+        ActivityScenario.launch(PreferencesActivity::class.java).use {
+            testRule.onNodeWithTag(NicknameInputTag).performTextInput("nick")
+            testRule.onNodeWithTag(SaveButtonTag).performClick()
+            testRule.waitForIdle()
+
+            // Assert
+            verify { mockRepo.userInfo }
+            testRule.onNodeWithTag("PreferencesScreen").assertDoesNotExist()
+            assert(it.state == Lifecycle.State.DESTROYED)
+        }
+
     }
 }

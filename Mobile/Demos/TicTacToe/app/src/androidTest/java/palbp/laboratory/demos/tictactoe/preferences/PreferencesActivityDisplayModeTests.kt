@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -9,6 +10,10 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import palbp.laboratory.demos.tictactoe.testutils.assertIsReadOnly
+import palbp.laboratory.demos.tictactoe.ui.EditButtonTag
+import palbp.laboratory.demos.tictactoe.ui.NavigateBackTag
+import palbp.laboratory.demos.tictactoe.ui.SaveButtonTag
 
 @RunWith(AndroidJUnit4::class)
 class PreferencesActivityDisplayModeTests {
@@ -41,6 +46,12 @@ class PreferencesActivityDisplayModeTests {
     }
 
     @Test
+    fun screen_textFields_do_not_accept_user_input() {
+        testRule.onNodeWithTag(NicknameInputTag).assertIsReadOnly()
+        testRule.onNodeWithTag(MotoInputTag).assertIsReadOnly()
+    }
+
+    @Test
     fun pressing_edit_button_places_screen_in_edit_mode() {
 
         // Act
@@ -49,6 +60,6 @@ class PreferencesActivityDisplayModeTests {
 
         // Assert
         testRule.onNodeWithTag(EditButtonTag).assertDoesNotExist()
-        testRule.onNodeWithTag(UpdateButtonTag).assertExists()
+        testRule.onNodeWithTag(SaveButtonTag).assertExists()
     }
 }
