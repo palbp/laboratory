@@ -1,6 +1,8 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
+import android.content.Intent
 import androidx.compose.ui.test.*
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.every
@@ -91,6 +93,27 @@ class PreferencesActivityEditModeTests {
             testRule.onNodeWithTag(LobbyScreenTag).assertExists()
         }
     }
+
+    @Test
+    fun when_started_with_FINISH_ON_SAVE_pressing_save_button_stores_info_and_finishes_activity() {
+
+        application.userInfoRepo = mockRepo
+        val intent = Intent(application, PreferencesActivity::class.java).also {
+            it.putExtra(FINISH_ON_SAVE_EXTRA, true)
+        }
+
+        ActivityScenario.launch<PreferencesActivity>(intent).use {
+            testRule.onNodeWithTag(NicknameInputTag).performTextInput("nick")
+            testRule.onNodeWithTag(SaveButtonTag).performClick()
+            testRule.waitForIdle()
+
+            // Assert
+            verify { mockRepo.userInfo }
+            testRule.onNodeWithTag(PreferencesScreenTag).assertDoesNotExist()
+            assert(it.state == Lifecycle.State.DESTROYED)
+        }
+    }
+
 
     @Test
     fun screen_save_button_becomes_enabled_if_moto_is_edited_and_erased() {

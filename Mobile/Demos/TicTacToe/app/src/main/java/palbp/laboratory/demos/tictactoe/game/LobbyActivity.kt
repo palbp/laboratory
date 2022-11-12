@@ -1,10 +1,11 @@
 package palbp.laboratory.demos.tictactoe.game
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
 
 /**
  * The screen used to display the list of players in the lobby, that is, available to play.
@@ -12,8 +13,8 @@ import androidx.activity.compose.setContent
 class LobbyActivity : ComponentActivity() {
 
     companion object {
-        fun navigate(origin: Activity) {
-            with(origin) {
+        fun navigate(context: Context) {
+            with(context) {
                 val intent = Intent(this, LobbyActivity::class.java)
                 startActivity(intent)
             }
@@ -23,7 +24,10 @@ class LobbyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LobbyScreen(onBackRequested = { finish() })
+            LobbyScreen(
+                onBackRequested = { finish() },
+                onPreferencesRequested = { PreferencesActivity.navigate(this) }
+            )
         }
     }
 }

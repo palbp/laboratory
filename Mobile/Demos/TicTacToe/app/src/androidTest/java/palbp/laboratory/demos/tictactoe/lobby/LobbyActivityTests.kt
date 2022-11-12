@@ -10,7 +10,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import palbp.laboratory.demos.tictactoe.game.LobbyActivity
 import palbp.laboratory.demos.tictactoe.game.LobbyScreenTag
+import palbp.laboratory.demos.tictactoe.preferences.PreferencesScreenTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateBackTag
+import palbp.laboratory.demos.tictactoe.ui.NavigateToPreferencesTag
 
 @RunWith(AndroidJUnit4::class)
 class LobbyActivityTests {
@@ -35,5 +37,17 @@ class LobbyActivityTests {
         // Assert
         testRule.onNodeWithTag(LobbyScreenTag).assertDoesNotExist()
         assert(testRule.activityRule.scenario.state == Lifecycle.State.DESTROYED)
+    }
+
+    @Test
+    fun pressing_navigate_to_settings_displays_preferences_activity() {
+
+        // Act
+        testRule.onNodeWithTag(PreferencesScreenTag).assertDoesNotExist()
+        testRule.onNodeWithTag(NavigateToPreferencesTag).performClick()
+        testRule.waitForIdle()
+
+        // Assert
+        testRule.onNodeWithTag(PreferencesScreenTag).assertExists()
     }
 }

@@ -17,11 +17,18 @@ import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 const val LobbyScreenTag = "LobbyScreen"
 
 @Composable
-fun LobbyScreen(onBackRequested: () -> Unit) {
+fun LobbyScreen(
+    onBackRequested: () -> Unit,
+    onPreferencesRequested: () -> Unit
+) {
     TicTacToeTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize().testTag(LobbyScreenTag),
-            topBar = { TopBar(NavigationHandlers(onBackRequested)) },
+            topBar = {
+                TopBar(
+                    NavigationHandlers(onBackRequested, onPreferencesRequested)
+                )
+            },
         ) { innerPadding ->
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -36,5 +43,5 @@ fun LobbyScreen(onBackRequested: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    LobbyScreen(onBackRequested = { })
+    LobbyScreen(onBackRequested = { }, onPreferencesRequested = { })
 }
