@@ -22,10 +22,19 @@ val Typography = Typography(
         fontSize = 42.sp
     ),
 
+    h5 = TextStyle(
+        fontFamily = TicTacToe,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 2.sp,
+        fontSize = 18.sp
+    ),
+
     button = TextStyle(
         fontFamily = TicTacToe,
         fontWeight = FontWeight.Normal,
         letterSpacing = 2.sp,
         fontSize = 24.sp
     ),
+
+
 )

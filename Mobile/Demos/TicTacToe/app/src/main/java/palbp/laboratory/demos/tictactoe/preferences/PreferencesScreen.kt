@@ -1,10 +1,7 @@
 package palbp.laboratory.demos.tictactoe.preferences
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Face
@@ -63,6 +60,12 @@ fun PreferencesScreen(
                     .padding(innerPadding)
                     .fillMaxSize(),
             ) {
+                Text(
+                    text = "How others see you",
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.primaryVariant
+                )
+                Spacer(modifier = Modifier.height(50.dp))
 
                 OutlinedTextField(
                     value = displayedNick,

@@ -26,7 +26,9 @@ class LobbyActivity : ComponentActivity() {
         setContent {
             LobbyScreen(
                 onBackRequested = { finish() },
-                onPreferencesRequested = { PreferencesActivity.navigate(this) }
+                onPreferencesRequested = {
+                    PreferencesActivity.navigate(this, finishOnSave = true)
+                }
             )
         }
     }

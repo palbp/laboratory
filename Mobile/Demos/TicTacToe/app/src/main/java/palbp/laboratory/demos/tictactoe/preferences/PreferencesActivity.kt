@@ -3,9 +3,11 @@ package palbp.laboratory.demos.tictactoe.preferences
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
+import palbp.laboratory.demos.tictactoe.TAG
 import palbp.laboratory.demos.tictactoe.game.LobbyActivity
 
 const val FINISH_ON_SAVE_EXTRA = "FinishOnSaveExtra"
@@ -40,10 +42,12 @@ class PreferencesActivity : ComponentActivity() {
                 onBackRequested = { finish() },
                 onSaveRequested = {
                     repo.userInfo = it
-                    if (intent.getBooleanExtra(FINISH_ON_SAVE_EXTRA, false))
+                    if (intent.getBooleanExtra(FINISH_ON_SAVE_EXTRA, false)) {
                         finish()
-                    else
+                    }
+                    else {
                         LobbyActivity.navigate(this)
+                    }
                 }
             )
         }
