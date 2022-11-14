@@ -108,7 +108,7 @@ class PreferencesActivityEditModeTests {
             testRule.waitForIdle()
 
             // Assert
-            verify { mockRepo.userInfo }
+            verify { mockRepo.userInfo = UserInfo("nick") }
             testRule.onNodeWithTag(PreferencesScreenTag).assertDoesNotExist()
             assert(it.state == Lifecycle.State.DESTROYED)
         }
