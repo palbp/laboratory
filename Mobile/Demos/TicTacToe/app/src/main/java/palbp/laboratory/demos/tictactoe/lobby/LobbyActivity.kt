@@ -1,11 +1,14 @@
-package palbp.laboratory.demos.tictactoe.game
+package palbp.laboratory.demos.tictactoe.lobby
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
+import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 
 /**
  * The screen used to display the list of players in the lobby, that is, available to play.

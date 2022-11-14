@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
-import palbp.laboratory.demos.tictactoe.game.LobbyActivity
+import palbp.laboratory.demos.tictactoe.lobby.LobbyActivity
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
 
 /**

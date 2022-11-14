@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game
+package palbp.laboratory.demos.tictactoe.lobby
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

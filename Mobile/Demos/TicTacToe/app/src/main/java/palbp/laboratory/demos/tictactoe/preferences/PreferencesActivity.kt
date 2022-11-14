@@ -3,12 +3,10 @@ package palbp.laboratory.demos.tictactoe.preferences
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
-import palbp.laboratory.demos.tictactoe.TAG
-import palbp.laboratory.demos.tictactoe.game.LobbyActivity
+import palbp.laboratory.demos.tictactoe.lobby.LobbyActivity
 
 const val FINISH_ON_SAVE_EXTRA = "FinishOnSaveExtra"
 

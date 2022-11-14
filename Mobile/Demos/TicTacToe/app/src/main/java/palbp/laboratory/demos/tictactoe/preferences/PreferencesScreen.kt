@@ -61,7 +61,7 @@ fun PreferencesScreen(
                     .fillMaxSize(),
             ) {
                 Text(
-                    text = "How others see you",
+                    text = stringResource(id = R.string.preferences_screen_title),
                     style = MaterialTheme.typography.h5,
                     color = MaterialTheme.colors.primaryVariant
                 )

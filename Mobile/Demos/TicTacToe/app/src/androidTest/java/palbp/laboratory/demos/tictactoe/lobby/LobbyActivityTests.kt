@@ -8,8 +8,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import palbp.laboratory.demos.tictactoe.game.LobbyActivity
-import palbp.laboratory.demos.tictactoe.game.LobbyScreenTag
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesScreenTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateBackTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateToPreferencesTag
