@@ -45,7 +45,6 @@ class FakeLobby : LobbyPullStyle, Lobby {
 
     override val players: Flow<List<UserInfo>>
         get() = flow {
-            emit(emptyList())
             while(true) {
                 delay(5000)
                 Log.v(TAG, "Lobby is emitting to the flow the version $count of the players' list")

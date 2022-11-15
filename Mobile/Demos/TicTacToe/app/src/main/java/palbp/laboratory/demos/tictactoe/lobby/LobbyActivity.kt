@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.game.GameActivity
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
@@ -47,6 +49,7 @@ class LobbyActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
 //            val players = viewModelPull.players
             val players by viewModel.players.collectAsState()
@@ -61,17 +64,17 @@ class LobbyActivity : ComponentActivity() {
                 }
             )
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-//        viewModelPull.enterLobby()
-        viewModel.enterLobby()
-    }
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onStart(owner: LifecycleOwner) {
+//                viewModelPull.enterLobby()
+                viewModel.enterLobby()
+            }
 
-    override fun onStop() {
-        super.onStop()
-//        viewModelPull.leaveLobby()
-        viewModel.leaveLobby()
+            override fun onStop(owner: LifecycleOwner) {
+//                viewModelPull.leaveLobby()
+                viewModel.leaveLobby()
+            }
+        })
     }
 }
