@@ -55,7 +55,10 @@
             android:name=".lobby.LobbyActivity"
             android:exported="false">
         </activity>
-
+        <activity
+            android:name=".game.GameActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

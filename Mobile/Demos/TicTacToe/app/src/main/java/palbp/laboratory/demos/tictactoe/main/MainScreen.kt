@@ -25,7 +25,7 @@ const val MainScreenTag = "MainScreen"
 const val PlayButtonTag = "PlayButton"
 
 @Composable
-fun MainScreen(onStartRequested: () -> Unit = {}) {
+fun MainScreen(onStartRequested: () -> Unit = { }) {
     TicTacToeTheme {
         Surface(
             modifier = Modifier.fillMaxSize().testTag(MainScreenTag),

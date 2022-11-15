@@ -29,12 +29,22 @@ val Typography = Typography(
         fontSize = 18.sp
     ),
 
+    subtitle1 = TextStyle(
+        fontFamily = TicTacToe,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp
+    ),
+
+    subtitle2 = TextStyle(
+        fontFamily = TicTacToe,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
+
     button = TextStyle(
         fontFamily = TicTacToe,
         fontWeight = FontWeight.Normal,
         letterSpacing = 2.sp,
         fontSize = 24.sp
     ),
-
-
 )
