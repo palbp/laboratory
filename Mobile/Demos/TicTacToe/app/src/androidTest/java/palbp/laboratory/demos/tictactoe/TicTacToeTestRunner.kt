@@ -8,7 +8,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
 import palbp.laboratory.demos.tictactoe.lobby.Lobby
-import palbp.laboratory.demos.tictactoe.lobby.LobbyPullStyle
+import palbp.laboratory.demos.tictactoe.lobby.PlayerInfo
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
 
@@ -22,15 +22,14 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
             every { userInfo } returns UserInfo("nick", "moto")
         }
 
-    override val lobbyPull: LobbyPullStyle
-        get() = TODO("Remove this after next class")
-
     override val lobby: Lobby
         get() = mockk(relaxed = true) {
-            coEvery { players } returns flow {
+            val localPlayer = PlayerInfo(UserInfo("test", "test moto"))
+            coEvery { enter(localPlayer) } returns flow {
                 listOf(
-                    UserInfo("nick1", "moto1"),
-                    UserInfo("nick2", "moto2")
+                    localPlayer,
+                    PlayerInfo(UserInfo("nick1", "moto1")),
+                    PlayerInfo(UserInfo("nick2", "moto2"))
                 )
             }
         }

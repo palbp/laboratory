@@ -5,9 +5,7 @@ import androidx.compose.ui.test.*
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -29,7 +27,11 @@ class PreferencesActivityEditModeTests {
     }
 
     private val mockRepo: UserInfoRepository = mockk(relaxed = true) {
-        every { userInfo } returns null
+        val user = slot<UserInfo>()
+        every { userInfo = capture(user) } answers { }
+        every { userInfo } answers {
+            if (user.isCaptured) user.captured else null
+        }
     }
 
     @Test

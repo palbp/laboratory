@@ -3,14 +3,17 @@ package palbp.laboratory.demos.tictactoe.lobby
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
+import palbp.laboratory.demos.tictactoe.TAG
 import palbp.laboratory.demos.tictactoe.game.GameActivity
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
@@ -26,6 +29,11 @@ class LobbyActivityReactive : ComponentActivity() {
         (application as DependenciesContainer).lobby
     }
 
+    private val localUser: UserInfo by lazy {
+        val localUserInfo = (application as DependenciesContainer).userInfoRepo.userInfo
+        checkNotNull(localUserInfo)
+    }
+
     companion object {
         fun navigate(context: Context) {
             with(context) {
@@ -37,13 +45,17 @@ class LobbyActivityReactive : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.v(TAG, "LobbyActivityReactive.onCreate() ")
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                lobby.players.collect {
+                Log.v(TAG, "Before collect")
+                lobby.enter(PlayerInfo(localUser)).collect {
+                    Log.v(TAG, "Inside collect")
                     setContent {
                         LobbyScreenContent(it)
                     }
                 }
+                Log.v(TAG, "After collect")
             }
         }
 
@@ -53,7 +65,7 @@ class LobbyActivityReactive : ComponentActivity() {
     }
 
     @Composable
-    private fun LobbyScreenContent(players: List<UserInfo> = emptyList()) {
+    private fun LobbyScreenContent(players: List<PlayerInfo> = emptyList()) {
         LobbyScreen(
             state = LobbyScreenState(players),
             onPlayerSelected = {

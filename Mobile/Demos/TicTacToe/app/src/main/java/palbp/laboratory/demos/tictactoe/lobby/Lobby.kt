@@ -1,55 +1,55 @@
 package palbp.laboratory.demos.tictactoe.lobby
 
-import android.util.Log
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import palbp.laboratory.demos.tictactoe.TAG
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
+import java.util.*
+
+data class PlayerInfo(val info: UserInfo, val id: UUID = UUID.randomUUID())
 
 /**
- * Abstraction that characterizes the game's lobby, using a push-style
- * interaction model, a.k.a reactive style.
+ * Abstraction that characterizes the game's lobby.
  */
 interface Lobby {
-    val players: Flow<List<UserInfo>>
-}
-
-/**
- * Abstraction that characterizes the game's lobby, using a pull-style
- * interaction model.
- * TODO: Remove it after next class.
- */
-interface LobbyPullStyle {
-    suspend fun getPlayers(): List<UserInfo>
+    suspend fun getPlayers(): List<PlayerInfo>
+    fun enter(localPlayer: PlayerInfo): Flow<List<PlayerInfo>>
+    fun leave()
 }
 
 /**
  * Fake implementation, for demo purposes.
- * TODO: Remove it after next class.
  */
-class FakeLobby : LobbyPullStyle, Lobby {
+class FakeLobby : Lobby {
     private var count = 1
 
-    private fun getCurrentListOfPlayers(): List<UserInfo> {
+    private var localPlayerInfo: PlayerInfo? = null
+
+    private fun getCurrentListOfPlayers(): List<PlayerInfo> {
         val list = buildList {
+            val localPlayer = localPlayerInfo
+            if (localPlayer != null)
+                add(localPlayer)
             repeat(5) {
-                add(UserInfo("My Nick $it", "$count This is my $it moto"))
+                add(PlayerInfo(
+                    UserInfo("My Nick $it", "$count This is my $it moto")
+                ))
             }
         }
         count += 1
         return list
     }
 
-    override suspend fun getPlayers(): List<UserInfo> = getCurrentListOfPlayers()
+    override suspend fun getPlayers(): List<PlayerInfo> = getCurrentListOfPlayers()
 
-    override val players: Flow<List<UserInfo>>
-        get() = flow {
-            while(true) {
-                delay(5000)
-                Log.v(TAG, "Lobby is emitting to the flow the version $count of the players' list")
-                emit(getCurrentListOfPlayers())
-            }
+    override fun enter(localPlayer: PlayerInfo): Flow<List<PlayerInfo>> = flow {
+        localPlayerInfo = localPlayer
+        while (localPlayerInfo != null) {
+            emit(getCurrentListOfPlayers())
         }
+    }
+
+    override fun leave() {
+        localPlayerInfo = null
+    }
 }
 
