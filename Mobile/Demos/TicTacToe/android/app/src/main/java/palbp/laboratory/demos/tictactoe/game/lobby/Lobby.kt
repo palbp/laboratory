@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.lobby
+package palbp.laboratory.demos.tictactoe.game.lobby
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -30,9 +30,11 @@ class FakeLobby : Lobby {
             if (localPlayer != null)
                 add(localPlayer)
             repeat(5) {
-                add(PlayerInfo(
+                add(
+                    PlayerInfo(
                     UserInfo("My Nick $it", "$count This is my $it moto")
-                ))
+                )
+                )
             }
         }
         count += 1

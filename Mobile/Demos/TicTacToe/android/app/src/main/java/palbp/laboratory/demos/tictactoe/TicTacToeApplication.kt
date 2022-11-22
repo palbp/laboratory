@@ -3,8 +3,8 @@ package palbp.laboratory.demos.tictactoe
 import android.app.Application
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import palbp.laboratory.demos.tictactoe.lobby.Lobby
-import palbp.laboratory.demos.tictactoe.lobby.LobbyFirebase
+import palbp.laboratory.demos.tictactoe.game.lobby.Lobby
+import palbp.laboratory.demos.tictactoe.game.lobby.LobbyFirebase
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepositorySharedPrefs
 

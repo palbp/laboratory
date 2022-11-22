@@ -7,8 +7,8 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
-import palbp.laboratory.demos.tictactoe.lobby.Lobby
-import palbp.laboratory.demos.tictactoe.lobby.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.Lobby
+import palbp.laboratory.demos.tictactoe.game.lobby.PlayerInfo
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
 

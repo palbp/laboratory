@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.lobby
+package palbp.laboratory.demos.tictactoe.game.lobby
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.TAG
-import palbp.laboratory.demos.tictactoe.game.GameActivity
+import palbp.laboratory.demos.tictactoe.game.play.GameActivity
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
 
