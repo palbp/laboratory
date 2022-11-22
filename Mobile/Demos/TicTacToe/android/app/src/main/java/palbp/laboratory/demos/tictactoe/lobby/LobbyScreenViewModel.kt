@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.tictactoe.lobby
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job

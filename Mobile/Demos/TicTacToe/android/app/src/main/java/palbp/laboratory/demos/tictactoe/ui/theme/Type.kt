@@ -30,15 +30,15 @@ val Typography = Typography(
     ),
 
     subtitle1 = TextStyle(
-        fontFamily = TicTacToe,
+        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 14.sp
+        fontSize = 18.sp
     ),
 
     subtitle2 = TextStyle(
-        fontFamily = TicTacToe,
+        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 14.sp
     ),
 
     button = TextStyle(

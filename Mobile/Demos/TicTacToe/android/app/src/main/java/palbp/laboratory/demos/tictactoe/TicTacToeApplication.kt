@@ -1,8 +1,10 @@
 package palbp.laboratory.demos.tictactoe
 
 import android.app.Application
-import palbp.laboratory.demos.tictactoe.lobby.FakeLobby
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import palbp.laboratory.demos.tictactoe.lobby.Lobby
+import palbp.laboratory.demos.tictactoe.lobby.LobbyFirebase
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepositorySharedPrefs
 
@@ -25,6 +27,6 @@ class TicTacToeApplication : DependenciesContainer, Application() {
         get() = UserInfoRepositorySharedPrefs(this)
 
     override val lobby: Lobby
-        get() = FakeLobby()
+        get() = LobbyFirebase(Firebase.firestore)
 }
 

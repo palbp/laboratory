@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.TAG
@@ -45,18 +44,16 @@ class LobbyActivityReactive : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.v(TAG, "LobbyActivityReactive.onCreate() ")
         lifecycleScope.launch {
+            Log.v(TAG, "before repeatOnLifeCycle")
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                Log.v(TAG, "Before collect")
                 lobby.enter(PlayerInfo(localUser)).collect {
-                    Log.v(TAG, "Inside collect")
                     setContent {
                         LobbyScreenContent(it)
                     }
                 }
-                Log.v(TAG, "After collect")
             }
+            Log.v(TAG, "After repeatOnLifeCycle")
         }
 
         setContent {

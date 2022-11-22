@@ -9,7 +9,7 @@ import palbp.laboratory.demos.tictactoe.lobby.LobbyActivityReactive
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
 
 /**
- * The start screen
+ * The start screen.
  */
 class MainActivity : ComponentActivity() {
 
@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
     private fun startGame() {
         if (repo.userInfo != null)
             LobbyActivityReactive.navigate(this)
+//            LobbyActivity.navigate(this)
         else
             PreferencesActivity.navigate(this)
     }
