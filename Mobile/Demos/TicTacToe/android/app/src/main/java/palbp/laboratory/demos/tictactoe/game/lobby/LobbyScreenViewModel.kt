@@ -27,8 +27,10 @@ class LobbyScreenViewModel(
         if (lobbyMonitor == null) {
             val localPlayer = PlayerInfo(userInfo)
             lobbyMonitor = viewModelScope.launch {
-                lobby.enter(localPlayer).collect {
-                    _players.value = it
+                lobby.enter(localPlayer).collect { currentPlayers ->
+                    _players.value = currentPlayers.filterNot {
+                        it.id == localPlayer.id
+                    }
                 }
             }
         }
