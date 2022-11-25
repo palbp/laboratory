@@ -1,7 +1,8 @@
 package palbp.laboratory.demos.tictactoe.game.lobby
 
-import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
@@ -11,14 +12,32 @@ import kotlinx.coroutines.tasks.await
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
 import java.util.*
 
-private const val LOBBY = "lobby"
+const val LOBBY = "lobby"
 private const val NICK_FIELD = "nick"
 private const val MOTO_FIELD = "moto"
+
+/**
+ * SUm type that characterizes the lobby state
+ */
+sealed class LobbyState
+class InUse(val localPlayerDocRef: DocumentReference): LobbyState()
+class InUseWithFlow(val scope: ProducerScope<List<PlayerInfo>>) : LobbyState()
+object Idle : LobbyState()
 
 /**
  * Implementation of the Game's lobby using Firebase's Firestore
  */
 class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
+
+    private var state: LobbyState = Idle
+
+    private suspend fun addLocalPlayer(localPlayer: PlayerInfo): DocumentReference {
+        val docRef = db.collection(LOBBY).document(localPlayer.id.toString())
+        docRef
+            .set(localPlayer.info.toDocumentContent())
+            .await()
+        return docRef
+    }
 
     override suspend fun getPlayers(): List<PlayerInfo> {
         try {
@@ -30,40 +49,50 @@ class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
         }
     }
 
-    private var producerScope: ProducerScope<List<PlayerInfo>>? = null
+    override suspend fun enter(localPlayer: PlayerInfo): List<PlayerInfo> {
+        check(state == Idle)
+        try {
+            state = InUse(addLocalPlayer(localPlayer))
+            return getPlayers()
+        }
+        catch (e: Throwable) {
+            throw UnreachableLobbyException()
+        }
+    }
 
-    override fun enter(localPlayer: PlayerInfo): Flow<List<PlayerInfo>> {
-        check(producerScope == null)
+    override fun enterAndObserve(localPlayer: PlayerInfo): Flow<List<PlayerInfo>> {
+        check(state == Idle)
         return callbackFlow {
-            producerScope = this
-            var lobbyRef: CollectionReference? = null
+            state = InUseWithFlow(this)
+            var localPlayerDocRef: DocumentReference? = null
+            var subscription: ListenerRegistration? = null
             try {
-                lobbyRef = db.collection(LOBBY)
-                lobbyRef
-                    .document(localPlayer.id.toString())
-                    .set(localPlayer.info.toDocumentContent())
-                    .addOnFailureListener { close(it) }
-            } catch (e: Throwable) {
-                close(e)
-            }
-
-            val subscription = lobbyRef?.addSnapshotListener { snapshot, error ->
-                when {
-                    error != null -> close(error)
-                    snapshot != null -> trySend(snapshot.map { it.toPlayerInfo() })
+                localPlayerDocRef = addLocalPlayer(localPlayer)
+                subscription = db.collection(LOBBY).addSnapshotListener { snapshot, error ->
+                    when {
+                        error != null -> close(error)
+                        snapshot != null -> trySend(snapshot.map { it.toPlayerInfo() })
+                    }
                 }
+            }
+            catch (e: Exception) {
+                close(e)
             }
 
             awaitClose {
                 subscription?.remove()
-                lobbyRef?.document(localPlayer.id.toString())?.delete()
+                localPlayerDocRef?.delete()
             }
         }
     }
 
-    override fun leave() {
-        producerScope?.close()
-        producerScope = null
+    override suspend fun leave() {
+        when (val currentState = state) {
+            is InUseWithFlow -> currentState.scope.close()
+            is InUse -> currentState.localPlayerDocRef.delete().await()
+            is Idle -> throw IllegalStateException()
+        }
+        state = Idle
     }
 }
 
@@ -71,7 +100,7 @@ class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
  * Extension function used to convert player info documents stored in the Firestore DB
  * into [PlayerInfo] instances.
  */
-private fun QueryDocumentSnapshot.toPlayerInfo() =
+fun QueryDocumentSnapshot.toPlayerInfo() =
     PlayerInfo(
         info = UserInfo(
             nick = data[NICK_FIELD] as String,
@@ -84,7 +113,7 @@ private fun QueryDocumentSnapshot.toPlayerInfo() =
  * [UserInfo] extension function used to convert an instance to a map of key-value
  * pairs containing the object's properties, to be used as a payload of
  */
-private fun UserInfo.toDocumentContent() = mapOf(
+fun UserInfo.toDocumentContent() = mapOf(
     NICK_FIELD to nick,
     MOTO_FIELD to moto
 )

@@ -47,7 +47,7 @@ class LobbyActivityReactive : ComponentActivity() {
         lifecycleScope.launch {
             Log.v(TAG, "before repeatOnLifeCycle")
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                lobby.enter(PlayerInfo(localUser)).collect {
+                lobby.enterAndObserve(PlayerInfo(localUser)).collect {
                     setContent {
                         LobbyScreenContent(it)
                     }

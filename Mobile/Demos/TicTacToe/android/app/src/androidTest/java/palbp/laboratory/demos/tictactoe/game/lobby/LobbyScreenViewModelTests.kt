@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game
+package palbp.laboratory.demos.tictactoe.game.lobby
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

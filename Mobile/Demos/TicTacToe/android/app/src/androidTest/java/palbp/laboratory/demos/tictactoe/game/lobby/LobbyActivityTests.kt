@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game
+package palbp.laboratory.demos.tictactoe.game.lobby
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag

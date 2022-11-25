@@ -1,6 +1,5 @@
 package palbp.laboratory.demos.tictactoe.game.lobby
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -27,7 +26,7 @@ class LobbyScreenViewModel(
         if (lobbyMonitor == null) {
             val localPlayer = PlayerInfo(userInfo)
             lobbyMonitor = viewModelScope.launch {
-                lobby.enter(localPlayer).collect { currentPlayers ->
+                lobby.enterAndObserve(localPlayer).collect { currentPlayers ->
                     _players.value = currentPlayers.filterNot {
                         it.id == localPlayer.id
                     }
@@ -37,8 +36,10 @@ class LobbyScreenViewModel(
     }
 
     fun leaveLobby() {
-        lobbyMonitor?.cancel()
-        lobbyMonitor = null
-        lobby.leave()
+        viewModelScope.launch {
+            lobbyMonitor?.cancel()
+            lobbyMonitor = null
+            lobby.leave()
+        }
     }
 }

@@ -3,6 +3,10 @@ package palbp.laboratory.demos.tictactoe
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +29,7 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
     override val lobby: Lobby
         get() = mockk(relaxed = true) {
             val localPlayer = PlayerInfo(UserInfo("test", "test moto"))
-            coEvery { enter(localPlayer) } returns flow {
+            coEvery { enterAndObserve(localPlayer) } returns flow {
                 listOf(
                     localPlayer,
                     PlayerInfo(UserInfo("nick1", "moto1")),
@@ -33,6 +37,15 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
                 )
             }
         }
+
+    val emulatedFirestoreDb: FirebaseFirestore by lazy {
+        Firebase.firestore.also {
+            it.useEmulator("10.0.2.2", 8080)
+            it.firestoreSettings = FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(false)
+                .build()
+        }
+    }
 }
 
 @Suppress("unused")

@@ -43,6 +43,6 @@ class TicTacToeApplication : DependenciesContainer, Application() {
         get() = UserInfoRepositorySharedPrefs(this)
 
     override val lobby: Lobby
-        get() = LobbyFirebase(emulatedFirestoreDb)
+        get() = LobbyFirebase(realFirestoreDb)
 }
 
