@@ -10,7 +10,6 @@ import palbp.laboratory.demos.tictactoe.game.lobby.LobbyFirebase
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepositorySharedPrefs
 
-
 const val TAG = "TicTacToeApp"
 
 /**
@@ -43,6 +42,6 @@ class TicTacToeApplication : DependenciesContainer, Application() {
         get() = UserInfoRepositorySharedPrefs(this)
 
     override val lobby: Lobby
-        get() = LobbyFirebase(realFirestoreDb)
+        get() = LobbyFirebase(emulatedFirestoreDb)
 }
 

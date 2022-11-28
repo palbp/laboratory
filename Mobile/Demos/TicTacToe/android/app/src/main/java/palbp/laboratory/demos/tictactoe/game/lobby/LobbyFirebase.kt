@@ -4,6 +4,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ private const val NICK_FIELD = "nick"
 private const val MOTO_FIELD = "moto"
 
 /**
- * SUm type that characterizes the lobby state
+ * Sum type that characterizes the lobby state
  */
 sealed class LobbyState
 class InUse(val localPlayerDocRef: DocumentReference): LobbyState()
@@ -68,10 +69,11 @@ class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
             var subscription: ListenerRegistration? = null
             try {
                 localPlayerDocRef = addLocalPlayer(localPlayer)
+//                trySend(db.collection(LOBBY).get().await().toPlayerList())
                 subscription = db.collection(LOBBY).addSnapshotListener { snapshot, error ->
                     when {
                         error != null -> close(error)
-                        snapshot != null -> trySend(snapshot.map { it.toPlayerInfo() })
+                        snapshot != null -> trySend(snapshot.toPlayerList())
                     }
                 }
             }
@@ -108,6 +110,9 @@ fun QueryDocumentSnapshot.toPlayerInfo() =
         ),
         id = UUID.fromString(id),
     )
+
+
+fun QuerySnapshot.toPlayerList() = map { it.toPlayerInfo() }
 
 /**
  * [UserInfo] extension function used to convert an instance to a map of key-value

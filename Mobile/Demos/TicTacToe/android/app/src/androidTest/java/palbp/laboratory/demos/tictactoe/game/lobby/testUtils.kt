@@ -9,7 +9,6 @@ import org.junit.runners.model.Statement
 import palbp.laboratory.demos.tictactoe.TicTacToeTestApplication
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
 
-val localTestPlayer = PlayerInfo(UserInfo("local"))
 val otherTestPlayersInLobby: List<PlayerInfo> = buildList {
     repeat(3 ) {
         add(PlayerInfo(UserInfo("remote $it", "moto")))
@@ -18,7 +17,7 @@ val otherTestPlayersInLobby: List<PlayerInfo> = buildList {
 
 class PopulatedFirebaseLobby : TestRule {
 
-    private val app: TicTacToeTestApplication by lazy {
+    val app: TicTacToeTestApplication by lazy {
         InstrumentationRegistry
             .getInstrumentation()
             .targetContext

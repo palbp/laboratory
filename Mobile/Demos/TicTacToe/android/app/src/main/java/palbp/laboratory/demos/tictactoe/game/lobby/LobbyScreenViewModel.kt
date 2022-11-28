@@ -20,26 +20,26 @@ class LobbyScreenViewModel(
     val players = _players.asStateFlow()
 
     private var lobbyMonitor: Job? = null
-    private val userInfo by lazy { checkNotNull(userInfoRepo.userInfo) }
 
-    fun enterLobby() {
+    fun enterLobby(): Job? =
         if (lobbyMonitor == null) {
-            val localPlayer = PlayerInfo(userInfo)
+            val localPlayer = PlayerInfo(checkNotNull(userInfoRepo.userInfo))
+            println(this.hashCode())
             lobbyMonitor = viewModelScope.launch {
                 lobby.enterAndObserve(localPlayer).collect { currentPlayers ->
                     _players.value = currentPlayers.filterNot {
-                        it.id == localPlayer.id
+                        it.id != localPlayer.id
                     }
                 }
             }
-        }
-    }
+            lobbyMonitor
+        } else null
 
-    fun leaveLobby() {
+    fun leaveLobby(): Job? = if (lobbyMonitor != null) {
         viewModelScope.launch {
             lobbyMonitor?.cancel()
             lobbyMonitor = null
             lobby.leave()
         }
-    }
+    } else null
 }

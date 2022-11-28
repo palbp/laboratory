@@ -10,11 +10,14 @@ import com.google.firebase.ktx.Firebase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.flow.flow
 import palbp.laboratory.demos.tictactoe.game.lobby.Lobby
 import palbp.laboratory.demos.tictactoe.game.lobby.PlayerInfo
 import palbp.laboratory.demos.tictactoe.preferences.UserInfo
 import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
+
+val localTestPlayer = PlayerInfo(UserInfo("local"))
 
 /**
  * The service locator to be used in the instrumented tests.
@@ -23,20 +26,23 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
 
     override var userInfoRepo: UserInfoRepository =
         mockk(relaxed = true) {
-            every { userInfo } returns UserInfo("nick", "moto")
+            every { userInfo } returns localTestPlayer.info
         }
 
     override val lobby: Lobby
         get() = mockk(relaxed = true) {
-            val localPlayer = PlayerInfo(UserInfo("test", "test moto"))
-            coEvery { enterAndObserve(localPlayer) } returns flow {
-                listOf(
-                    localPlayer,
-                    PlayerInfo(UserInfo("nick1", "moto1")),
-                    PlayerInfo(UserInfo("nick2", "moto2"))
+            val localPlayer = slot<PlayerInfo>()
+            every { enterAndObserve(capture(localPlayer)) } returns flow {
+                emit(
+                    listOf(
+                        localPlayer.captured,
+                        PlayerInfo(UserInfo("nick1", "moto1")),
+                        PlayerInfo(UserInfo("nick2", "moto2"))
+                    )
                 )
             }
         }
+
 
     val emulatedFirestoreDb: FirebaseFirestore by lazy {
         Firebase.firestore.also {
