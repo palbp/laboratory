@@ -27,9 +27,10 @@ class LobbyScreenViewModel(
             println(this.hashCode())
             lobbyMonitor = viewModelScope.launch {
                 lobby.enterAndObserve(localPlayer).collect { currentPlayers ->
-                    _players.value = currentPlayers.filterNot {
+                    val otherPlayers = currentPlayers.filter {
                         it.id != localPlayer.id
                     }
+                    _players.value = otherPlayers
                 }
             }
             lobbyMonitor

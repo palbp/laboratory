@@ -61,16 +61,14 @@ class LobbyScreenViewModelTests {
     fun local_player_is_excluded_from_the_flow(): Unit = runTest {
         // Arrange
         val allObservedPlayers = mutableListOf<PlayerInfo>()
-        var isEmpty = true
-
         val sut = LobbyScreenViewModel(app.lobby, app.userInfoRepo)
 
         // Act
         val latch = SuspendingCountDownLatch(2)
         // There are exactly TWO calls to the collector's block:
-        // 1 - the first bearing an empty list, which is the initial content of the StateFlow
-        // 2 - the second with the only list produced by the mock
-        // Regardless we will check if the local player ever appeared
+        // - the first bearing an empty list, which is the initial content of the StateFlow
+        // - the second with the only list produced by the mock
+        // Regardless, we will check if the local player ever appeared
         val collectJob = launch {
             sut.enterLobby()
             sut.players.collect {
@@ -84,7 +82,7 @@ class LobbyScreenViewModelTests {
         collectJob.cancel()
 
         // Assert
-        assertFalse(allObservedPlayers.contains(localTestPlayer))
+        assertFalse(allObservedPlayers.any { it.info == localTestPlayer.info })
         assertFalse(allObservedPlayers.isEmpty())
     }
 }
