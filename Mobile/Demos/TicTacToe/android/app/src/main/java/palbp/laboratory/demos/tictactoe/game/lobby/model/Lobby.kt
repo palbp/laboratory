@@ -1,10 +1,6 @@
-package palbp.laboratory.demos.tictactoe.game.lobby
+package palbp.laboratory.demos.tictactoe.game.lobby.model
 
 import kotlinx.coroutines.flow.Flow
-import palbp.laboratory.demos.tictactoe.preferences.UserInfo
-import java.util.*
-
-data class PlayerInfo(val info: UserInfo, val id: UUID = UUID.randomUUID())
 
 /**
  * Abstraction that characterizes the game's lobby.

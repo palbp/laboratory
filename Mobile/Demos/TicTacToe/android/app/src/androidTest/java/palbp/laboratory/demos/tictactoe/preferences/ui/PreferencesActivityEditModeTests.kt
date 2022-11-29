@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.preferences
+package palbp.laboratory.demos.tictactoe.preferences.ui
 
 import android.content.Intent
 import androidx.compose.ui.test.*
@@ -10,7 +10,12 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import palbp.laboratory.demos.tictactoe.game.lobby.LobbyScreenTag
+import palbp.laboratory.demos.tictactoe.game.lobby.ui.LobbyScreenTag
+import palbp.laboratory.demos.tictactoe.preferences.MotoInputTag
+import palbp.laboratory.demos.tictactoe.preferences.NicknameInputTag
+import palbp.laboratory.demos.tictactoe.preferences.PreferencesScreenTag
+import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
+import palbp.laboratory.demos.tictactoe.preferences.model.UserInfoRepository
 import palbp.laboratory.demos.tictactoe.testutils.PreserveDefaultDependencies
 import palbp.laboratory.demos.tictactoe.testutils.assertIsNotReadOnly
 import palbp.laboratory.demos.tictactoe.testutils.createPreserveDefaultDependenciesComposeRule

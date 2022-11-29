@@ -7,15 +7,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.flow.flow
-import palbp.laboratory.demos.tictactoe.game.lobby.Lobby
-import palbp.laboratory.demos.tictactoe.game.lobby.PlayerInfo
-import palbp.laboratory.demos.tictactoe.preferences.UserInfo
-import palbp.laboratory.demos.tictactoe.preferences.UserInfoRepository
+import palbp.laboratory.demos.tictactoe.game.lobby.model.Lobby
+import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
+import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
+import palbp.laboratory.demos.tictactoe.preferences.model.UserInfoRepository
 
 val localTestPlayer = PlayerInfo(UserInfo("local"))
 

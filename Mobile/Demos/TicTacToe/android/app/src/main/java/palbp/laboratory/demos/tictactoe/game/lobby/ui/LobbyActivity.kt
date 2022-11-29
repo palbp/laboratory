@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game.lobby
+package palbp.laboratory.demos.tictactoe.game.lobby.ui
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.game.play.GameActivity
-import palbp.laboratory.demos.tictactoe.preferences.PreferencesActivity
+import palbp.laboratory.demos.tictactoe.preferences.ui.PreferencesActivity
 import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 
 /**

@@ -24,17 +24,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".preferences.PreferencesActivity"
+            android:name=".preferences.ui.PreferencesActivity"
             android:exported="false"
             android:noHistory="true"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".game.lobby.LobbyActivity"
+            android:name=".game.lobby.ui.LobbyActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".game.lobby.LobbyActivityReactive"
+            android:name=".game.lobby.ui.LobbyActivityReactive"
             android:exported="false">
         </activity>
         <activity

@@ -1,16 +1,14 @@
 package palbp.laboratory.demos.tictactoe.game.lobby
 
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import palbp.laboratory.demos.tictactoe.preferences.UserInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.model.Lobby
+import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
+import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
 import java.util.*
 
 const val LOBBY = "lobby"
@@ -69,7 +67,6 @@ class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
             var subscription: ListenerRegistration? = null
             try {
                 localPlayerDocRef = addLocalPlayer(localPlayer)
-//                trySend(db.collection(LOBBY).get().await().toPlayerList())
                 subscription = db.collection(LOBBY).addSnapshotListener { snapshot, error ->
                     when {
                         error != null -> close(error)

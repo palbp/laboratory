@@ -7,6 +7,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
 import palbp.laboratory.demos.tictactoe.localTestPlayer
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingCountDownLatch
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingGate
