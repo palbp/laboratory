@@ -38,7 +38,7 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".game.play.GameActivity"
+            android:name=".game.play.ui.GameActivity"
             android:exported="false">
         </activity>
     </application>

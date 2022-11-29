@@ -15,7 +15,7 @@ import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.TAG
 import palbp.laboratory.demos.tictactoe.game.lobby.model.Lobby
 import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
-import palbp.laboratory.demos.tictactoe.game.play.GameActivity
+import palbp.laboratory.demos.tictactoe.game.play.ui.GameActivity
 import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
 import palbp.laboratory.demos.tictactoe.preferences.ui.PreferencesActivity
 

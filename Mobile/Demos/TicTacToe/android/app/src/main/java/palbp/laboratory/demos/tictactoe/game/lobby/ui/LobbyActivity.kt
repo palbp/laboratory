@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
-import palbp.laboratory.demos.tictactoe.game.play.GameActivity
+import palbp.laboratory.demos.tictactoe.game.play.ui.GameActivity
 import palbp.laboratory.demos.tictactoe.preferences.ui.PreferencesActivity
 import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 
