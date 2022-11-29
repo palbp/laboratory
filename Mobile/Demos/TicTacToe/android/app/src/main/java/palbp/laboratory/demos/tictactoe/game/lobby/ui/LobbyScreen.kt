@@ -75,7 +75,7 @@ fun LobbyScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun MainScreenPreview() {
+private fun LobbyScreenPreview() {
     LobbyScreen(
         state = LobbyScreenState(players),
         onBackRequested = { },
