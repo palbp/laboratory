@@ -26,11 +26,10 @@ class LobbyScreenViewModel(
     fun enterLobby(): Job? =
         if (lobbyMonitor == null) {
             val localPlayer = PlayerInfo(checkNotNull(userInfoRepo.userInfo))
-            println(this.hashCode())
             lobbyMonitor = viewModelScope.launch {
                 lobby.enterAndObserve(localPlayer).collect { currentPlayers ->
                     val otherPlayers = currentPlayers.filter {
-                        it.id != localPlayer.id
+                        it != localPlayer
                     }
                     _players.value = otherPlayers
                 }

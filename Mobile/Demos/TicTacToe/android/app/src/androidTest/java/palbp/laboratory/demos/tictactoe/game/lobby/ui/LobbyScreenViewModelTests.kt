@@ -27,7 +27,6 @@ class LobbyScreenViewModelTests {
 
     @Test
     fun entering_lobby_always_gets_userInfo_from_repo() = runTest {
-
         // Arrange
         val mockRepo: UserInfoRepository = mockk {
             every { userInfo } returns localTestPlayer.info
@@ -37,9 +36,11 @@ class LobbyScreenViewModelTests {
         // Act
         sut.enterLobby()?.join()
         sut.leaveLobby()?.join()
+        sut.enterLobby()?.join()
+        sut.leaveLobby()?.join()
 
         // Assert
-        verify(exactly = 1) { mockRepo.userInfo }
+        verify(exactly = 2) { mockRepo.userInfo }
     }
 
     @Test
