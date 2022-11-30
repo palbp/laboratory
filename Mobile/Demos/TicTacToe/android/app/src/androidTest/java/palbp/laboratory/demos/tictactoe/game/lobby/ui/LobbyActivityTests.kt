@@ -7,18 +7,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import palbp.laboratory.demos.tictactoe.game.lobby.ui.LobbyActivity
-import palbp.laboratory.demos.tictactoe.game.lobby.ui.LobbyScreenTag
 import palbp.laboratory.demos.tictactoe.game.play.ui.GameScreenTag
-import palbp.laboratory.demos.tictactoe.main.PlayButtonTag
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesScreenTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateBackTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateToPreferencesTag
-import palbp.laboratory.demos.tictactoe.ui.UserInfoViewTag
 
 @RunWith(AndroidJUnit4::class)
 class LobbyActivityTests {
@@ -60,7 +55,7 @@ class LobbyActivityTests {
     @Test
     fun pressing_a_player_card_navigates_to_game_screen() {
         // Act
-        testRule.onAllNodesWithTag(UserInfoViewTag).onFirst().performClick()
+        testRule.onAllNodesWithTag(PlayerInfoViewTag).onFirst().performClick()
         testRule.waitForIdle()
 
         // Assert
