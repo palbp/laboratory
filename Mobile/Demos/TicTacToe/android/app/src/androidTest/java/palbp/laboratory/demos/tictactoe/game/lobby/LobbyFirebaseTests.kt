@@ -7,9 +7,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import palbp.laboratory.demos.tictactoe.game.lobby.model.ChallengeReceived
 import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.model.RosterUpdated
 import palbp.laboratory.demos.tictactoe.localTestPlayer
-import palbp.laboratory.demos.tictactoe.testutils.SuspendingCountDownLatch
+import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingGate
 
 @ExperimentalCoroutinesApi
@@ -66,19 +68,29 @@ class LobbyFirebaseTests {
     }
 
     @Test
-    fun enterAndObserve_flow_reports_lobby_changes(): Unit = runTest {
+    fun enterAndObserve_flow_reports_roster_changes(): Unit = runTest {
         // Arrange
         val sut = populatedLobbyRule.lobby
+        val expectedCount = otherTestPlayersInLobby.size + 1
         val observations: MutableList<List<PlayerInfo>> = mutableListOf()
         val canDelete = SuspendingGate()
-        val expectedObservations = SuspendingCountDownLatch(2)
+        val hasDeleted = SuspendingGate()
 
         // Act
         val collectJob = launch {
-            sut.enterAndObserve(localTestPlayer).collect {
-                canDelete.open()
-                expectedObservations.countDown()
-                observations.add(it)
+            sut.enterAndObserve(localTestPlayer).collect { event ->
+                if (event is RosterUpdated) {
+                    when (event.players.size) {
+                        expectedCount -> {
+                            canDelete.open()
+                            observations.add(event.players)
+                        }
+                        expectedCount-1 -> {
+                            hasDeleted.open()
+                            observations.add(event.players)
+                        }
+                    }
+                }
             }
         }
 
@@ -90,7 +102,7 @@ class LobbyFirebaseTests {
             .delete()
             .await()
 
-        expectedObservations.await()
+        hasDeleted.await()
         sut.leave()
         collectJob.join()
 
@@ -101,5 +113,115 @@ class LobbyFirebaseTests {
 
         assertEquals(otherTestPlayersInLobby.size, observations[1].size)
         assertTrue(observations.first().contains(localTestPlayer))
+    }
+
+    @Test
+    fun enterAndObserve_flow_reports_received_challenges(): Unit = runTest {
+        // Arrange
+        val sut = populatedLobbyRule.lobby
+        val enteredLobby = SuspendingGate()
+        val challengeReceived = SuspendingGate()
+        var received: PlayerInfo? = null
+
+        // Act
+        val collectJob = launch {
+            sut.enterAndObserve(localTestPlayer).collect { event ->
+                if (event is RosterUpdated) {
+                    if (event.players.any { it == localTestPlayer })
+                        enteredLobby.open()
+                }
+                if (event is ChallengeReceived) {
+                    received = event.challenge.challenger
+                    challengeReceived.open()
+                }
+            }
+        }
+
+        enteredLobby.await()
+
+        val challenger = PlayerInfo(UserInfo(nick = "challengerNick"))
+
+        populatedLobbyRule.app.emulatedFirestoreDb
+            .collection(LOBBY)
+            .document(localTestPlayer.id.toString())
+            .update(CHALLENGER_FIELD, challenger.toDocumentContent())
+            .await()
+
+        challengeReceived.await()
+        sut.leave()
+        collectJob.join()
+
+        // Assert
+        assertEquals(challenger, received)
+    }
+
+    @Test
+    fun issueChallenge_removes_challenger_from_the_lobby(): Unit = runTest {
+        // Arrange
+        val sut = populatedLobbyRule.lobby
+        sut.enter(localTestPlayer)
+
+        // Act
+        sut.issueChallenge(otherTestPlayersInLobby.first())
+
+        // Assert
+        val stillInLobby = sut.getPlayers().any { it == localTestPlayer }
+        assertFalse(stillInLobby)
+    }
+
+    @Test
+    fun issueChallenge_updates_challenged_data_with_challenger_info(): Unit = runTest {
+        // Arrange
+        val sut = populatedLobbyRule.lobby
+        sut.enter(localTestPlayer)
+
+        // Act
+        val challengedPLayer = otherTestPlayersInLobby.first()
+        sut.issueChallenge(challengedPLayer)
+
+        // Assert
+        val challenge = populatedLobbyRule.app.emulatedFirestoreDb
+            .collection(LOBBY)
+            .document(challengedPLayer.id.toString())
+            .get()
+            .await()
+            .toChallengeOrNull()
+
+        assertNotNull(challenge)
+        assertEquals(localTestPlayer, challenge?.challenger)
+        assertEquals(challengedPLayer, challenge?.challenged)
+    }
+
+    @Test
+    fun issueChallenge_returns_match_participants_info(): Unit = runTest {
+        // Arrange
+        val sut = populatedLobbyRule.lobby
+        sut.enter(localTestPlayer)
+
+        // Act
+        val match = sut.issueChallenge(otherTestPlayersInLobby.first())
+
+        // Assert
+        assertEquals(localTestPlayer, match.challenger)
+        assertEquals(otherTestPlayersInLobby.first(), match.challenged)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun issueChallenge_without_entering_lobby_throws(): Unit = runTest {
+        val sut = populatedLobbyRule.lobby
+        sut.issueChallenge(otherTestPlayersInLobby.first())
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun leave_without_entering_lobby_throws(): Unit = runTest {
+        val sut = populatedLobbyRule.lobby
+        sut.leave()
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun enter_without_leaving_lobby_throws(): Unit = runTest {
+        val sut = populatedLobbyRule.lobby
+        sut.enter(localTestPlayer)
+        sut.enter(localTestPlayer)
     }
 }

@@ -14,10 +14,14 @@ import palbp.laboratory.demos.tictactoe.game.play.model.Marker
  */
 class GameActivity: ComponentActivity() {
     companion object {
-        fun navigate(context: Context) {
-            with(context) {
-                val intent = Intent(this, GameActivity::class.java)
-                startActivity(intent)
+        private const val OPPONENT_ID_EXTRA = "OPPONENT_ID_EXTRA"
+        fun navigate(origin: Context, opponentId: String) {
+            with(origin) {
+                startActivity(
+                    Intent(this, GameActivity::class.java).also {
+                        it.putExtra(OPPONENT_ID_EXTRA, opponentId)
+                    }
+                )
             }
         }
     }

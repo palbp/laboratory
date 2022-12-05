@@ -7,12 +7,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.flow.flow
+import palbp.laboratory.demos.tictactoe.game.lobby.model.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.model.Lobby
 import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.model.RosterUpdated
+import palbp.laboratory.demos.tictactoe.game.lobby.otherTestPlayersInLobby
 import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
 import palbp.laboratory.demos.tictactoe.preferences.model.UserInfoRepository
 
@@ -32,12 +36,26 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
         get() = mockk(relaxed = true) {
             val localPlayer = slot<PlayerInfo>()
             every { enterAndObserve(capture(localPlayer)) } returns flow {
-                emit(
-                    listOf(
-                        localPlayer.captured,
-                        PlayerInfo(UserInfo("nick1", "moto1")),
-                        PlayerInfo(UserInfo("nick2", "moto2"))
-                    )
+                emit(RosterUpdated(
+                    buildList {
+                        add(localPlayer.captured)
+                        addAll(otherTestPlayersInLobby)
+                    }
+                ))
+            }
+
+            coEvery { enter(capture(localPlayer)) } answers {
+                buildList {
+                    add(localPlayer.captured)
+                    addAll(otherTestPlayersInLobby)
+                }
+            }
+
+            val opponent = slot<PlayerInfo>()
+            coEvery { issueChallenge(capture(opponent)) } answers {
+                Challenge(
+                    challenger = localPlayer.captured,
+                    challenged = opponent.captured
                 )
             }
         }

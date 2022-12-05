@@ -10,7 +10,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import palbp.laboratory.demos.tictactoe.game.play.ui.GameScreenTag
 import palbp.laboratory.demos.tictactoe.preferences.PreferencesScreenTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateBackTag
 import palbp.laboratory.demos.tictactoe.ui.NavigateToPreferencesTag
@@ -53,12 +52,12 @@ class LobbyActivityTests {
     }
 
     @Test
-    fun pressing_a_player_card_navigates_to_game_screen() {
+    fun pressing_a_player_card_displays_match_starting_dialog() {
         // Act
         testRule.onAllNodesWithTag(PlayerInfoViewTag).onFirst().performClick()
         testRule.waitForIdle()
 
         // Assert
-        testRule.onNodeWithTag(GameScreenTag).assertExists()
+        testRule.onNodeWithTag(StartingMatchDialogTag).assertExists()
     }
 }

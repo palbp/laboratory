@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
-import palbp.laboratory.demos.tictactoe.game.play.ui.GameActivity
 import palbp.laboratory.demos.tictactoe.preferences.ui.PreferencesActivity
 import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 
@@ -45,14 +44,20 @@ class LobbyActivity : ComponentActivity() {
             val players by viewModel.players.collectAsState()
             LobbyScreen(
                 state = LobbyScreenState(players),
-                onPlayerSelected = {
-                    GameActivity.navigate(this)
+                onPlayerSelected = { player ->
+                    viewModel.sendChallenge(player)
+                    //GameActivity.navigate(this, player.id.toString())
                 },
                 onBackRequested = { finish() },
                 onPreferencesRequested = {
                     PreferencesActivity.navigate(this, finishOnSave = true)
                 }
             )
+
+            val pendingMatch by viewModel.pendingMatch.collectAsState()
+            if (pendingMatch != null) {
+                StartingMatchDialog()
+            }
         }
 
         lifecycle.addObserver(object : DefaultLifecycleObserver {
