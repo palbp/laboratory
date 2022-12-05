@@ -16,8 +16,6 @@ import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 
 /**
  * The screen used to display the list of players in the lobby, that is, available to play.
- * This a reactive version of this screen. An alternative approach is used in
- * [LobbyActivityReactive].
  */
 class LobbyActivity : ComponentActivity() {
 
