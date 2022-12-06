@@ -15,6 +15,7 @@
     <string name="starting_match_dialog_text">Waiting for opponent to join</string>
     <string name="starting_match_cancel_button">Cancel</string>
 
+    <string name="game_screen_waiting">Joining match</string>
     <string name="game_screen_your_turn">It\'s your turn</string>
     <string name="game_screen_opponent_turn">Opponent\'s turn</string>
     <string name="game_screen_forfeit">Forfeit</string>

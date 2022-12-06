@@ -10,10 +10,10 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import palbp.laboratory.demos.tictactoe.DependenciesContainer
-import palbp.laboratory.demos.tictactoe.game.lobby.model.*
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.*
 import palbp.laboratory.demos.tictactoe.game.lobby.otherTestPlayersInLobby
 import palbp.laboratory.demos.tictactoe.localTestPlayer
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfoRepository
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfoRepository
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingGate
 
 @ExperimentalCoroutinesApi

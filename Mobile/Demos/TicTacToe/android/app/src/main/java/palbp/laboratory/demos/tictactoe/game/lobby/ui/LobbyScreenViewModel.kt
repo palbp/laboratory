@@ -6,15 +6,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import palbp.laboratory.demos.tictactoe.game.lobby.model.*
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfoRepository
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.*
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfoRepository
 
 /**
- * View model for the Lobby Screen hosted by [LobbyActivity]
+ * View model for the Lobby Screen hosted by [LobbyActivity].
  */
 class LobbyScreenViewModel(
     val lobby: Lobby,
-    val userInfoRepo: UserInfoRepository
+    val userInfoRepo: UserInfoRepository,
 ) : ViewModel() {
 
     private val _players = MutableStateFlow<List<PlayerInfo>>(emptyList())
@@ -23,12 +23,12 @@ class LobbyScreenViewModel(
     private val _pendingMatch = MutableStateFlow<MatchStarting?>(null)
     val pendingMatch = _pendingMatch.asStateFlow()
 
-    private var lobbyMonitor: Job? = null
+    private var lobbyMonitor: Pair<Job, PlayerInfo>? = null
 
     fun enterLobby(): Job? =
         if (lobbyMonitor == null) {
             val localPlayer = PlayerInfo(checkNotNull(userInfoRepo.userInfo))
-            lobbyMonitor = viewModelScope.launch {
+            val eventObserver = viewModelScope.launch {
                 lobby.enterAndObserve(localPlayer).collect { event ->
                     when(event) {
                         is RosterUpdated -> {
@@ -37,32 +37,38 @@ class LobbyScreenViewModel(
                             }
                         }
                         is ChallengeReceived -> {
-                            _pendingMatch.value = IncomingChallenge(event.challenge)
+                            _pendingMatch.value = IncomingChallenge(localPlayer, event.challenge)
                         }
                     }
                 }
             }
-            lobbyMonitor
+            lobbyMonitor = Pair(eventObserver, localPlayer)
+            eventObserver
         } else null
 
     fun leaveLobby(): Job? =
         if (lobbyMonitor != null) {
             viewModelScope.launch {
-                lobbyMonitor?.cancel()
+                lobbyMonitor?.first?.cancel()
                 lobbyMonitor = null
                 _pendingMatch.value = null
                 lobby.leave()
             }
         } else null
 
-    fun sendChallenge(opponent: PlayerInfo): Job? =
-        if (lobbyMonitor != null) {
+    fun sendChallenge(opponent: PlayerInfo): Job? {
+        val currentMonitor = lobbyMonitor
+        return if (currentMonitor != null) {
             viewModelScope.launch {
-                _pendingMatch.value = SentChallenge(lobby.issueChallenge(to = opponent))
+                val challenge = lobby.issueChallenge(to = opponent)
+                _pendingMatch.value = SentChallenge(
+                    localPlayer = currentMonitor.second,
+                    challenge = challenge
+                )
                 lobbyMonitor = null
             }
-        }
-        else null
+        } else null
+    }
 }
 
 /**
@@ -72,7 +78,11 @@ class LobbyScreenViewModel(
  * [SentChallenge] means that a match is about to start because the local player challenged
  * another player in the lobby
  */
-sealed class MatchStarting(val challenge: Challenge)
-class IncomingChallenge(challenge: Challenge) : MatchStarting(challenge)
-class SentChallenge(challenge: Challenge) : MatchStarting(challenge)
+sealed class MatchStarting(val localPlayer: PlayerInfo, val challenge: Challenge)
+
+class IncomingChallenge(localPlayer: PlayerInfo, challenge: Challenge)
+    : MatchStarting(localPlayer, challenge)
+
+class SentChallenge(localPlayer: PlayerInfo, challenge: Challenge)
+    : MatchStarting(localPlayer, challenge)
 

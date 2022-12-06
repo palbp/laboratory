@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game.lobby.model
+package palbp.laboratory.demos.tictactoe.game.lobby.domain
 
 /**
  * Data type that characterizes challenges.

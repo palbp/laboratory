@@ -6,8 +6,8 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import palbp.laboratory.demos.tictactoe.game.lobby.model.*
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.*
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 import java.util.*
 
 class UnreachableLobbyException : Exception()

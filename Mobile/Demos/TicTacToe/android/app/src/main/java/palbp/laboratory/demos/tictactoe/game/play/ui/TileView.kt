@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import palbp.laboratory.demos.tictactoe.R
-import palbp.laboratory.demos.tictactoe.game.play.model.Marker
+import palbp.laboratory.demos.tictactoe.game.play.domain.Marker
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
 @Composable

@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game.lobby
+package palbp.laboratory.demos.tictactoe.game.lobby.adapters
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -7,11 +7,12 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import palbp.laboratory.demos.tictactoe.game.lobby.model.ChallengeReceived
-import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
-import palbp.laboratory.demos.tictactoe.game.lobby.model.RosterUpdated
+import palbp.laboratory.demos.tictactoe.game.lobby.*
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.ChallengeReceived
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.RosterUpdated
 import palbp.laboratory.demos.tictactoe.localTestPlayer
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingGate
 
 @ExperimentalCoroutinesApi

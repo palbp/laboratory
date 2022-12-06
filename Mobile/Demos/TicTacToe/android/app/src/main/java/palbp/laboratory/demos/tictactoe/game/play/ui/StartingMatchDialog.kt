@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game.lobby.ui
+package palbp.laboratory.demos.tictactoe.game.play.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box

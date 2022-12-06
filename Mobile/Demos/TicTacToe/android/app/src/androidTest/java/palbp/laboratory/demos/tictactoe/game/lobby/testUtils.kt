@@ -7,9 +7,9 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 import palbp.laboratory.demos.tictactoe.TicTacToeTestApplication
-import palbp.laboratory.demos.tictactoe.game.lobby.model.Lobby
-import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.Lobby
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 
 val otherTestPlayersInLobby: List<PlayerInfo> = buildList {
     repeat(3 ) {

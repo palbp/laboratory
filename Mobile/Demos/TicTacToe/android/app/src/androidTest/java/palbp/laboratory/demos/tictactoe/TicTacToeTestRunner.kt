@@ -12,13 +12,17 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.flow.flow
-import palbp.laboratory.demos.tictactoe.game.lobby.model.Challenge
-import palbp.laboratory.demos.tictactoe.game.lobby.model.Lobby
-import palbp.laboratory.demos.tictactoe.game.lobby.model.PlayerInfo
-import palbp.laboratory.demos.tictactoe.game.lobby.model.RosterUpdated
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.Lobby
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.RosterUpdated
 import palbp.laboratory.demos.tictactoe.game.lobby.otherTestPlayersInLobby
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfo
-import palbp.laboratory.demos.tictactoe.preferences.model.UserInfoRepository
+import palbp.laboratory.demos.tictactoe.game.play.domain.Board
+import palbp.laboratory.demos.tictactoe.game.play.domain.Game
+import palbp.laboratory.demos.tictactoe.game.play.domain.Marker
+import palbp.laboratory.demos.tictactoe.game.play.domain.Match
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
+import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfoRepository
 
 val localTestPlayer = PlayerInfo(UserInfo("local"))
 
@@ -58,8 +62,16 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
                     challenged = opponent.captured
                 )
             }
+
+            coEvery { leave() } returns Unit
         }
 
+    override val match: Match
+        get() = mockk(relaxed = true) {
+            every { start(any(), any()) } returns flow {
+                emit(Game(Marker.firstToMove, Board()))
+            }
+        }
 
     val emulatedFirestoreDb: FirebaseFirestore by lazy {
         Firebase.firestore.also {
