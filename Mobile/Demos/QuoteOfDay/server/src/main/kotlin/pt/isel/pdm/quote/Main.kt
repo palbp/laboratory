@@ -16,7 +16,7 @@ import spark.Service.ignite
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-private const val DEFAULT_PORT = 8080
+private const val DEFAULT_PORT = 8888
 
 private val logger = LoggerFactory.getLogger("Quote-Of-Day server")
 
