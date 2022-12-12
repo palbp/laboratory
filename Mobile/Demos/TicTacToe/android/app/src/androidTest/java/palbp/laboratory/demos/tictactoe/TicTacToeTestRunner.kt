@@ -16,15 +16,17 @@ import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Lobby
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.RosterUpdated
-import palbp.laboratory.demos.tictactoe.game.lobby.otherTestPlayersInLobby
-import palbp.laboratory.demos.tictactoe.game.play.domain.Board
-import palbp.laboratory.demos.tictactoe.game.play.domain.Game
-import palbp.laboratory.demos.tictactoe.game.play.domain.Marker
-import palbp.laboratory.demos.tictactoe.game.play.domain.Match
+import palbp.laboratory.demos.tictactoe.game.play.domain.*
 import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfoRepository
 
 val localTestPlayer = PlayerInfo(UserInfo("local"))
+
+val otherTestPlayersInLobby: List<PlayerInfo> = buildList {
+    repeat(3 ) {
+        add(PlayerInfo(UserInfo("remote $it", "moto")))
+    }
+}
 
 /**
  * The service locator to be used in the instrumented tests.
@@ -68,8 +70,11 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
 
     override val match: Match
         get() = mockk(relaxed = true) {
-            every { start(any(), any()) } returns flow {
-                emit(Game(Marker.firstToMove, Board()))
+            val localPlayer = slot<PlayerInfo>()
+            val challenge = slot<Challenge>()
+            coEvery { start(capture(localPlayer), capture(challenge)) } returns flow {
+                val localMarker = getLocalPlayerMarker(localPlayer.captured, challenge.captured)
+                emit(Game(localMarker, Board()))
             }
         }
 

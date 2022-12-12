@@ -20,7 +20,7 @@ class LobbyScreenViewModel(
     private val _players = MutableStateFlow<List<PlayerInfo>>(emptyList())
     val players = _players.asStateFlow()
 
-    private val _pendingMatch = MutableStateFlow<MatchStarting?>(null)
+    private val _pendingMatch = MutableStateFlow<PendingChallenge?>(null)
     val pendingMatch = _pendingMatch.asStateFlow()
 
     private var lobbyMonitor: Pair<Job, PlayerInfo>? = null
@@ -78,11 +78,11 @@ class LobbyScreenViewModel(
  * [SentChallenge] means that a match is about to start because the local player challenged
  * another player in the lobby
  */
-sealed class MatchStarting(val localPlayer: PlayerInfo, val challenge: Challenge)
+sealed class PendingChallenge(val localPlayer: PlayerInfo, val challenge: Challenge)
 
 class IncomingChallenge(localPlayer: PlayerInfo, challenge: Challenge)
-    : MatchStarting(localPlayer, challenge)
+    : PendingChallenge(localPlayer, challenge)
 
 class SentChallenge(localPlayer: PlayerInfo, challenge: Challenge)
-    : MatchStarting(localPlayer, challenge)
+    : PendingChallenge(localPlayer, challenge)
 

@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import palbp.laboratory.demos.tictactoe.game.lobby.LobbyFirebase
+import palbp.laboratory.demos.tictactoe.game.lobby.adapters.LobbyFirebase
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Lobby
 import palbp.laboratory.demos.tictactoe.game.play.adapters.MatchFirebase
 import palbp.laboratory.demos.tictactoe.game.play.domain.Match

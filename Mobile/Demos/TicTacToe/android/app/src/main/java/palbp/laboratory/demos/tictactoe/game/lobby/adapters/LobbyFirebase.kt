@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.tictactoe.game.lobby
+package palbp.laboratory.demos.tictactoe.game.lobby.adapters
 
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.channels.ProducerScope

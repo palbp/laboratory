@@ -1,5 +1,6 @@
 package palbp.laboratory.demos.tictactoe.game.play.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -24,7 +25,7 @@ import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 const val GameScreenTag = "GameScreen"
 
 data class GameScreenState(
-    val starting: Boolean,
+    @StringRes val title: Int?,
     val game: Game
 )
 
@@ -32,8 +33,7 @@ data class GameScreenState(
 fun GameScreen(
     state: GameScreenState,
     onMoveRequested: (Coordinate) -> Unit = { },
-    onForfeitRequested: () -> Unit = { },
-    onBackRequested: () -> Unit = { },
+    onForfeitRequested: () -> Unit = { }
 ) {
     TicTacToeTheme {
         Scaffold(
@@ -41,9 +41,7 @@ fun GameScreen(
                 .fillMaxSize()
                 .testTag(GameScreenTag),
             topBar = {
-                TopBar(
-                    NavigationHandlers(onBackRequested)
-                )
+                TopBar()
             },
         ) { innerPadding ->
             Column(
@@ -54,7 +52,7 @@ fun GameScreen(
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
                 val titleTextId = when {
-                    state.starting -> R.string.game_screen_waiting
+                    state.title != null -> state.title
                     state.game.localPlayerMarker == state.game.board.turn ->
                         R.string.game_screen_your_turn
                     else -> R.string.game_screen_opponent_turn
@@ -67,6 +65,7 @@ fun GameScreen(
                 BoardView(
                     board = state.game.board,
                     onTileSelected = onMoveRequested,
+                    enabled = state.game.localPlayerMarker == state.game.board.turn,
                     modifier = Modifier
                         .padding(32.dp)
                         .weight(1.0f, true)
@@ -85,7 +84,7 @@ fun GameScreen(
 @Composable
 private fun GameScreenPreview() {
     GameScreen(state = GameScreenState(
-        starting = false,
+        title = null,
         Game(Marker.CROSS, aBoard)
     ))
 }
@@ -94,7 +93,7 @@ private fun GameScreenPreview() {
 @Composable
 private fun GameScreenWaiting() {
     GameScreen(state = GameScreenState(
-        starting = true,
+        title = R.string.game_screen_waiting,
         Game(Marker.CROSS, Board(Marker.CROSS))
     ))
 }

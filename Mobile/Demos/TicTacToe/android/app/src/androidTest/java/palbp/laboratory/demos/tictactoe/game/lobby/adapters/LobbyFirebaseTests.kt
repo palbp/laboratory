@@ -12,6 +12,7 @@ import palbp.laboratory.demos.tictactoe.game.lobby.domain.ChallengeReceived
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.RosterUpdated
 import palbp.laboratory.demos.tictactoe.localTestPlayer
+import palbp.laboratory.demos.tictactoe.otherTestPlayersInLobby
 import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingGate
 

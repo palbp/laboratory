@@ -6,27 +6,52 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.play.domain.Coordinate
+import palbp.laboratory.demos.tictactoe.game.play.domain.Game
 import palbp.laboratory.demos.tictactoe.game.play.domain.Match
+
+/**
+ * Represents the current match state
+ */
+enum class MatchState { IDLE, STARTING, STARTED, FINISHED }
 
 /**
  * View model for the Game Screen hosted by [GameActivity].
  */
-class GameScreenViewModel(val match: Match) : ViewModel() {
+class GameScreenViewModel(private val match: Match) : ViewModel() {
 
-    private var _started by mutableStateOf(false)
-    val started: Boolean = _started
+    private val _onGoingGame = MutableStateFlow(Game())
+    val onGoingGame = _onGoingGame.asStateFlow()
+
+    private var _state by mutableStateOf(MatchState.IDLE)
+    val state: MatchState
+        get() = _state
 
     fun startMatch(localPlayer: PlayerInfo, challenge: Challenge): Job? =
-        if (!started) {
-            _started = true
+        if (state == MatchState.IDLE) {
+            _state = MatchState.STARTING
             viewModelScope.launch {
-                match.start(localPlayer, challenge)
+                match.start(localPlayer, challenge).collect {
+                    _onGoingGame.value = it
+                    _state = MatchState.STARTED
+                }
+            }
+        }
+        else null
+
+    fun makeMove(at: Coordinate): Job? =
+        if (state == MatchState.STARTED) {
+            viewModelScope.launch {
+                match.makeMove(at)
             }
         }
         else null
 
     fun forfeit(): Job? = null
 }
+

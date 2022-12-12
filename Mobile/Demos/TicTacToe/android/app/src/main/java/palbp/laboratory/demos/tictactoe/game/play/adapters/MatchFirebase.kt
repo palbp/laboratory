@@ -14,27 +14,35 @@ import palbp.laboratory.demos.tictactoe.game.play.domain.*
 
 class MatchFirebase(private val db: FirebaseFirestore) : Match {
 
-    private var onGoingGame: Game? = null
+    private var onGoingGame: Pair<Game, String>? = null
 
     private fun subscribeGameStateUpdated(id: String, flow: ProducerScope<Game>) =
         db.collection(ONGOING)
             .document(id)
             .addSnapshotListener { snapshot, error ->
-                val currentGame = onGoingGame
-                checkNotNull(currentGame)
+                val currentGame = checkNotNull(onGoingGame)
                 when {
                     error != null -> flow.close(error)
                     snapshot != null -> {
-                        val game = Game(currentGame.localPlayerMarker, snapshot.toBoard())
-                        onGoingGame = game
-                        flow.trySend(game)
+                        snapshot.toBoardOrNull()?.let {
+                            val game = Game(currentGame.first.localPlayerMarker, it)
+                            onGoingGame = onGoingGame?.copy(first = game)
+                            flow.trySend(game)
+                        }
                     }
                 }
             }
 
-    private suspend fun publishGame(game: Game, challengerId: String) {
+    private suspend fun publishGame(game: Game, gameId: String) {
         db.collection(ONGOING)
-            .document(challengerId)
+            .document(gameId)
+            .set(game.board.toDocumentContent())
+            .await()
+    }
+
+    private suspend fun updateGame(game: Game, gameId: String) {
+        db.collection(ONGOING)
+            .document(gameId)
             .set(game.board.toDocumentContent())
             .await()
     }
@@ -42,18 +50,17 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
     override fun start(localPLayer: PlayerInfo, challenge: Challenge): Flow<Game> {
         check(onGoingGame == null)
         val newGame = Game(
-            localPlayerMarker =
-                if (localPLayer == challenge.challenged) Marker.firstToMove.other
-                else Marker.firstToMove,
+            localPlayerMarker = getLocalPlayerMarker(localPLayer, challenge),
             board = Board()
         )
-        onGoingGame = newGame
+        val gameId = challenge.challenger.id.toString()
+        onGoingGame = Pair(newGame, gameId)
         return callbackFlow {
             var gameSubscription: ListenerRegistration? = null
 
             try {
                 if (localPLayer == challenge.challenged)
-                    publishGame(newGame, challenge.challenger.id.toString())
+                    publishGame(newGame, gameId)
 
                 gameSubscription = subscribeGameStateUpdated(
                     id = challenge.challenger.id.toString(),
@@ -70,7 +77,10 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
     }
 
     override suspend fun makeMove(at: Coordinate) {
-        TODO("Not yet implemented")
+        onGoingGame = checkNotNull(onGoingGame).also {
+            val game = it.copy(first = it.first.makeMove(at))
+            updateGame(game.first, game.second)
+        }
     }
 
     override suspend fun forfeit() {
@@ -91,26 +101,33 @@ const val BOARD_FIELD = "board"
  */
 fun Board.toDocumentContent() = mapOf(
     TURN_FIELD to turn.name,
-    BOARD_FIELD to toMovesList().joinToString(separator = "") { it?.name ?: " " }
+    BOARD_FIELD to toMovesList().joinToString(separator = "") {
+        when (it) {
+            Marker.CROSS -> "X"
+            Marker.CIRCLE -> "O"
+            null -> "-"
+        }
+    }
 )
 
 /**
  * Extension function to convert documents stored in the Firestore DB
  * into [Board] instances.
  */
-fun DocumentSnapshot.toBoard(): Board {
-    val moves = data?.get(BOARD_FIELD) as String
-    val turn = Marker.valueOf(data?.get(TURN_FIELD) as String)
-    return Board.fromMovesList(turn, moves.toMovesList())
-}
+fun DocumentSnapshot.toBoardOrNull(): Board? =
+    data?.let {
+        val moves = it[BOARD_FIELD] as String
+        val turn = Marker.valueOf(it[TURN_FIELD] as String)
+        Board.fromMovesList(turn, moves.toMovesList())
+    }
 
 /**
  * Converts this string to a list of moves in the board
  */
 fun String.toMovesList(): List<Marker?> = map {
     when (it) {
-        Marker.CROSS.name.first() -> Marker.CROSS
-        Marker.CIRCLE.name.first() -> Marker.CIRCLE
+        'X' -> Marker.CROSS
+        'O' -> Marker.CIRCLE
         else -> null
     }
 }

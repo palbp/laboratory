@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 @Composable
 fun TileView(
     move: Marker?,
+    enabled: Boolean,
     onSelected: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -26,7 +28,8 @@ fun TileView(
         .background(MaterialTheme.colors.background)
         .fillMaxSize(1.0f)
         .padding(12.dp)
-        .clickable(enabled = move == null) { onSelected() }
+        .testTag("TileView")
+        .clickable(enabled = move == null && enabled) { onSelected() }
     ) {
         if (move != null) {
             val marker = when (move) {
@@ -46,7 +49,7 @@ fun TileView(
 @Composable
 private fun TileViewCirclePreview() {
     TicTacToeTheme {
-        TileView(move = Marker.CIRCLE, onSelected = { })
+        TileView(move = Marker.CIRCLE, enabled = true, onSelected = { })
     }
 }
 
@@ -55,7 +58,7 @@ private fun TileViewCirclePreview() {
 @Composable
 private fun TileViewCrossPreview() {
     TicTacToeTheme {
-        TileView(move = Marker.CROSS, onSelected = { })
+        TileView(move = Marker.CROSS, enabled = true, onSelected = { })
     }
 }
 
@@ -63,6 +66,6 @@ private fun TileViewCrossPreview() {
 @Composable
 private fun TileViewEmptyPreview() {
     TicTacToeTheme {
-        TileView(move = null, onSelected = { })
+        TileView(move = null, enabled = true, onSelected = { })
     }
 }
