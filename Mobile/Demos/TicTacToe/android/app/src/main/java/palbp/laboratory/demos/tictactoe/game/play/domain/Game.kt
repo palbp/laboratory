@@ -2,6 +2,7 @@ package palbp.laboratory.demos.tictactoe.game.play.domain
 
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.lobby.domain.firstToMove
 
 /**
  * Represents a Tic-Tac-Toe game. Instances are immutable.
@@ -29,5 +30,5 @@ fun Game.makeMove(at: Coordinate): Game {
  * Gets which marker is to be assigned to the local player for the given challenge.
  */
 fun getLocalPlayerMarker(localPlayer: PlayerInfo, challenge: Challenge) =
-    if (localPlayer == challenge.challenged) Marker.firstToMove.other
-    else Marker.firstToMove
+    if (localPlayer == challenge.firstToMove) Marker.firstToMove
+    else Marker.firstToMove.other

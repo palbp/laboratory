@@ -47,19 +47,20 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
             .await()
     }
 
-    override fun start(localPLayer: PlayerInfo, challenge: Challenge): Flow<Game> {
+    override fun start(localPlayer: PlayerInfo, challenge: Challenge): Flow<Game> {
         check(onGoingGame == null)
-        val newGame = Game(
-            localPlayerMarker = getLocalPlayerMarker(localPLayer, challenge),
-            board = Board()
-        )
-        val gameId = challenge.challenger.id.toString()
-        onGoingGame = Pair(newGame, gameId)
-        return callbackFlow {
-            var gameSubscription: ListenerRegistration? = null
 
+        return callbackFlow {
+            val newGame = Game(
+                localPlayerMarker = getLocalPlayerMarker(localPlayer, challenge),
+                board = Board()
+            )
+            val gameId = challenge.challenger.id.toString()
+            onGoingGame = Pair(newGame, gameId)
+
+            var gameSubscription: ListenerRegistration? = null
             try {
-                if (localPLayer == challenge.challenged)
+                if (localPlayer == challenge.challenged)
                     publishGame(newGame, gameId)
 
                 gameSubscription = subscribeGameStateUpdated(
@@ -84,7 +85,9 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
     }
 
     override suspend fun forfeit() {
-        TODO("Not yet implemented")
+        onGoingGame = checkNotNull(onGoingGame).also {
+
+        }
     }
 }
 

@@ -11,13 +11,14 @@ import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
 interface Match {
 
     /**
-     * Starts the match. The first to make a move is the challenger.
-     * @param [localPLayer] the local player information
+     * Starts the match. The first to make a move is the challenger. The game
+     * is only actually in progress once its initial state is published on the flow.
+     * @param [localPlayer] the local player information
      * @param [challenge] the challenge bearing the players' information
      * @return the flow of game state change events, expressed as [Game] instances
      * @throws IllegalStateException if a game is in progress
      */
-    fun start(localPLayer: PlayerInfo, challenge: Challenge): Flow<Game>
+    fun start(localPlayer: PlayerInfo, challenge: Challenge): Flow<Game>
 
     /**
      * Makes a move at the given coordinates.

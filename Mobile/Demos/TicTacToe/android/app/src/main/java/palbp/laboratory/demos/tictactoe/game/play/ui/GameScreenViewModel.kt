@@ -52,6 +52,8 @@ class GameScreenViewModel(private val match: Match) : ViewModel() {
         }
         else null
 
-    fun forfeit(): Job? = null
+    fun forfeit(): Job? =
+        if (state == MatchState.STARTED) viewModelScope.launch { match.forfeit() }
+        else null
 }
 

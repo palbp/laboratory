@@ -38,7 +38,7 @@ class GameScreenViewModelTests {
         // Arrange
         val expectedGame = Game(Marker.firstToMove.other, Board())
         val mockMatch: Match = mockk(relaxed = true) {
-            coEvery { start(any(), any()) } returns flow { emit(expectedGame) }
+            every { start(any(), any()) } returns flow { emit(expectedGame) }
         }
         val sut = GameScreenViewModel(mockMatch)
 
@@ -85,7 +85,7 @@ class GameScreenViewModelTests {
         var game = Game(Marker.firstToMove, Board())
         val mockMatch: Match = mockk(relaxed = true) {
             val at = slot<Coordinate>()
-            coEvery { start(any(), any()) } returns flow { emit(game) }
+            every { start(any(), any()) } returns flow { emit(game) }
             coEvery { makeMove(capture(at)) } answers {
                 game = game.makeMove(at.captured)
             }
@@ -102,6 +102,40 @@ class GameScreenViewModelTests {
         assertNotNull(game.board[at])
         verify(exactly = 1) { mockMatch.start(any(), any()) }
         coVerify(exactly = 1) { mockMatch.makeMove(any()) }
+    }
+
+    @Test
+    fun forfeit_on_started_match_succeeds() = runTest {
+        // Arrange
+        val game = Game(Marker.firstToMove, Board())
+        val mockMatch: Match = mockk(relaxed = true) {
+            coEvery { start(any(), any()) } returns flow { emit(game) }
+            coEvery { forfeit() } returns Unit
+        }
+
+        val sut = GameScreenViewModel(mockMatch)
+        sut.startMatch(localTestPlayer, localPlayerStartsTestChallenge)?.join()
+
+        // Act
+        val job = sut.forfeit()
+        job?.join()
+
+        // Assert
+        assertNotNull(job)
+        coVerify(exactly = 1) { mockMatch.forfeit() }
+    }
+
+    @Test
+    fun forfeit_when_match_is_not_started_returns_null() = runTest {
+        // Arrange
+        val sut = GameScreenViewModel(app.match)
+
+        // Act
+        val job = sut.forfeit()
+
+        // Assert
+        assertNull(job)
+
     }
 }
 

@@ -44,10 +44,7 @@ class LobbyActivity : ComponentActivity() {
             LobbyScreen(
                 state = LobbyScreenState(players),
                 onPlayerSelected = { player -> viewModel.sendChallenge(player) },
-                onBackRequested = {
-                    setResult(1, )
-                    finish()
-                                  },
+                onBackRequested = { finish() },
                 onPreferencesRequested = {
                     PreferencesActivity.navigate(this, finishOnSave = true)
                 }
