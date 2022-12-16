@@ -37,7 +37,7 @@ class GameScreenViewModel(private val match: Match) : ViewModel() {
             _state = MatchState.STARTING
             viewModelScope.launch {
                 match.start(localPlayer, challenge).collect {
-                    _onGoingGame.value = it
+                    _onGoingGame.value = it.game
                     _state = MatchState.STARTED
                 }
             }

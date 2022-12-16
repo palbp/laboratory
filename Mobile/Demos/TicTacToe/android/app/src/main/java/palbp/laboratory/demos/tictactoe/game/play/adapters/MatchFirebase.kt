@@ -16,18 +16,27 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
 
     private var onGoingGame: Pair<Game, String>? = null
 
-    private fun subscribeGameStateUpdated(id: String, flow: ProducerScope<Game>) =
+    private fun subscribeGameStateUpdated(
+        localPlayerMarker: Marker,
+        gameId: String,
+        flow: ProducerScope<GameEvent>
+    ) =
         db.collection(ONGOING)
-            .document(id)
+            .document(gameId)
             .addSnapshotListener { snapshot, error ->
-                val currentGame = checkNotNull(onGoingGame)
                 when {
                     error != null -> flow.close(error)
                     snapshot != null -> {
-                        snapshot.toBoardOrNull()?.let {
-                            val game = Game(currentGame.first.localPlayerMarker, it)
-                            onGoingGame = onGoingGame?.copy(first = game)
-                            flow.trySend(game)
+                        snapshot.toMatchStateOrNull()?.let {
+                            val game = Game(localPlayerMarker, it.first)
+                            val forfeit = it.second
+                            val gameEvent = when {
+                                onGoingGame == null -> GameStarted(game)
+                                forfeit != null -> GameEnded(game, forfeit)
+                                else -> MoveMade(game)
+                            }
+                            onGoingGame = Pair(game, gameId)
+                            flow.trySend(gameEvent)
                         }
                     }
                 }
@@ -47,7 +56,7 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
             .await()
     }
 
-    override fun start(localPlayer: PlayerInfo, challenge: Challenge): Flow<Game> {
+    override fun start(localPlayer: PlayerInfo, challenge: Challenge): Flow<GameEvent> {
         check(onGoingGame == null)
 
         return callbackFlow {
@@ -56,7 +65,6 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
                 board = Board()
             )
             val gameId = challenge.challenger.id.toString()
-            onGoingGame = Pair(newGame, gameId)
 
             var gameSubscription: ListenerRegistration? = null
             try {
@@ -64,7 +72,8 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
                     publishGame(newGame, gameId)
 
                 gameSubscription = subscribeGameStateUpdated(
-                    id = challenge.challenger.id.toString(),
+                    localPlayerMarker = newGame.localPlayerMarker,
+                    gameId = gameId,
                     flow = this
                 )
             } catch (e: Throwable) {
@@ -86,7 +95,10 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
 
     override suspend fun forfeit() {
         onGoingGame = checkNotNull(onGoingGame).also {
-
+            db.collection(ONGOING)
+                .document(it.second)
+                .update(FORFEIT_FIELD, it.first.localPlayerMarker)
+                .await()
         }
     }
 }
@@ -97,6 +109,7 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
 const val ONGOING = "ongoing"
 const val TURN_FIELD = "turn"
 const val BOARD_FIELD = "board"
+const val FORFEIT_FIELD = "forfeit"
 
 /**
  * [Board] extension function used to convert an instance to a map of key-value
@@ -115,13 +128,17 @@ fun Board.toDocumentContent() = mapOf(
 
 /**
  * Extension function to convert documents stored in the Firestore DB
- * into [Board] instances.
+ * into the corresponding match state.
  */
-fun DocumentSnapshot.toBoardOrNull(): Board? =
+fun DocumentSnapshot.toMatchStateOrNull(): Pair<Board, Marker?>? =
     data?.let {
         val moves = it[BOARD_FIELD] as String
         val turn = Marker.valueOf(it[TURN_FIELD] as String)
-        Board.fromMovesList(turn, moves.toMovesList())
+        val forfeit = it[FORFEIT_FIELD] as String?
+        Pair(
+            first = Board.fromMovesList(turn, moves.toMovesList()),
+            second =  if (forfeit != null) Marker.valueOf(forfeit) else null
+        )
     }
 
 /**

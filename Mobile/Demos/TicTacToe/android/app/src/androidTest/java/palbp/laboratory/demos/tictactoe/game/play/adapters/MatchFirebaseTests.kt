@@ -4,14 +4,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import palbp.laboratory.demos.tictactoe.game.play.CleanupMatchesRule
-import palbp.laboratory.demos.tictactoe.game.play.domain.Board
-import palbp.laboratory.demos.tictactoe.game.play.domain.Coordinate
-import palbp.laboratory.demos.tictactoe.game.play.domain.Game
+import palbp.laboratory.demos.tictactoe.game.play.domain.*
 import palbp.laboratory.demos.tictactoe.localTestPlayer
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingCountDownLatch
 import palbp.laboratory.demos.tictactoe.testutils.SuspendingGate
@@ -27,7 +24,7 @@ class MatchFirebaseTests {
 
         val sut = matchesRule.match
         val gameStateChangedGate = SuspendingGate()
-        var game: Game? = null
+        var gameEvent: GameEvent? = null
 
         // Act
         val collectJob = launch {
@@ -35,7 +32,7 @@ class MatchFirebaseTests {
                 localPlayer = localTestPlayer,
                 challenge = matchesRule.remoteInitiatedChallenge
             ).collect {
-                game = it
+                gameEvent = it
                 gameStateChangedGate.open()
             }
         }
@@ -44,7 +41,8 @@ class MatchFirebaseTests {
         collectJob.cancel()
 
         // Assert
-        assertNotNull(game)
+        assertTrue(gameEvent is GameStarted)
+        assertNotNull(gameEvent)
     }
 
     @Test
@@ -74,7 +72,7 @@ class MatchFirebaseTests {
             .get()
             .await()
 
-        assertNotNull(matchDoc.toBoardOrNull())
+        assertNotNull(matchDoc.toMatchStateOrNull())
     }
 
     @Test
@@ -91,7 +89,7 @@ class MatchFirebaseTests {
         val collectJob = launch {
             sut.start(localPlayer = localTestPlayer, challenge = challenge)
                 .collect {
-                    gameStates.add(it)
+                    gameStates.add(it.game)
                     expectedGameStatesGate.countDown()
                     if (gameStates.size == 1)
                         gameStartedGate.open()
@@ -133,7 +131,7 @@ class MatchFirebaseTests {
                 localPlayer = localTestPlayer,
                 challenge = matchesRule.remoteInitiatedChallenge
             ).collect {
-                gameStates.add(it)
+                gameStates.add(it.game)
                 expectedGameStatesGate.countDown()
                 if (gameStates.size == 1)
                     gameStartedGate.open()
@@ -177,5 +175,76 @@ class MatchFirebaseTests {
         collectJob.cancel()
 
         sut.makeMove(Coordinate(0, 0))
+    }
+
+    @Test
+    fun forfeit_by_local_player_publishes_his_intent() = runTest {
+
+        // Arrange
+        val sut = matchesRule.match
+        val gameStartedGate = SuspendingGate()
+        var gameStarted: GameEvent? = null
+
+        val collectJob = launch {
+            sut.start(
+                localPlayer = localTestPlayer,
+                challenge = matchesRule.remoteInitiatedChallenge
+            ).collect {
+                gameStarted = it
+                gameStartedGate.open()
+            }
+        }
+
+        gameStartedGate.await()
+        collectJob.cancel()
+
+        // Act
+        matchesRule.match.forfeit()
+
+        // Assert
+        val challenger = matchesRule.remoteInitiatedChallenge.challenger
+        val matchState = matchesRule.app.emulatedFirestoreDb
+            .collection(ONGOING)
+            .document(challenger.id.toString())
+            .get()
+            .await()
+            .toMatchStateOrNull()
+
+        assertNotNull(gameStarted)
+        assertNotNull(matchState)
+        assertEquals(gameStarted?.game?.localPlayerMarker, matchState?.second)
+    }
+
+    @Test
+    fun forfeit_publishes_event_on_flow() = runTest {
+
+        // Arrange
+        val sut = matchesRule.match
+        val gameStartedGate = SuspendingGate()
+        val gameEndedGate = SuspendingGate()
+        var forfeitEvent: GameEvent? = null
+
+        val collectJob = launch {
+            sut.start(
+                localPlayer = localTestPlayer,
+                challenge = matchesRule.remoteInitiatedChallenge
+            ).collect {
+                gameStartedGate.open()
+                if (it is GameEnded) {
+                    forfeitEvent = it
+                    gameEndedGate.open()
+                }
+            }
+        }
+
+        gameStartedGate.await()
+
+        // Act
+        sut.forfeit()
+        gameEndedGate.await()
+        collectJob.cancel()
+
+        // Assert
+        assertNotNull(forfeitEvent)
     }
 }

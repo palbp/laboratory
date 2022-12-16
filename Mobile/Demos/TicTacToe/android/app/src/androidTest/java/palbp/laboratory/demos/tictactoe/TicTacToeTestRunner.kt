@@ -74,7 +74,7 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
             val challenge = slot<Challenge>()
             coEvery { start(capture(localPlayer), capture(challenge)) } returns flow {
                 val localMarker = getLocalPlayerMarker(localPlayer.captured, challenge.captured)
-                emit(Game(localMarker, Board()))
+                emit(GameStarted(Game(localMarker, Board())))
             }
         }
 

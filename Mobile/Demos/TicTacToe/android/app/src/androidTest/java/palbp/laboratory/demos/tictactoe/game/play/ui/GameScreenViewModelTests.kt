@@ -38,7 +38,7 @@ class GameScreenViewModelTests {
         // Arrange
         val expectedGame = Game(Marker.firstToMove.other, Board())
         val mockMatch: Match = mockk(relaxed = true) {
-            every { start(any(), any()) } returns flow { emit(expectedGame) }
+            every { start(any(), any()) } returns flow { emit(GameStarted(expectedGame)) }
         }
         val sut = GameScreenViewModel(mockMatch)
 
@@ -85,7 +85,7 @@ class GameScreenViewModelTests {
         var game = Game(Marker.firstToMove, Board())
         val mockMatch: Match = mockk(relaxed = true) {
             val at = slot<Coordinate>()
-            every { start(any(), any()) } returns flow { emit(game) }
+            every { start(any(), any()) } returns flow { emit(GameStarted(game)) }
             coEvery { makeMove(capture(at)) } answers {
                 game = game.makeMove(at.captured)
             }
@@ -109,7 +109,7 @@ class GameScreenViewModelTests {
         // Arrange
         val game = Game(Marker.firstToMove, Board())
         val mockMatch: Match = mockk(relaxed = true) {
-            coEvery { start(any(), any()) } returns flow { emit(game) }
+            coEvery { start(any(), any()) } returns flow { emit(GameStarted(game)) }
             coEvery { forfeit() } returns Unit
         }
 
