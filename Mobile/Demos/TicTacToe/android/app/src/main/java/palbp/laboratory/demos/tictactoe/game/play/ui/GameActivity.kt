@@ -15,7 +15,6 @@ import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.R
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
-import palbp.laboratory.demos.tictactoe.game.play.domain.Coordinate
 import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 import java.util.*
@@ -55,15 +54,9 @@ class GameActivity: ComponentActivity() {
                 else -> null
             }
 
-            val onMoveRequested: (at: Coordinate) -> Unit =
-                if (game.localPlayerMarker == game.board.turn) {
-                    { at -> viewModel.makeMove(at) }
-                }
-                else { { } }
-
             GameScreen(
                 state = GameScreenState(title, game),
-                onMoveRequested = onMoveRequested
+                onMoveRequested = { at -> viewModel.makeMove(at) }
             )
             if (viewModel.state == MatchState.STARTING) {
                 StartingMatchDialog()
@@ -106,7 +99,7 @@ class GameActivity: ComponentActivity() {
 }
 
 @Parcelize
-private data class MatchInfo(
+internal data class MatchInfo(
     val localPlayerId: String,
     val localPlayerNick: String,
     val opponentId: String,
@@ -114,7 +107,7 @@ private data class MatchInfo(
     val challengerId: String,
 ) : Parcelable
 
-private fun MatchInfo(localPlayer: PlayerInfo, challenge: Challenge): MatchInfo {
+internal fun MatchInfo(localPlayer: PlayerInfo, challenge: Challenge): MatchInfo {
     val opponent =
         if (localPlayer == challenge.challenged) challenge.challenger
         else challenge.challenged

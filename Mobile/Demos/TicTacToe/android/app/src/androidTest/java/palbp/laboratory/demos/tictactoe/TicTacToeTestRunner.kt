@@ -11,6 +11,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Lobby
@@ -38,8 +39,8 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
             every { userInfo } returns localTestPlayer.info
         }
 
-    override val lobby: Lobby
-        get() = mockk(relaxed = true) {
+    override var lobby: Lobby =
+        mockk(relaxed = true) {
             val localPlayer = slot<PlayerInfo>()
             every { enterAndObserve(capture(localPlayer)) } returns flow {
                 emit(RosterUpdated(
@@ -68,13 +69,15 @@ class TicTacToeTestApplication : DependenciesContainer, Application() {
             coEvery { leave() } returns Unit
         }
 
-    override val match: Match
-        get() = mockk(relaxed = true) {
+    override var match: Match =
+        mockk(relaxed = true) {
             val localPlayer = slot<PlayerInfo>()
             val challenge = slot<Challenge>()
-            coEvery { start(capture(localPlayer), capture(challenge)) } returns flow {
-                val localMarker = getLocalPlayerMarker(localPlayer.captured, challenge.captured)
-                emit(GameStarted(Game(localMarker, Board())))
+            coEvery { start(capture(localPlayer), capture(challenge)) } answers {
+                flow {
+                    val localMarker = getLocalPlayerMarker(localPlayer.captured, challenge.captured)
+                    emit(GameStarted(Game(localMarker, Board())))
+                }
             }
         }
 

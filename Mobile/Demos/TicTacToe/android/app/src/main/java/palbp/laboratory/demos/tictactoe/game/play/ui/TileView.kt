@@ -17,6 +17,8 @@ import palbp.laboratory.demos.tictactoe.R
 import palbp.laboratory.demos.tictactoe.game.play.domain.Marker
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
+internal const val TileViewTag = "TileView"
+
 @Composable
 fun TileView(
     move: Marker?,
@@ -28,7 +30,7 @@ fun TileView(
         .background(MaterialTheme.colors.background)
         .fillMaxSize(1.0f)
         .padding(12.dp)
-        .testTag("TileView")
+        .testTag(TileViewTag)
         .clickable(enabled = move == null && enabled) { onSelected() }
     ) {
         if (move != null) {

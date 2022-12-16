@@ -22,7 +22,8 @@ import palbp.laboratory.demos.tictactoe.ui.NavigationHandlers
 import palbp.laboratory.demos.tictactoe.ui.TopBar
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
-const val GameScreenTag = "GameScreen"
+internal const val GameScreenTag = "GameScreen"
+internal const val GameScreenTitleTag = "GameScreenTitle"
 
 data class GameScreenState(
     @StringRes val title: Int?,
@@ -60,7 +61,8 @@ fun GameScreen(
                 Text(
                     text = stringResource(id = titleTextId),
                     style = MaterialTheme.typography.h4,
-                    color = MaterialTheme.colors.primaryVariant
+                    color = MaterialTheme.colors.primaryVariant,
+                    modifier = Modifier.testTag(GameScreenTitleTag)
                 )
                 BoardView(
                     board = state.game.board,
@@ -97,7 +99,6 @@ private fun GameScreenWaiting() {
         Game(Marker.CROSS, Board(Marker.CROSS))
     ))
 }
-
 
 private val aBoard = Board(
     turn = Marker.CIRCLE,
