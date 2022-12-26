@@ -11,9 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
-import palbp.laboratory.demos.tictactoe.game.play.domain.Coordinate
-import palbp.laboratory.demos.tictactoe.game.play.domain.Game
-import palbp.laboratory.demos.tictactoe.game.play.domain.Match
+import palbp.laboratory.demos.tictactoe.game.play.domain.*
 
 /**
  * Represents the current match state
@@ -38,7 +36,16 @@ class GameScreenViewModel(private val match: Match) : ViewModel() {
             viewModelScope.launch {
                 match.start(localPlayer, challenge).collect {
                     _onGoingGame.value = it.game
-                    _state = MatchState.STARTED
+                    _state = when (it) {
+                        is GameStarted -> MatchState.STARTED
+                        is GameEnded -> MatchState.FINISHED
+                        else ->
+                            if (it.game.getResult() !is OnGoing) MatchState.FINISHED
+                            else MatchState.STARTED
+                    }
+
+                    if (_state == MatchState.FINISHED)
+                        match.end()
                 }
             }
         }

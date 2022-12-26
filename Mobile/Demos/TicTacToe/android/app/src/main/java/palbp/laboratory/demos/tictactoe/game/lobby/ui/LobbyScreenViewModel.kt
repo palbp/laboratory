@@ -65,7 +65,6 @@ class LobbyScreenViewModel(
                     localPlayer = currentMonitor.second,
                     challenge = challenge
                 )
-                lobbyMonitor = null
             }
         } else null
     }

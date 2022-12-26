@@ -28,11 +28,14 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
                     error != null -> flow.close(error)
                     snapshot != null -> {
                         snapshot.toMatchStateOrNull()?.let {
-                            val game = Game(localPlayerMarker, it.first)
-                            val forfeit = it.second
+                            val game = Game(
+                                localPlayerMarker = localPlayerMarker,
+                                forfeitedBy = it.second,
+                                board = it.first
+                            )
                             val gameEvent = when {
                                 onGoingGame == null -> GameStarted(game)
-                                forfeit != null -> GameEnded(game, forfeit)
+                                game.forfeitedBy != null -> GameEnded(game, game.forfeitedBy.other)
                                 else -> MoveMade(game)
                             }
                             onGoingGame = Pair(game, gameId)
@@ -52,7 +55,7 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
     private suspend fun updateGame(game: Game, gameId: String) {
         db.collection(ONGOING)
             .document(gameId)
-            .set(game.board.toDocumentContent())
+            .update(game.board.toDocumentContent())
             .await()
     }
 
@@ -91,6 +94,8 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
             val game = it.copy(first = it.first.makeMove(at))
             updateGame(game.first, game.second)
         }
+
+
     }
 
     override suspend fun forfeit() {
@@ -99,6 +104,16 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
                 .document(it.second)
                 .update(FORFEIT_FIELD, it.first.localPlayerMarker)
                 .await()
+        }
+    }
+
+    override suspend fun end() {
+        onGoingGame = checkNotNull(onGoingGame).let {
+            db.collection(ONGOING)
+                .document(it.second)
+                .delete()
+                .await()
+            null
         }
     }
 }

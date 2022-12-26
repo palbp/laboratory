@@ -25,23 +25,27 @@ class PopulatedFirebaseLobby : TestRule {
     val lobby: Lobby = LobbyFirebase(app.emulatedFirestoreDb)
 
     private suspend fun populateLobby() {
-        val results = otherTestPlayersInLobby.map {
+        otherTestPlayersInLobby.forEach {
             app.emulatedFirestoreDb
                 .collection(LOBBY)
                 .document(it.id.toString())
                 .set(it.info.toDocumentContent())
+                .await()
         }
-        results.forEach { it.await() }
     }
 
     private suspend fun emptyLobby() {
-        val results = otherTestPlayersInLobby.map {
-            app.emulatedFirestoreDb
-                .collection(LOBBY)
-                .document(it.id.toString())
-                .delete()
-        }
-        results.forEach { it.await() }
+        app.emulatedFirestoreDb
+            .collection(LOBBY)
+            .get()
+            .await()
+            .forEach {
+                app.emulatedFirestoreDb
+                    .collection(LOBBY)
+                    .document(it.id)
+                    .delete()
+                    .await()
+            }
     }
 
 

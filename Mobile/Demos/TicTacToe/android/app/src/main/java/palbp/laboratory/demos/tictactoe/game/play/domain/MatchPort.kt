@@ -14,7 +14,7 @@ import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
 sealed class GameEvent(val game: Game)
 class GameStarted(game: Game) : GameEvent(game)
 class MoveMade(game: Game) : GameEvent(game)
-class GameEnded(game: Game, val winner: Marker) : GameEvent(game)
+class GameEnded(game: Game, val winner: Marker? = null) : GameEvent(game)
 
 /**
  * Abstraction that characterizes a match between two players, that is, the
@@ -44,5 +44,10 @@ interface Match {
      * @throws IllegalStateException if a game is not in progress
      */
     suspend fun forfeit()
+
+    /**
+     * Ends the match, cleaning up if necessary.
+     */
+    suspend fun end()
 }
 

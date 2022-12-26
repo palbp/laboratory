@@ -33,6 +33,8 @@ class LobbyFirebaseTests {
         // Assert
         val expectedInLobby = otherTestPlayersInLobby
         assertTrue(playersInLobby.containsAll(expectedInLobby))
+        println("expected.size = ${expectedInLobby.size}")
+        println("playersInLobby.size = ${playersInLobby.size}")
         assertTrue(expectedInLobby.size == playersInLobby.size)
     }
 
@@ -155,20 +157,6 @@ class LobbyFirebaseTests {
 
         // Assert
         assertEquals(challenger, received)
-    }
-
-    @Test
-    fun issueChallenge_removes_challenger_from_the_lobby(): Unit = runTest {
-        // Arrange
-        val sut = populatedLobbyRule.lobby
-        sut.enter(localTestPlayer)
-
-        // Act
-        sut.issueChallenge(otherTestPlayersInLobby.first())
-
-        // Assert
-        val stillInLobby = sut.getPlayers().any { it == localTestPlayer }
-        assertFalse(stillInLobby)
     }
 
     @Test

@@ -85,3 +85,19 @@ fun Board.hasWon(marker: Marker): Boolean =
             tiles[0][0] == marker && tiles[1][1] == marker && tiles[2][2] == marker ||
             tiles[0][2] == marker && tiles[1][1] == marker && tiles[2][0] == marker
 
+
+open class BoardResult
+class HasWinner(val winner: Marker) : BoardResult()
+class Tied : BoardResult()
+class OnGoing : BoardResult()
+
+/**
+ * Gets the current result of this board.
+ */
+fun Board.getResult(): BoardResult =
+    when {
+        hasWon(Marker.CIRCLE) -> HasWinner(Marker.CIRCLE)
+        hasWon(Marker.CROSS) -> HasWinner(Marker.CROSS)
+        toMovesList().all { it != null } -> Tied()
+        else -> OnGoing()
+    }

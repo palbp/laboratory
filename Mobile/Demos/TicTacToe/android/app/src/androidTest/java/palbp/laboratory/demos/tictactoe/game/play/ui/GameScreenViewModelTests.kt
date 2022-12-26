@@ -36,9 +36,9 @@ class GameScreenViewModelTests {
     @Test
     fun startMatch_puts_created_match_in_onGoingGame_state_flow() = runTest {
         // Arrange
-        val expectedGame = Game(Marker.firstToMove.other, Board())
+        val expectedGame = Game(localPlayerMarker = Marker.firstToMove.other, board = Board())
         val mockMatch: Match = mockk(relaxed = true) {
-            every { start(any(), any()) } returns flow { emit(GameStarted(expectedGame)) }
+            coEvery { start(any(), any()) } returns flow { emit(GameStarted(expectedGame)) }
         }
         val sut = GameScreenViewModel(mockMatch)
 
@@ -61,7 +61,7 @@ class GameScreenViewModelTests {
         // Assert
         assertNotNull(createdGame)
         assertEquals(expectedGame, createdGame)
-        verify { mockMatch.start(any(), any()) }
+        coVerify { mockMatch.start(any(), any()) }
     }
 
     @Test
@@ -82,10 +82,10 @@ class GameScreenViewModelTests {
     @Test
     fun makeMove_on_started_match_succeeds() = runTest {
         // Arrange
-        var game = Game(Marker.firstToMove, Board())
+        var game = Game(localPlayerMarker = Marker.firstToMove, board = Board())
         val mockMatch: Match = mockk(relaxed = true) {
             val at = slot<Coordinate>()
-            every { start(any(), any()) } returns flow { emit(GameStarted(game)) }
+            coEvery { start(any(), any()) } returns flow { emit(GameStarted(game)) }
             coEvery { makeMove(capture(at)) } answers {
                 game = game.makeMove(at.captured)
             }
@@ -100,14 +100,40 @@ class GameScreenViewModelTests {
 
         // Assert
         assertNotNull(game.board[at])
-        verify(exactly = 1) { mockMatch.start(any(), any()) }
+        coVerify(exactly = 1) { mockMatch.start(any(), any()) }
         coVerify(exactly = 1) { mockMatch.makeMove(any()) }
+    }
+
+    @Test
+    fun finishing_the_match_sets_state_to_FINISHED() = runTest {
+        val mockMatch: Match = mockk(relaxed = true) {
+            coEvery { start(any(), any()) } returns flow {
+                var game = Game(localPlayerMarker = Marker.firstToMove, board = Board())
+                emit(GameStarted(game))
+                game = game.makeMove(at = Coordinate(0, 0))
+                emit(MoveMade(game))
+                game = game.copy(board = game.board.makeMove(at = Coordinate(0, 1)))
+                emit(MoveMade(game))
+                game = game.copy(board = game.board.makeMove(at = Coordinate(1, 1)))
+                emit(MoveMade(game))
+                game = game.copy(board = game.board.makeMove(at = Coordinate(0, 2)))
+                emit(MoveMade(game))
+                game = game.copy(board = game.board.makeMove(at = Coordinate(2, 2)))
+                emit(MoveMade(game))
+            }
+        }
+
+        val sut = GameScreenViewModel(mockMatch)
+        sut.startMatch(localTestPlayer, localPlayerStartsTestChallenge)?.join()
+
+        // Assert
+        assertEquals(MatchState.FINISHED, sut.state)
     }
 
     @Test
     fun forfeit_on_started_match_succeeds() = runTest {
         // Arrange
-        val game = Game(Marker.firstToMove, Board())
+        val game = Game(localPlayerMarker = Marker.firstToMove, board = Board())
         val mockMatch: Match = mockk(relaxed = true) {
             coEvery { start(any(), any()) } returns flow { emit(GameStarted(game)) }
             coEvery { forfeit() } returns Unit
@@ -126,6 +152,23 @@ class GameScreenViewModelTests {
     }
 
     @Test
+    fun forfeiting_the_match_sets_state_to_FINISHED() = runTest {
+        val mockMatch: Match = mockk(relaxed = true) {
+            coEvery { start(any(), any()) } returns flow {
+                val game = Game(localPlayerMarker = Marker.firstToMove, board = Board())
+                emit(GameStarted(game))
+                emit(GameEnded(game.copy(forfeitedBy = Marker.firstToMove), Marker.firstToMove.other))
+            }
+        }
+
+        val sut = GameScreenViewModel(mockMatch)
+        sut.startMatch(localTestPlayer, localPlayerStartsTestChallenge)?.join()
+
+        // Assert
+        assertEquals(MatchState.FINISHED, sut.state)
+    }
+
+    @Test
     fun forfeit_when_match_is_not_started_returns_null() = runTest {
         // Arrange
         val sut = GameScreenViewModel(app.match)
@@ -135,7 +178,6 @@ class GameScreenViewModelTests {
 
         // Assert
         assertNull(job)
-
     }
 }
 

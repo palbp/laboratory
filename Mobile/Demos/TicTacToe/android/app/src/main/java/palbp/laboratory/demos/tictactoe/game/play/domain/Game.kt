@@ -7,10 +7,12 @@ import palbp.laboratory.demos.tictactoe.game.lobby.domain.firstToMove
 /**
  * Represents a Tic-Tac-Toe game. Instances are immutable.
  * @property localPlayerMarker  The local player marker
+ * @property forfeitedBy        The marker of the player who forfeited the game, if that was the case
  * @property board              The game board
  */
 data class Game(
     val localPlayerMarker: Marker = Marker.firstToMove,
+    val forfeitedBy: Marker? = null,
     val board: Board = Board()
 )
 
@@ -32,3 +34,10 @@ fun Game.makeMove(at: Coordinate): Game {
 fun getLocalPlayerMarker(localPlayer: PlayerInfo, challenge: Challenge) =
     if (localPlayer == challenge.firstToMove) Marker.firstToMove
     else Marker.firstToMove.other
+
+/**
+ * Gets the game current result
+ */
+fun Game.getResult() =
+    if (forfeitedBy != null) HasWinner(forfeitedBy.other)
+    else board.getResult()

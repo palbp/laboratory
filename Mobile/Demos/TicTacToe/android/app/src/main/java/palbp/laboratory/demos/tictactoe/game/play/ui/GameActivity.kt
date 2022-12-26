@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.ComponentActivity
+import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
@@ -15,6 +16,7 @@ import palbp.laboratory.demos.tictactoe.DependenciesContainer
 import palbp.laboratory.demos.tictactoe.R
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.Challenge
 import palbp.laboratory.demos.tictactoe.game.lobby.domain.PlayerInfo
+import palbp.laboratory.demos.tictactoe.game.play.domain.getResult
 import palbp.laboratory.demos.tictactoe.preferences.domain.UserInfo
 import palbp.laboratory.demos.tictactoe.utils.viewModelInit
 import java.util.*
@@ -46,25 +48,40 @@ class GameActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            val game by viewModel.onGoingGame.collectAsState()
-            val title = when (viewModel.state) {
+            val currentGame by viewModel.onGoingGame.collectAsState()
+            val currentState = viewModel.state
+            val title = when (currentState) {
                 MatchState.STARTING -> R.string.game_screen_waiting
                 MatchState.IDLE -> R.string.game_screen_waiting
                 else -> null
             }
 
             GameScreen(
-                state = GameScreenState(title, game),
-                onMoveRequested = { at -> viewModel.makeMove(at) }
+                state = GameScreenState(title, currentGame),
+                onMoveRequested = { at -> viewModel.makeMove(at) },
+                onForfeitRequested = { viewModel.forfeit() }
             )
-            if (viewModel.state == MatchState.STARTING) {
-                StartingMatchDialog()
+
+            when (currentState) {
+                MatchState.STARTING -> StartingMatchDialog()
+                MatchState.FINISHED -> MatchEndedDialog(
+                    localPLayerMarker = currentGame.localPlayerMarker,
+                    result = currentGame.getResult(),
+                    onDismissRequested = { finish() }
+                )
+                else -> { }
             }
         }
 
         if (viewModel.state == MatchState.IDLE)
             viewModel.startMatch(localPlayer, challenge)
+
+        onBackPressedDispatcher.addCallback(owner = this, enabled = true) {
+            viewModel.forfeit()
+            finish()
+        }
     }
 
     @Suppress("deprecation")

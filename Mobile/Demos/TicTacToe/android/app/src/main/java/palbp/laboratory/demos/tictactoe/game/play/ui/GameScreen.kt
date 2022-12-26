@@ -18,12 +18,12 @@ import palbp.laboratory.demos.tictactoe.game.play.domain.Board
 import palbp.laboratory.demos.tictactoe.game.play.domain.Coordinate
 import palbp.laboratory.demos.tictactoe.game.play.domain.Game
 import palbp.laboratory.demos.tictactoe.game.play.domain.Marker
-import palbp.laboratory.demos.tictactoe.ui.NavigationHandlers
 import palbp.laboratory.demos.tictactoe.ui.TopBar
 import palbp.laboratory.demos.tictactoe.ui.theme.TicTacToeTheme
 
 internal const val GameScreenTag = "GameScreen"
 internal const val GameScreenTitleTag = "GameScreenTitle"
+internal const val ForfeitButtonTag = "ForfeitButton"
 
 data class GameScreenState(
     @StringRes val title: Int?,
@@ -34,7 +34,7 @@ data class GameScreenState(
 fun GameScreen(
     state: GameScreenState,
     onMoveRequested: (Coordinate) -> Unit = { },
-    onForfeitRequested: () -> Unit = { }
+    onForfeitRequested: () -> Unit = { },
 ) {
     TicTacToeTheme {
         Scaffold(
@@ -73,7 +73,10 @@ fun GameScreen(
                         .weight(1.0f, true)
                         .fillMaxSize()
                 )
-                Button(onClick = onForfeitRequested) {
+                Button(
+                    onClick = onForfeitRequested,
+                    modifier = Modifier.testTag(ForfeitButtonTag)
+                ) {
                     Text(text = "Forfeit")
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -87,7 +90,7 @@ fun GameScreen(
 private fun GameScreenPreview() {
     GameScreen(state = GameScreenState(
         title = null,
-        Game(Marker.CROSS, aBoard)
+        Game(localPlayerMarker = Marker.CROSS, board = aBoard)
     ))
 }
 
@@ -96,7 +99,7 @@ private fun GameScreenPreview() {
 private fun GameScreenWaiting() {
     GameScreen(state = GameScreenState(
         title = R.string.game_screen_waiting,
-        Game(Marker.CROSS, Board(Marker.CROSS))
+        Game(localPlayerMarker = Marker.CROSS, board = Board(Marker.CROSS))
     ))
 }
 

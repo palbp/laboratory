@@ -43,8 +43,9 @@ class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
             error != null -> flow.close(error)
             snapshot != null -> {
                 val challenge: Challenge? = snapshot.toChallengeOrNull()
-                if (challenge != null)
+                if (challenge != null) {
                     flow.trySend(ChallengeReceived(challenge))
+                }
             }
         }
     }
@@ -107,7 +108,6 @@ class LobbyFirebase(private val db: FirebaseFirestore) : Lobby {
             .update(CHALLENGER_FIELD, localPlayer.toDocumentContent())
             .await()
 
-        leave()
         return Challenge(challenger = localPlayer, challenged = to)
     }
 
