@@ -208,6 +208,7 @@ class GameActivityTests {
             }
             coEvery { makeMove(any()) } returns Unit
             coEvery { forfeit() } answers { result = HasWinner(winner = localMarker.other) }
+            coEvery { end() } returns Unit
         }
 
         ActivityScenario.launch<GameActivity>(intent).use {
@@ -278,6 +279,7 @@ class GameActivityTests {
             }
             coEvery { makeMove(any()) } returns Unit
             coEvery { forfeit() } answers { result = HasWinner(winner = localMarker.other) }
+            coEvery { end() } returns Unit
         }
 
         ActivityScenario.launch<GameActivity>(intent).use {
