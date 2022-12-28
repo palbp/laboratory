@@ -77,7 +77,7 @@ fun GameScreen(
                     onClick = onForfeitRequested,
                     modifier = Modifier.testTag(ForfeitButtonTag)
                 ) {
-                    Text(text = "Forfeit")
+                    Text(text = stringResource(id = R.string.game_screen_forfeit))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
