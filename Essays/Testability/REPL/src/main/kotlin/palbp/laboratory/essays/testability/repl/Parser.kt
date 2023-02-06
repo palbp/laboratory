@@ -29,13 +29,16 @@ private fun operation(tokens: List<Token>, startsAt: Int): Pair<Expression, Int>
     val operation = tokens[startsAt]
     val left = expression(tokens, startsAt = startsAt + 1)
     val right = expression(tokens, startsAt = left.second)
-    return Pair(first = when (operation.value) {
-        "+" -> Addition(left.first, right.first)
-        "-" -> Subtraction(left.first, right.first)
-        "*" -> Multiplication(left.first, right.first)
-        "/" -> Division(left.first, right.first)
-        else -> throw UnexpectedToken(operation)
-    }, second = right.second)
+    return Pair(
+        first = when (operation.value) {
+            "+" -> Addition(left.first, right.first)
+            "-" -> Subtraction(left.first, right.first)
+            "*" -> Multiplication(left.first, right.first)
+            "/" -> Division(left.first, right.first)
+            else -> throw UnexpectedToken(operation)
+        },
+        second = right.second
+    )
 }
 
 private fun constant(tokens: List<Token>, startsAt: Int): Pair<Expression, Int> {
