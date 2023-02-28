@@ -1,15 +1,15 @@
 package palbp.laboratory.essays.testability.pacman.domain
 
 /**
- * The arena dimensions
+ * The maze dimensions
  */
-const val ARENA_WIDTH = 28
-const val ARENA_HEIGHT = 31
+const val MAZE_WIDTH = 28
+const val MAZE_HEIGHT = 31
 
 /**
- * The arena layout, in a human-readable form.
+ * The maze layout, in a human-readable form.
  */
-const val ARENA_LAYOUT =
+const val MAZE_LAYOUT =
     "" +
         "┏━━━━━━━━━━━━┱┲━━━━━━━━━━━━┓" +
         "┃............││............┃" +

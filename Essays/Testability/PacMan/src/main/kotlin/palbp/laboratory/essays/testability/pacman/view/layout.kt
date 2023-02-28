@@ -1,19 +1,18 @@
 package palbp.laboratory.essays.testability.pacman.view
 
-import palbp.laboratory.essays.testability.pacman.domain.ARENA_LAYOUT
-import palbp.laboratory.essays.testability.pacman.domain.ARENA_WIDTH
+import palbp.laboratory.essays.testability.pacman.domain.MAZE_LAYOUT
+import palbp.laboratory.essays.testability.pacman.domain.MAZE_WIDTH
 import palbp.laboratory.essays.testability.pacman.domain.ghostHouseDoorSymbol
 import palbp.laboratory.essays.testability.pacman.domain.isExternalWall
 import palbp.laboratory.essays.testability.pacman.domain.isHauntedHouseWall
 import palbp.laboratory.essays.testability.pacman.domain.isInternalWall
 import palbp.laboratory.essays.testability.pacman.domain.isObstacle
 import pt.isel.canvas.Canvas
-import pt.isel.canvas.WHITE
 
 /**
  * The scale factor to apply when drawing the arena layout on the screen
  */
-const val SCALE = 2f
+const val SCALE = 3f
 
 /**
  * The size of each element in the layout sprite sheet (see resources/layout-sprite.png)
@@ -39,7 +38,7 @@ fun drawLayout(canvas: Canvas) {
             width = CELL_SIZE,
             height = CELL_SIZE
         )
-        // canvas.drawRect(x = it.originInArena.x, y = it.originInArena.y, width = CELL_SIZE, height = CELL_SIZE, color = WHITE, 2)
+//        canvas.drawRect(x = it.originInArena.x, y = it.originInArena.y, width = CELL_SIZE, height = CELL_SIZE, color = WHITE, 2)
     }
 }
 
@@ -49,10 +48,10 @@ fun drawLayout(canvas: Canvas) {
  * structure is initiated. What if we need to control it? ;)
  */
 internal val layoutSpritesCoordinates: List<LayoutCellInfo> = buildList {
-    ARENA_LAYOUT.forEachIndexed { index, symbol ->
+    MAZE_LAYOUT.forEachIndexed { index, symbol ->
         if (isObstacle(symbol)) {
-            val originInArena = Point(x = index % ARENA_WIDTH * CELL_SIZE, y = index / ARENA_WIDTH * CELL_SIZE)
-            val originInSprite = computeSpriteCode(ARENA_LAYOUT, index)
+            val originInArena = Point(x = index % MAZE_WIDTH * CELL_SIZE, y = index / MAZE_WIDTH * CELL_SIZE)
+            val originInSprite = computeSpriteCode(MAZE_LAYOUT, index)
             add(LayoutCellInfo(originInArena, layoutSpriteIndexToPoint(originInSprite)))
         }
     }
@@ -96,13 +95,13 @@ internal fun layoutSpriteIndexToPoint(index: Int): Point {
 }
 
 private fun computeExternalWallCode(layoutDescription: String, index: Int): Int {
-    val wallColumn = index % ARENA_WIDTH
-    val wallRow = index / ARENA_WIDTH
+    val wallColumn = index % MAZE_WIDTH
+    val wallRow = index / MAZE_WIDTH
     return when (layoutDescription[index]) {
         '┃' -> if (wallColumn == 0 || wallColumn == 5) 3 else 2
         '━' -> if (wallRow == 0 || wallRow == 13 || wallRow == 19) 10 else 12
         '┓' -> if (wallRow == 0 || wallRow == 19) 0 else SPRITE_SHEET_ROW_SIZE + 6
-        '┏' -> if (wallRow == 0 || wallRow == 19 ) 1 else SPRITE_SHEET_ROW_SIZE + 7
+        '┏' -> if (wallRow == 0 || wallRow == 19) 1 else SPRITE_SHEET_ROW_SIZE + 7
         '┛' -> if (wallRow == 9 || wallRow == 30) 4 else SPRITE_SHEET_ROW_SIZE + 10
         '┗' -> if (wallRow == 9 || wallRow == 30) 5 else SPRITE_SHEET_ROW_SIZE + 11
         '┲' -> SPRITE_SHEET_ROW_SIZE * 2 + 10
@@ -120,7 +119,7 @@ private fun computeInternalWallCode(layoutDescription: String, index: Int): Int 
     // We do this because we presume this function is ONLY called for symbols pertaining to internal walls and those
     // are ALWAYS inside the arena.
     return when (layoutDescription[index]) {
-        '─' -> layoutDescription[index - ARENA_WIDTH].let {
+        '─' -> layoutDescription[index - MAZE_WIDTH].let {
             if (isInternalWall(it)) SPRITE_SHEET_ROW_SIZE + 4 else 14
         }
         '│' -> layoutDescription[index - 1].let {
@@ -139,8 +138,8 @@ private fun computeInternalWallCode(layoutDescription: String, index: Int): Int 
 }
 
 private fun computeHauntedHouseWallCode(layoutDescription: String, index: Int): Int {
-    val wallColumn = index % ARENA_WIDTH
-    val wallRow = index / ARENA_WIDTH
+    val wallColumn = index % MAZE_WIDTH
+    val wallRow = index / MAZE_WIDTH
     val code = when (layoutDescription[index]) {
         '╗' -> SPRITE_SHEET_ROW_SIZE + 12
         '╔' -> SPRITE_SHEET_ROW_SIZE + 13
@@ -150,12 +149,11 @@ private fun computeHauntedHouseWallCode(layoutDescription: String, index: Int): 
         '═' ->
             when {
                 wallRow == 16 -> 10
-                layoutDescription[index-1] == ghostHouseDoorSymbol -> 2 * SPRITE_SHEET_ROW_SIZE
-                layoutDescription[index+1] == ghostHouseDoorSymbol -> 2 * SPRITE_SHEET_ROW_SIZE + 1
+                layoutDescription[index - 1] == ghostHouseDoorSymbol -> 2 * SPRITE_SHEET_ROW_SIZE
+                layoutDescription[index + 1] == ghostHouseDoorSymbol -> 2 * SPRITE_SHEET_ROW_SIZE + 1
                 else -> 12
             }
         else -> EMPTY_SPRITE_CODE
     }
     return code
 }
-

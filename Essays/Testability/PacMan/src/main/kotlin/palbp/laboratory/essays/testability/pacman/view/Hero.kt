@@ -3,6 +3,7 @@ package palbp.laboratory.essays.testability.pacman.view
 import palbp.laboratory.essays.testability.pacman.domain.Direction
 import palbp.laboratory.essays.testability.pacman.domain.Hero
 import pt.isel.canvas.Canvas
+import java.lang.Integer.max
 
 /**
  * The size of each element in the actors sprite sheet (see resources/actors-sprite.png)
@@ -22,18 +23,21 @@ private val actorsOffset = Point(x = CELL_SIZE / 2, y = CELL_SIZE / 2)
 
 /**
  * Draws the hero on the arena.
- * @param canvas    the canvas where to draw
  * @param hero      the hero to be drawn
+ * @param canvas    the canvas where to draw
  */
-fun drawHero(canvas: Canvas, hero: Hero) {
+fun drawHero(hero: Hero, canvas: Canvas) {
     val spriteSheetRow = when (hero.facing) {
         Direction.RIGHT -> 0
         Direction.LEFT -> 1
         Direction.UP -> 2
         Direction.DOWN -> 3
     }
-    val originInSprite = Point(x = ACTORS_SPRITE_SIZE, y = spriteSheetRow * CELL_SIZE)
-    val originInArena = Point(x = hero.at.column * CELL_SIZE - actorsOffset.x, y = hero.at.row * CELL_SIZE - actorsOffset.y)
+    val originInSprite = Point(x = ACTORS_SPRITE_SIZE, y = spriteSheetRow * ACTORS_SPRITE_SIZE)
+    val originInArena = Point(
+        x = max(hero.at.column * CELL_SIZE - actorsOffset.x, 0),
+        y = max(hero.at.row * CELL_SIZE - actorsOffset.y, 0)
+    )
     val spriteInfo = "${originInSprite.x},${originInSprite.y},$ACTORS_SPRITE_SIZE,$ACTORS_SPRITE_SIZE"
     canvas.drawImage(
         fileName = "actors-sprite|$spriteInfo",

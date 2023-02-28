@@ -1,8 +1,9 @@
 package palbp.laboratory.essays.testability.pacman
 
 import palbp.laboratory.essays.testability.pacman.domain.Direction
+import palbp.laboratory.essays.testability.pacman.domain.changeHeroDirection
 import palbp.laboratory.essays.testability.pacman.domain.createArena
-import palbp.laboratory.essays.testability.pacman.domain.faceTo
+import palbp.laboratory.essays.testability.pacman.domain.moveHero
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_HEIGHT
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_WIDTH
 import palbp.laboratory.essays.testability.pacman.view.drawArena
@@ -24,8 +25,10 @@ fun main() {
 
     onStart {
         val canvas = Canvas(width = ARENA_VIEW_WIDTH, height = ARENA_VIEW_HEIGHT, background = BLACK)
+
         var arena = createArena()
         drawArena(arena, canvas)
+
         canvas.onKeyPressed {
             val direction: Direction? = when (it.code) {
                 DOWN_CODE -> Direction.DOWN
@@ -35,7 +38,8 @@ fun main() {
                 else -> null
             }
             if (direction != null) {
-                arena = arena.copy(pacMan = faceTo(arena.pacMan, direction))
+                arena = if (direction != arena.pacMan.facing) arena.changeHeroDirection(direction).moveHero()
+                else arena.moveHero()
                 drawArena(arena, canvas)
             }
         }
