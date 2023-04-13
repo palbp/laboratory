@@ -26,9 +26,20 @@ operator fun Coordinate.plus(direction: Direction) = when (direction) {
 /**
  * The game's hero, Pac-Man
  * @property at the hero's current location in the maze.
- * @property facing the direction the hero is facing.
+ * @property facing the direction the hero is facing
+ * @property intent the direction the hero wants to move to. This is used to change the movement direction once
+ * there's not a wall in the way.
+ * @property moving true if the hero is moving, false otherwise. If the hero is moving, then he moves in the direction
+ * he's facing.
+ * @property previouslyAt the hero's previous location in the maze. This is used to keep track of the hero's movement.
  */
-data class Hero(val at: Coordinate, val facing: Direction)
+data class Hero(
+    val at: Coordinate,
+    val facing: Direction,
+    val intent: Direction = facing,
+    val moving: Boolean = false,
+    val previouslyAt: Coordinate = at
+)
 
 /**
  * Gets a new hero instance at the same location but facing [to].
@@ -36,11 +47,17 @@ data class Hero(val at: Coordinate, val facing: Direction)
 fun Hero.face(to: Direction) = copy(facing = to)
 
 /**
- * Moves the hero to the next cell in the direction he's facing. If the hero is facing a wall, he doesn't
- * move.
+ * Gets a new hero instance with the same location and facing direction, but with a new intent.
+ */
+fun Hero.changeIntent(to: Direction) = copy(intent = to)
+
+/**
+ *  Moves the hero to the next cell in the direction he intends to move. If the hero intends to move towards a wall,
+ *  he tries to move in the direction he's facing. If there's a wall in the way, he doesn't move.
  */
 fun Hero.move(maze: Maze): Hero {
-    val nextCoordinate = at + facing
-    return if (maze.hasWall(nextCoordinate)) this
-    else copy(at = nextCoordinate)
+    val nextFacing = if (maze.hasWall(at + intent)) facing else intent
+    val nextCoordinate = at + nextFacing
+    return if (maze.hasWall(nextCoordinate)) this.copy(moving = false)
+    else copy(at = nextCoordinate, facing = nextFacing, moving = true, previouslyAt = at)
 }

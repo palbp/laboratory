@@ -53,7 +53,7 @@ val innerWallSymbols: List<Char> = listOf('╭', '╮', '╰', '╯', '─', '�
  * The symbol used to represent the ghost house doors, the rectangle at the center of the layout where
  * ghosts spawn from.
  */
-val ghostHouseDoorSymbol: Char = '-'
+const val ghostHouseDoorSymbol: Char = '-'
 val ghostHouseWallSymbols: List<Char> = listOf('║', '╔', '═', '╗', '╚', '╝')
 
 /**

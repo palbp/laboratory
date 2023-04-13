@@ -1,12 +1,14 @@
 package palbp.laboratory.essays.testability.pacman
 
 import palbp.laboratory.essays.testability.pacman.domain.Direction
+import palbp.laboratory.essays.testability.pacman.domain.MovementStep
+import palbp.laboratory.essays.testability.pacman.domain.World
 import palbp.laboratory.essays.testability.pacman.domain.changeHeroDirection
-import palbp.laboratory.essays.testability.pacman.domain.createArena
-import palbp.laboratory.essays.testability.pacman.domain.moveHero
+import palbp.laboratory.essays.testability.pacman.domain.doStep
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_HEIGHT
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_WIDTH
-import palbp.laboratory.essays.testability.pacman.view.drawArena
+import palbp.laboratory.essays.testability.pacman.view.draw
+import palbp.laboratory.essays.testability.pacman.view.redraw
 import pt.isel.canvas.BLACK
 import pt.isel.canvas.Canvas
 import pt.isel.canvas.DOWN_CODE
@@ -25,9 +27,10 @@ fun main() {
 
     onStart {
         val canvas = Canvas(width = ARENA_VIEW_WIDTH, height = ARENA_VIEW_HEIGHT, background = BLACK)
+        val movementStep = MovementStep(current = 0, totalSteps = 3)
 
-        var arena = createArena()
-        drawArena(arena, canvas)
+        var world = World(step = movementStep)
+        canvas.draw(world)
 
         canvas.onKeyPressed {
             val direction: Direction? = when (it.code) {
@@ -38,10 +41,14 @@ fun main() {
                 else -> null
             }
             if (direction != null) {
-                arena = if (direction != arena.pacMan.facing) arena.changeHeroDirection(direction).moveHero()
-                else arena.moveHero()
-                drawArena(arena, canvas)
+                world = world.changeHeroDirection(direction)
             }
+        }
+
+        canvas.onTimeProgress(1000 / 60) {
+            world = world.doStep()
+            if (world.arena.pacMan.moving)
+                canvas.redraw(world)
         }
     }
 

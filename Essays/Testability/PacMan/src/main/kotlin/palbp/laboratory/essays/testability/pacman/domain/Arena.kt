@@ -11,7 +11,7 @@ val pacManStartingPosition = Coordinate(row = 23, column = 13)
  * @property maze the maze that composes the arena.
  * @property pacMan the hero that moves around the maze.
  */
-data class Arena(val maze: Maze, val pacMan: Hero)
+data class Arena(val maze: Maze, val pacMan: Hero, val step: Int = 0)
 
 /**
  * Creates a new [Arena] instance in its initial state.
@@ -29,11 +29,11 @@ fun Arena.moveHero(): Arena {
 }
 
 /**
- * Changes the hero's facing direction.
- * @param to the new facing direction.
- * @return a new [Arena] instance with the hero facing the new direction.
+ * Changes the hero's intended movement direction.
+ * @param to the new intended direction.
+ * @return a new [Arena] instance with the hero intending to move to the new direction.
  */
 fun Arena.changeHeroDirection(to: Direction): Arena {
-    val nextPacMan = pacMan.face(to)
+    val nextPacMan = pacMan.changeIntent(to)
     return copy(pacMan = nextPacMan)
 }

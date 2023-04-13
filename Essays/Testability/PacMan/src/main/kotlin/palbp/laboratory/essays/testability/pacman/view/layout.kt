@@ -1,5 +1,6 @@
 package palbp.laboratory.essays.testability.pacman.view
 
+import palbp.laboratory.essays.testability.pacman.domain.Coordinate
 import palbp.laboratory.essays.testability.pacman.domain.MAZE_LAYOUT
 import palbp.laboratory.essays.testability.pacman.domain.MAZE_WIDTH
 import palbp.laboratory.essays.testability.pacman.domain.ghostHouseDoorSymbol
@@ -8,6 +9,7 @@ import palbp.laboratory.essays.testability.pacman.domain.isHauntedHouseWall
 import palbp.laboratory.essays.testability.pacman.domain.isInternalWall
 import palbp.laboratory.essays.testability.pacman.domain.isObstacle
 import pt.isel.canvas.Canvas
+import pt.isel.canvas.WHITE
 
 /**
  * The scale factor to apply when drawing the arena layout on the screen
@@ -25,20 +27,18 @@ const val LAYOUT_SPRITE_SIZE = 8
 const val CELL_SIZE: Int = (LAYOUT_SPRITE_SIZE * SCALE).toInt()
 
 /**
- * Draws the arena layout on the given canvas. Note that the arena layout used in this game is always the same.
- * @param canvas    where the layout is to be drawn
+ * Draws the arena layout on this canvas. Note that the arena layout used in this game is always the same.
  */
-fun drawLayout(canvas: Canvas) {
+fun Canvas.drawLayout() {
     layoutSpritesCoordinates.forEach {
         val spriteInfo = "${it.originInSprite.x},${it.originInSprite.y},$LAYOUT_SPRITE_SIZE,$LAYOUT_SPRITE_SIZE"
-        canvas.drawImage(
+        drawImage(
             fileName = "layout-sprite|$spriteInfo",
             xLeft = it.originInArena.x,
             yTop = it.originInArena.y,
             width = CELL_SIZE,
             height = CELL_SIZE
         )
-//        canvas.drawRect(x = it.originInArena.x, y = it.originInArena.y, width = CELL_SIZE, height = CELL_SIZE, color = WHITE, 2)
     }
 }
 
@@ -50,7 +50,7 @@ fun drawLayout(canvas: Canvas) {
 internal val layoutSpritesCoordinates: List<LayoutCellInfo> = buildList {
     MAZE_LAYOUT.forEachIndexed { index, symbol ->
         if (isObstacle(symbol)) {
-            val originInArena = Point(x = index % MAZE_WIDTH * CELL_SIZE, y = index / MAZE_WIDTH * CELL_SIZE)
+            val originInArena = Coordinate(index).toPoint()
             val originInSprite = computeSpriteCode(MAZE_LAYOUT, index)
             add(LayoutCellInfo(originInArena, layoutSpriteIndexToPoint(originInSprite)))
         }

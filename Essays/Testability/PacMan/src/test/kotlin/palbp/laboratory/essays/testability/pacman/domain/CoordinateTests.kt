@@ -39,4 +39,11 @@ class CoordinateTests {
             Coordinate(row = 1, column = MAZE_WIDTH)
         }
     }
+
+    @Test
+    fun `adding a direction to a coordinate returns the correct coordinate`() {
+        val sut = Coordinate(row = 1, column = 1)
+        val expected = Coordinate(row = 0, column = 1)
+        assertEquals(expected = expected, actual = sut + Direction.UP)
+    }
 }
