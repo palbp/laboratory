@@ -32,8 +32,8 @@ fun Canvas.redraw(hero: Hero, step: MovementStep) {
     )
 
     val previousOriginInArena = Point(
-        x = hero.previouslyAt.column * CELL_SIZE - actorsOffset.x,
-        y = hero.previouslyAt.row * CELL_SIZE - actorsOffset.y
+        x = max(hero.previouslyAt.column * CELL_SIZE - actorsOffset.x, 0),
+        y = max(hero.previouslyAt.row * CELL_SIZE - actorsOffset.y, 0)
     )
 
     drawRect(previousOriginInArena.x, previousOriginInArena.y, ACTOR_SIZE, ACTOR_SIZE, BLACK)
