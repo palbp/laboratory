@@ -26,24 +26,19 @@ fun Canvas.redraw(hero: Hero, step: MovementStep) {
         }
     } else Pair(0, 0)
 
-    val originInArena = Point(
+    val positionInArena = Point(
         x = max(hero.at.column * CELL_SIZE - actorsOffset.x + deltaX, 0),
         y = max(hero.at.row * CELL_SIZE - actorsOffset.y + deltaY, 0)
     )
 
-    val previousOriginInArena = Point(
+    val previousPositionInArena = Point(
         x = max(hero.previouslyAt.column * CELL_SIZE - actorsOffset.x, 0),
         y = max(hero.previouslyAt.row * CELL_SIZE - actorsOffset.y, 0)
     )
 
-    val radius = ACTOR_SIZE / 2
-    drawCircle(
-        xCenter = previousOriginInArena.x + radius,
-        yCenter = previousOriginInArena.y + radius,
-        radius = radius,
-        color = BLACK
-    )
-    drawHeroSprite(this, spriteInfo, originInArena)
+    clearHeroArea(previousPositionInArena)
+    clearHeroArea(positionInArena)
+    drawHeroSprite(this, spriteInfo, positionInArena)
 }
 
 /**
@@ -63,6 +58,19 @@ private const val ACTOR_SIZE = (ACTORS_SPRITE_SIZE * SCALE).toInt()
 private val actorsOffset = Point(x = CELL_SIZE / 2, y = CELL_SIZE / 2)
 
 /**
+ * Clears the area occupied by the hero on the canvas.
+ */
+private fun Canvas.clearHeroArea(arenaPosition: Point) {
+    val radius = ACTOR_SIZE / 2
+    drawCircle(
+        xCenter = arenaPosition.x + radius,
+        yCenter = arenaPosition.y + radius,
+        radius = radius,
+        color = BLACK
+    )
+}
+
+/**
  * Draws the hero sprite specified by its coordinates on the sprite sheet (see resources/actors-sprite.png) at the given
  * position on the arena.
  *
@@ -74,6 +82,7 @@ private fun drawHeroSprite(canvas: Canvas, spriteAt: SpriteInfo, arenaPosition: 
         x = spriteAt.sheetColumn * ACTORS_SPRITE_SIZE,
         y = spriteAt.sheetRow * ACTORS_SPRITE_SIZE
     )
+
     val spriteInfo = "${originInSprite.x},${originInSprite.y},$ACTORS_SPRITE_SIZE,$ACTORS_SPRITE_SIZE"
     canvas.drawImage(
         fileName = "actors-sprite-t|$spriteInfo",
