@@ -36,7 +36,13 @@ fun Canvas.redraw(hero: Hero, step: MovementStep) {
         y = max(hero.previouslyAt.row * CELL_SIZE - actorsOffset.y, 0)
     )
 
-    drawRect(previousOriginInArena.x, previousOriginInArena.y, ACTOR_SIZE, ACTOR_SIZE, BLACK)
+    val radius = ACTOR_SIZE / 2
+    drawCircle(
+        xCenter = previousOriginInArena.x + radius,
+        yCenter = previousOriginInArena.y + radius,
+        radius = radius,
+        color = BLACK
+    )
     drawHeroSprite(this, spriteInfo, originInArena)
 }
 
@@ -70,7 +76,7 @@ private fun drawHeroSprite(canvas: Canvas, spriteAt: SpriteInfo, arenaPosition: 
     )
     val spriteInfo = "${originInSprite.x},${originInSprite.y},$ACTORS_SPRITE_SIZE,$ACTORS_SPRITE_SIZE"
     canvas.drawImage(
-        fileName = "actors-sprite|$spriteInfo",
+        fileName = "actors-sprite-t|$spriteInfo",
         xLeft = arenaPosition.x,
         yTop = arenaPosition.y,
         width = ACTOR_SIZE,
