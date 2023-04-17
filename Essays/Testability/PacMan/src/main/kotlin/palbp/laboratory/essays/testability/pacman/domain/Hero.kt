@@ -29,7 +29,6 @@ operator fun Coordinate.plus(direction: Direction) = when (direction) {
  * @property facing the direction the hero is facing
  * @property intent the direction the hero wants to move to. This is used to change the movement direction once
  * there's not a wall in the way.
- * @property moving true if the hero is moving, false otherwise. If the hero is moving, then he moves in the direction
  * he's facing.
  * @property previouslyAt the hero's previous location in the maze. This is used to keep track of the hero's movement.
  */
@@ -37,9 +36,13 @@ data class Hero(
     val at: Coordinate,
     val facing: Direction,
     val intent: Direction = facing,
-    val moving: Boolean = false,
     val previouslyAt: Coordinate = at
 )
+
+/**
+ * Checks if the hero is moving.
+ */
+fun Hero.isMoving() = at != previouslyAt
 
 /**
  * Gets a new hero instance at the same location but facing [to].
@@ -58,6 +61,6 @@ fun Hero.changeIntent(to: Direction) = copy(intent = to)
 fun Hero.move(maze: Maze): Hero {
     val nextFacing = if (maze.hasWall(at + intent)) facing else intent
     val nextCoordinate = at + nextFacing
-    return if (maze.hasWall(nextCoordinate)) this.copy(moving = false)
-    else copy(at = nextCoordinate, facing = nextFacing, moving = true, previouslyAt = at)
+    return if (maze.hasWall(nextCoordinate)) copy(previouslyAt = at)
+    else copy(at = nextCoordinate, facing = nextFacing, previouslyAt = at)
 }

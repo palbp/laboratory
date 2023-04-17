@@ -2,7 +2,8 @@ package palbp.laboratory.essays.testability.pacman.view
 
 import palbp.laboratory.essays.testability.pacman.domain.Direction
 import palbp.laboratory.essays.testability.pacman.domain.Hero
-import palbp.laboratory.essays.testability.pacman.domain.MovementStep
+import palbp.laboratory.essays.testability.pacman.domain.Step
+import palbp.laboratory.essays.testability.pacman.domain.isMoving
 import pt.isel.canvas.BLACK
 import pt.isel.canvas.Canvas
 import java.lang.Integer.max
@@ -12,12 +13,12 @@ import java.lang.Integer.max
  * @param hero the hero to be drawn
  * @param step the movement step (used to determine the hero's position on the canvas)
  */
-fun Canvas.redraw(hero: Hero, step: MovementStep) {
+fun Canvas.redraw(hero: Hero, step: Step) {
 
     val spriteInfo = computeSpriteInfo(hero)
 
     val scaledStepDelta = computeMovementStepDelta(step)
-    val (deltaX, deltaY) = if (hero.moving) {
+    val (deltaX, deltaY) = if (hero.isMoving()) {
         when (hero.facing) {
             Direction.RIGHT -> Pair(-scaledStepDelta, 0)
             Direction.LEFT -> Pair(scaledStepDelta, 0)
@@ -99,8 +100,8 @@ private fun drawHeroSprite(canvas: Canvas, spriteAt: SpriteInfo, arenaPosition: 
  * (its hit box has already changed), but the animation is still in progress, so the actor is not yet in its final
  * position on the screen. This is only accomplished in the last step of the animation.
  */
-internal fun computeMovementStepDelta(step: MovementStep): Int {
-    val stepSize = CELL_SIZE / step.totalSteps
+internal fun computeMovementStepDelta(step: Step): Int {
+    val stepSize = CELL_SIZE / step.total
     return CELL_SIZE - ((step.current + 1) * stepSize)
 }
 

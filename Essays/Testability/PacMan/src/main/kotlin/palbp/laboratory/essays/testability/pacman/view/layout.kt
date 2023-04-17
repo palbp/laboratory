@@ -9,7 +9,6 @@ import palbp.laboratory.essays.testability.pacman.domain.isHauntedHouseWall
 import palbp.laboratory.essays.testability.pacman.domain.isInternalWall
 import palbp.laboratory.essays.testability.pacman.domain.isObstacle
 import pt.isel.canvas.Canvas
-import pt.isel.canvas.WHITE
 
 /**
  * The scale factor to apply when drawing the arena layout on the screen
