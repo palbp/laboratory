@@ -9,13 +9,19 @@ import pt.isel.canvas.Canvas
 import java.lang.Integer.max
 
 /**
+ * The number of animation steps for the hero.
+ */
+const val ANIMATION_STEP_COUNT = 8
+
+/**
  * Draws the hero on this canvas, clearing the canvas on the previous hero position.
  * @param hero the hero to be drawn
  * @param step the movement step (used to determine the hero's position on the canvas)
+ * @param animationStep the hero animation step (used to determine the hero's sprite)
  */
-fun Canvas.redraw(hero: Hero, step: Step) {
+fun Canvas.redraw(hero: Hero, step: Step, animationStep: Step) {
 
-    val spriteInfo = computeSpriteInfo(hero)
+    val spriteInfo = computeSpriteInfo(hero, animationStep)
 
     val scaledStepDelta = computeMovementStepDelta(step)
     val (deltaX, deltaY) = if (hero.isMoving()) {
@@ -108,15 +114,24 @@ internal fun computeMovementStepDelta(step: Step): Int {
 /**
  * Computes the location of the sprite on the hero's sprite sheet (see resources/actors-sprite.png).
  */
-internal fun computeSpriteInfo(hero: Hero): SpriteInfo {
-    val spriteSheetRow = when (hero.facing) {
-        Direction.RIGHT -> 0
-        Direction.LEFT -> 1
-        Direction.UP -> 2
-        Direction.DOWN -> 3
+internal fun computeSpriteInfo(hero: Hero, animationStep: Step): SpriteInfo {
+
+    val spriteSheetColumn = when (animationStep.current) {
+        0,1 -> 2
+        4,5 -> 0
+        else -> 1
     }
 
-    return SpriteInfo(spriteSheetRow, sheetColumn = 1)
+    val spriteSheetRow =
+        if (spriteSheetColumn == 2) 0
+        else when (hero.facing) {
+            Direction.RIGHT -> 0
+            Direction.LEFT -> 1
+            Direction.UP -> 2
+            Direction.DOWN -> 3
+        }
+
+    return SpriteInfo(spriteSheetRow, spriteSheetColumn)
 }
 
 /**

@@ -2,9 +2,11 @@ package palbp.laboratory.essays.testability.pacman
 
 import palbp.laboratory.essays.testability.pacman.domain.Direction
 import palbp.laboratory.essays.testability.pacman.domain.Step
-import palbp.laboratory.essays.testability.pacman.domain.isMoving
+import palbp.laboratory.essays.testability.pacman.view.ANIMATION_STEP_COUNT
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_HEIGHT
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_WIDTH
+import palbp.laboratory.essays.testability.pacman.view.draw
+import palbp.laboratory.essays.testability.pacman.view.redraw
 import pt.isel.canvas.BLACK
 import pt.isel.canvas.Canvas
 import pt.isel.canvas.DOWN_CODE
@@ -23,10 +25,11 @@ fun main() {
 
     onStart {
         val canvas = Canvas(width = ARENA_VIEW_WIDTH, height = ARENA_VIEW_HEIGHT, background = BLACK)
-        val movementStep = Step(current = 0, total = 3)
-
-        var world = World(movementStep = movementStep)
-        canvas.draw(world)
+        var world = World(
+            movementStep = Step(current = 0, total = 3),
+            heroAnimationStep = Step(current = 0, total = ANIMATION_STEP_COUNT)
+        )
+        canvas.draw(world.arena, world.movementStep, world.heroAnimationStep)
 
         canvas.onKeyPressed {
             val direction: Direction? = when (it.code) {
@@ -43,8 +46,7 @@ fun main() {
 
         canvas.onTimeProgress(1000 / 50) {
             world = world.doStep()
-            if (world.arena.pacMan.isMoving())
-                canvas.redraw(world)
+            canvas.redraw(world.arena, world.movementStep, world.heroAnimationStep)
         }
     }
 
