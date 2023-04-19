@@ -8,6 +8,11 @@ import palbp.laboratory.essays.testability.pacman.domain.createArena
 import palbp.laboratory.essays.testability.pacman.domain.isFirst
 import palbp.laboratory.essays.testability.pacman.domain.moveHero
 import palbp.laboratory.essays.testability.pacman.domain.next
+import palbp.laboratory.essays.testability.pacman.view.ANIMATION_STEP_COUNT
+import palbp.laboratory.essays.testability.pacman.view.SCALE
+import palbp.laboratory.essays.testability.pacman.view.draw
+import palbp.laboratory.essays.testability.pacman.view.redraw
+import pt.isel.canvas.Canvas
 
 /**
  * Represents the game's world, which is composed of an arena and a movement step, used to determine when the hero
@@ -19,8 +24,8 @@ import palbp.laboratory.essays.testability.pacman.domain.next
  */
 data class World(
     val arena: Arena = createArena(),
-    val movementStep: Step,
-    val heroAnimationStep: Step
+    val movementStep: Step = Step(current = 0, total = SCALE.toInt()),
+    val heroAnimationStep: Step = Step(current = 0, total = ANIMATION_STEP_COUNT)
 )
 
 /**
@@ -36,3 +41,13 @@ fun World.doStep(): World {
  * Changes the hero's intended movement direction.
  */
 fun World.changeHeroDirection(direction: Direction) = copy(arena = arena.changeHeroDirection(direction))
+
+/**
+ * Draws the game world on this canvas
+ */
+fun Canvas.draw(world: World) = draw(world.arena, world.movementStep, world.heroAnimationStep)
+
+/**
+ * Draws the game world on this canvas, only updating the changed content
+ */
+fun Canvas.redraw(world: World) = redraw(world.arena, world.movementStep, world.heroAnimationStep)

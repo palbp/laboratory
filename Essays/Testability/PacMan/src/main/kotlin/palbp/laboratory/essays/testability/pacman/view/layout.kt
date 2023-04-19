@@ -7,7 +7,6 @@ import palbp.laboratory.essays.testability.pacman.domain.ghostHouseDoorSymbol
 import palbp.laboratory.essays.testability.pacman.domain.isExternalWall
 import palbp.laboratory.essays.testability.pacman.domain.isHauntedHouseWall
 import palbp.laboratory.essays.testability.pacman.domain.isInternalWall
-import palbp.laboratory.essays.testability.pacman.domain.isObstacle
 import pt.isel.canvas.Canvas
 
 /**
@@ -43,16 +42,14 @@ fun Canvas.drawLayout() {
 
 /**
  * List with the pre-computed coordinates of the layout sprites. The goal is to only compute them once,
- * at application startup. WIth the current approach we are unable to control the exact moment when this data
+ * at application startup. With the current approach we are unable to control the exact moment when this data
  * structure is initiated. What if we need to control it? ;)
  */
 internal val layoutSpritesCoordinates: List<LayoutCellInfo> = buildList {
-    MAZE_LAYOUT.forEachIndexed { index, symbol ->
-        if (isObstacle(symbol)) {
-            val originInArena = Coordinate(index).toPoint()
-            val originInSprite = computeSpriteCode(MAZE_LAYOUT, index)
-            add(LayoutCellInfo(originInArena, layoutSpriteIndexToPoint(originInSprite)))
-        }
+    MAZE_LAYOUT.forEachIndexed { index, _ ->
+        val originInArena = Coordinate(index).toPoint()
+        val originInSprite = computeSpriteCode(MAZE_LAYOUT, index)
+        add(LayoutCellInfo(originInArena, layoutSpriteIndexToPoint(originInSprite)))
     }
 }
 
@@ -68,7 +65,16 @@ internal data class LayoutCellInfo(val originInArena: Point, val originInSprite:
  */
 private const val SPRITE_SHEET_ROW_SIZE = 16
 
+/**
+ * The sprite code for the empty cell
+ */
 private const val EMPTY_SPRITE_CODE = 44
+
+/**
+ * The sprite codes for pellets and power pellets
+ */
+private const val PELLET_SPRITE_CODE = 45
+private const val POWER_PELLET_SPRITE_CODE = 47
 
 /**
  * Computes the sprite number that corresponds to the symbol at [index] of [layoutDescription].

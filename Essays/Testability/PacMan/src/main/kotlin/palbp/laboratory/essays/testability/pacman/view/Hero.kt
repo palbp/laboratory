@@ -68,12 +68,13 @@ private val actorsOffset = Point(x = CELL_SIZE / 2, y = CELL_SIZE / 2)
  * Clears the area occupied by the hero on the canvas.
  */
 private fun Canvas.clearHeroArea(arenaPosition: Point) {
-    val radius = ACTOR_SIZE / 2
-    drawCircle(
-        xCenter = arenaPosition.x + radius,
-        yCenter = arenaPosition.y + radius,
-        radius = radius,
-        color = BLACK
+    val correction = (SCALE * 2).toInt()
+    drawRect(
+        arenaPosition.x + correction / 2,
+        arenaPosition.y + correction / 2,
+        ACTOR_SIZE - correction,
+        ACTOR_SIZE - correction,
+        BLACK
     )
 }
 
@@ -117,8 +118,8 @@ internal fun computeMovementStepDelta(step: Step): Int {
 internal fun computeSpriteInfo(hero: Hero, animationStep: Step): SpriteInfo {
 
     val spriteSheetColumn = when (animationStep.current) {
-        0,1 -> 2
-        4,5 -> 0
+        0, 1 -> 2
+        4, 5 -> 0
         else -> 1
     }
 

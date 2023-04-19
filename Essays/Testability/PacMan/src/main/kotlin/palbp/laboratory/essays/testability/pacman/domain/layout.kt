@@ -77,3 +77,14 @@ fun isHauntedHouseWall(symbol: Char) = symbol in ghostHouseWallSymbols
  */
 fun isObstacle(symbol: Char) =
     isExternalWall(symbol) || isInternalWall(symbol) || isHauntedHouseWall(symbol) || symbol == ghostHouseDoorSymbol
+
+/**
+ * Checks whether the given symbol is a pellet, that is, a small point that the hero can eat to score points
+ */
+fun isPellet(symbol: Char) = symbol == '.'
+
+/**
+ * Checks whether the given symbol is a power pellet, that is, a big point that the hero can eat to score points and
+ * temporarily put the villains in a vulnerable state
+ */
+fun isPowerPellet(symbol: Char) = symbol == '●'
