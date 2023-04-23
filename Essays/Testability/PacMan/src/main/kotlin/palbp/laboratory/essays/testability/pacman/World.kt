@@ -6,6 +6,7 @@ import palbp.laboratory.essays.testability.pacman.domain.Step
 import palbp.laboratory.essays.testability.pacman.domain.changeHeroDirection
 import palbp.laboratory.essays.testability.pacman.domain.createArena
 import palbp.laboratory.essays.testability.pacman.domain.isFirst
+import palbp.laboratory.essays.testability.pacman.domain.isMoving
 import palbp.laboratory.essays.testability.pacman.domain.moveHero
 import palbp.laboratory.essays.testability.pacman.domain.next
 import palbp.laboratory.essays.testability.pacman.view.ANIMATION_STEP_COUNT
@@ -34,7 +35,7 @@ data class World(
 fun World.doStep(): World {
     val nextStep = movementStep.next()
     val nextArena = if (nextStep.isFirst()) arena.moveHero() else arena
-    return World(nextArena, nextStep, heroAnimationStep.next())
+    return World(nextArena, nextStep, if (arena.pacMan.isMoving()) heroAnimationStep.next() else heroAnimationStep)
 }
 
 /**

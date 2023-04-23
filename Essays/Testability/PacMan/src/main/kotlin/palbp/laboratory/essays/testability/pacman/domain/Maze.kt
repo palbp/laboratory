@@ -32,7 +32,15 @@ enum class Cell {
     /**
      * An obstacle for all actors
      */
-    WALL
+    WALL,
+    /**
+     * A cell that contains a pellet
+     */
+    PELLET,
+    /**
+     * A cell that contains a power pellet
+     */
+    POWER_PELLET
 }
 
 /**
@@ -50,8 +58,12 @@ data class Maze(val cells: List<Cell>)
 fun createMaze(from: String = MAZE_LAYOUT) = Maze(
     buildList {
         from.forEach { symbol ->
-            val cell = if (isObstacle(symbol)) Cell.WALL else Cell.EMPTY
-            add(cell)
+            add(when {
+                isObstacle(symbol) -> Cell.WALL
+                isPellet(symbol) -> Cell.PELLET
+                isPowerPellet(symbol) -> Cell.POWER_PELLET
+                else -> Cell.EMPTY
+            })
         }
     }
 )
@@ -60,3 +72,13 @@ fun createMaze(from: String = MAZE_LAYOUT) = Maze(
  * Checks whether there's a wall in the given coordinate.
  */
 fun Maze.hasWall(at: Coordinate) = cells[at.toIndex()] == Cell.WALL
+
+/**
+ * Checks whether there's a pellet in the given coordinate.
+ */
+fun Maze.hasPellet(at: Coordinate) = cells[at.toIndex()] == Cell.PELLET
+
+/**
+ * Checks whether there's a power pellet in the given coordinate.
+ */
+fun Maze.hasPowerPellet(at: Coordinate) = cells[at.toIndex()] == Cell.POWER_PELLET

@@ -19,7 +19,7 @@ const val ARENA_VIEW_HEIGHT = MAZE_HEIGHT * CELL_SIZE
  */
 fun Canvas.draw(arena: Arena, step: Step, heroAnimationStep: Step) {
     erase()
-    drawLayout()
+    draw(arena.maze)
     redraw(arena.pacMan, step, heroAnimationStep)
 }
 

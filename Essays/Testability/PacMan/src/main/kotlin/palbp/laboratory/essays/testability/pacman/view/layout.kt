@@ -12,10 +12,10 @@ import pt.isel.canvas.Canvas
 /**
  * The scale factor to apply when drawing the arena layout on the screen
  */
-const val SCALE = 3f
+const val SCALE = 2f
 
 /**
- * The size of each element in the layout sprite sheet (see resources/layout-sprite.png)
+ * The size of each element in the layout sprite sheet (see resources/sprites/layout.png)
  */
 const val LAYOUT_SPRITE_SIZE = 8
 
@@ -29,15 +29,38 @@ const val CELL_SIZE: Int = (LAYOUT_SPRITE_SIZE * SCALE).toInt()
  */
 fun Canvas.drawLayout() {
     layoutSpritesCoordinates.forEach {
-        val spriteInfo = "${it.originInSprite.x},${it.originInSprite.y},$LAYOUT_SPRITE_SIZE,$LAYOUT_SPRITE_SIZE"
-        drawImage(
-            fileName = "layout-sprite|$spriteInfo",
-            xLeft = it.originInArena.x,
-            yTop = it.originInArena.y,
-            width = CELL_SIZE,
-            height = CELL_SIZE
-        )
+        drawLayoutSprite(it.originInArena, it.originInSprite)
     }
+}
+
+/**
+ * Draws a pellet on the given coordinates on this canvas.
+ */
+fun Canvas.drawPellet(originInArena: Point) {
+    drawLayoutSprite(originInArena, layoutSpriteIndexToPoint(PELLET_SPRITE_CODE))
+}
+
+/**
+ * Draws a power pellet on the given coordinates on this canvas.
+ */
+fun Canvas.drawPowerPellet(originInArena: Point) {
+    drawLayoutSprite(originInArena, layoutSpriteIndexToPoint(POWER_PELLET_SPRITE_CODE))
+}
+
+/**
+ * Draws a single layout sprite on this canvas. See resources/sprites/layout.png to see the sprite sheet.
+ * @param originInArena the coordinates where the sprite is to be drawn
+ * @param originInSprite the coordinates of the sprite in the sprite sheet
+ */
+internal fun Canvas.drawLayoutSprite(originInArena: Point, originInSprite: Point) {
+    val spriteInfo = "${originInSprite.x},${originInSprite.y},$LAYOUT_SPRITE_SIZE,$LAYOUT_SPRITE_SIZE"
+    drawImage(
+        fileName = "sprites/layout|$spriteInfo",
+        xLeft = originInArena.x,
+        yTop = originInArena.y,
+        width = CELL_SIZE,
+        height = CELL_SIZE
+    )
 }
 
 /**

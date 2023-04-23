@@ -49,7 +49,7 @@ fun Canvas.redraw(hero: Hero, step: Step, animationStep: Step) {
 }
 
 /**
- * The size of each element in the actors sprite sheet (see resources/actors-sprite.png)
+ * The size of each element in the actors sprite sheet (see resources/sprites/actors.png)
  * Note that there are larger elements on the sprite sheet, but they are not in use.
  */
 private const val ACTORS_SPRITE_SIZE = 16
@@ -79,7 +79,7 @@ private fun Canvas.clearHeroArea(arenaPosition: Point) {
 }
 
 /**
- * Draws the hero sprite specified by its coordinates on the sprite sheet (see resources/actors-sprite.png) at the given
+ * Draws the hero sprite specified by its coordinates on the sprite sheet (see resources/sprites/actors.png) at the given
  * position on the arena.
  *
  * @param canvas            the canvas where to draw
@@ -93,7 +93,7 @@ private fun drawHeroSprite(canvas: Canvas, spriteAt: SpriteInfo, arenaPosition: 
 
     val spriteInfo = "${originInSprite.x},${originInSprite.y},$ACTORS_SPRITE_SIZE,$ACTORS_SPRITE_SIZE"
     canvas.drawImage(
-        fileName = "actors-sprite-t|$spriteInfo",
+        fileName = "sprites/actors|$spriteInfo",
         xLeft = arenaPosition.x,
         yTop = arenaPosition.y,
         width = ACTOR_SIZE,
@@ -113,7 +113,7 @@ internal fun computeMovementStepDelta(step: Step): Int {
 }
 
 /**
- * Computes the location of the sprite on the hero's sprite sheet (see resources/actors-sprite.png).
+ * Computes the location of the sprite on the hero's sprite sheet (see resources/sprites/actors.png).
  */
 internal fun computeSpriteInfo(hero: Hero, animationStep: Step): SpriteInfo {
 
@@ -136,6 +136,6 @@ internal fun computeSpriteInfo(hero: Hero, animationStep: Step): SpriteInfo {
 }
 
 /**
- * The information needed to select a sprite on the hero's sprite sheet (see resources/actors-sprite.png)
+ * The information needed to select a sprite on the hero's sprite sheet (see resources/sprites/actors.png)
  */
 internal data class SpriteInfo(val sheetRow: Int, val sheetColumn: Int)
