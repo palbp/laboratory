@@ -1,7 +1,8 @@
 package palbp.laboratory.essays.testability.pacman
 
-import palbp.laboratory.essays.testability.pacman.domain.Arena
+import palbp.laboratory.essays.testability.pacman.domain.ArenaState
 import palbp.laboratory.essays.testability.pacman.domain.Direction
+import palbp.laboratory.essays.testability.pacman.domain.HeroAction
 import palbp.laboratory.essays.testability.pacman.domain.Step
 import palbp.laboratory.essays.testability.pacman.domain.changeHeroDirection
 import palbp.laboratory.essays.testability.pacman.domain.createArena
@@ -19,12 +20,12 @@ import pt.isel.canvas.Canvas
  * Represents the game's world, which is composed of an arena and a movement step, used to determine when the hero
  * should move in the arena.
  *
- * @param arena the game arena
+ * @param arenaState the current state of the game arena
  * @param movementStep the movement step
  * @param heroAnimationStep the hero animation step
  */
 data class World(
-    val arena: Arena = createArena(),
+    val arenaState: ArenaState = ArenaState(createArena(), HeroAction.MOVE),
     val movementStep: Step = Step(current = 0, total = SCALE.toInt()),
     val heroAnimationStep: Step = Step(current = 0, total = ANIMATION_STEP_COUNT)
 )
@@ -34,21 +35,27 @@ data class World(
  */
 fun World.doStep(): World {
     val nextStep = movementStep.next()
-    val nextArena = if (nextStep.isFirst()) arena.moveHero() else arena
-    return World(nextArena, nextStep, if (arena.pacMan.isMoving()) heroAnimationStep.next() else heroAnimationStep)
+    val nextArenaState = if (nextStep.isFirst()) arenaState.arena.moveHero() else arenaState
+
+    return World(
+        arenaState = nextArenaState,
+        movementStep = nextStep,
+        heroAnimationStep = if (arenaState.arena.pacMan.isMoving()) heroAnimationStep.next() else heroAnimationStep
+    )
 }
 
 /**
  * Changes the hero's intended movement direction.
  */
-fun World.changeHeroDirection(direction: Direction) = copy(arena = arena.changeHeroDirection(direction))
+fun World.changeHeroDirection(direction: Direction) =
+    copy(arenaState = arenaState.copy(arena = arenaState.arena.changeHeroDirection(direction)))
 
 /**
  * Draws the game world on this canvas
  */
-fun Canvas.draw(world: World) = draw(world.arena, world.movementStep, world.heroAnimationStep)
+fun Canvas.draw(world: World) = draw(world.arenaState.arena, world.movementStep, world.heroAnimationStep)
 
 /**
  * Draws the game world on this canvas, only updating the changed content
  */
-fun Canvas.redraw(world: World) = redraw(world.arena, world.movementStep, world.heroAnimationStep)
+fun Canvas.redraw(world: World) = redraw(world.arenaState.arena, world.movementStep, world.heroAnimationStep)

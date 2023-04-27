@@ -69,6 +69,11 @@ fun createMaze(from: String = MAZE_LAYOUT) = Maze(
 )
 
 /**
+ * Gets the cell at the given coordinate.
+ */
+operator fun Maze.get(at: Coordinate) = cells[at.toIndex()]
+
+/**
  * Checks whether there's a wall in the given coordinate.
  */
 fun Maze.hasWall(at: Coordinate) = cells[at.toIndex()] == Cell.WALL
@@ -82,3 +87,11 @@ fun Maze.hasPellet(at: Coordinate) = cells[at.toIndex()] == Cell.PELLET
  * Checks whether there's a power pellet in the given coordinate.
  */
 fun Maze.hasPowerPellet(at: Coordinate) = cells[at.toIndex()] == Cell.POWER_PELLET
+
+/**
+ * Clears the cell at the given coordinate.
+ */
+fun Maze.clearCell(at: Coordinate) =
+    copy(cells = cells.mapIndexed { index, cell ->
+        if (index == at.toIndex()) Cell.EMPTY else cell
+    })

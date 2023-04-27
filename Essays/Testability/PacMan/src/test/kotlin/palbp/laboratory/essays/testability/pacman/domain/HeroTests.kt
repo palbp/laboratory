@@ -16,14 +16,14 @@ class HeroTests {
             facing = Direction.RIGHT,
             previouslyAt = start
         )
-        assertEquals(expected = expected, actual = sut.move(maze))
+        assertEquals(expected = expected, actual = sut.move(maze).hero)
     }
 
     @Test
     fun `hero cannot move to wall`() {
         val sut = Hero(at = Coordinate(row = 1, column = 1), facing = Direction.UP)
         val expected = Hero(at = Coordinate(row = 1, column = 1), facing = Direction.UP)
-        assertEquals(expected = expected, actual = sut.move(maze))
+        assertEquals(expected = expected, actual = sut.move(maze).hero)
     }
 
     @Test
@@ -43,13 +43,13 @@ class HeroTests {
             intent = Direction.RIGHT,
             previouslyAt = start
         )
-        assertEquals(expected = expected, actual = sut.changeIntent(Direction.RIGHT).move(maze))
+        assertEquals(expected = expected, actual = sut.changeIntent(Direction.RIGHT).move(maze).hero)
     }
 
     @Test
     fun `when hero moves its previous location is updated`() {
         val sut = Hero(at = Coordinate(row = 1, column = 1), facing = Direction.RIGHT)
         val expected = Hero(at = Coordinate(row = 1, column = 2), facing = Direction.RIGHT, previouslyAt = Coordinate(row = 1, column = 1))
-        assertEquals(expected = expected, actual = sut.move(maze))
+        assertEquals(expected = expected, actual = sut.move(maze).hero)
     }
 }

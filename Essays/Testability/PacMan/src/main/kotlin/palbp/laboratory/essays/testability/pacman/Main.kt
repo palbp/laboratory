@@ -1,8 +1,10 @@
 package palbp.laboratory.essays.testability.pacman
 
 import palbp.laboratory.essays.testability.pacman.domain.Direction
+import palbp.laboratory.essays.testability.pacman.domain.Step
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_HEIGHT
 import palbp.laboratory.essays.testability.pacman.view.ARENA_VIEW_WIDTH
+import palbp.laboratory.essays.testability.pacman.view.SCALE
 import pt.isel.canvas.BLACK
 import pt.isel.canvas.Canvas
 import pt.isel.canvas.DOWN_CODE
@@ -20,9 +22,12 @@ import pt.isel.canvas.onStart
 fun main() {
 
     onStart {
+        loadClips("sounds/munch_1", "sounds/munch_2", "sounds/siren_1")
         val canvas = Canvas(width = ARENA_VIEW_WIDTH, height = ARENA_VIEW_HEIGHT, background = BLACK)
-        var world = World()
+        var world = World(movementStep = Step(current = 0, total = SCALE.toInt() * 2))
         canvas.draw(world)
+
+        // playSoundLoop("sounds/siren_1")
 
         canvas.onKeyPressed {
             val direction: Direction? = when (it.code) {
@@ -37,7 +42,7 @@ fun main() {
             }
         }
 
-        canvas.onTimeProgress(1000 / 50) {
+        canvas.onTimeProgress(1000 / 40) {
             world = world.doStep()
             canvas.redraw(world)
         }

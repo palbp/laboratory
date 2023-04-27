@@ -58,9 +58,32 @@ fun Hero.changeIntent(to: Direction) = copy(intent = to)
  *  Moves the hero to the next cell in the direction he intends to move. If the hero intends to move towards a wall,
  *  he tries to move in the direction he's facing. If there's a wall in the way, he doesn't move.
  */
-fun Hero.move(maze: Maze): Hero {
+fun Hero.move(maze: Maze): HeroMovementResult {
     val nextFacing = if (maze.hasWall(at + intent)) facing else intent
     val nextCoordinate = at + nextFacing
-    return if (maze.hasWall(nextCoordinate)) copy(previouslyAt = at)
-    else copy(at = nextCoordinate, facing = nextFacing, previouslyAt = at)
+    return if (maze.hasWall(nextCoordinate))
+        HeroMovementResult(hero = copy(previouslyAt = at), action = HeroAction.STOP)
+    else {
+        val action = when (maze[nextCoordinate]) {
+            Cell.PELLET -> HeroAction.EAT_PELLET
+            Cell.POWER_PELLET -> HeroAction.EAT_POWER_PELLET
+            else -> HeroAction.MOVE
+        }
+        HeroMovementResult(hero = copy(at = nextCoordinate, facing = nextFacing, previouslyAt = at), action = action)
+    }
 }
+
+/**
+ * The hero's action.
+ */
+enum class HeroAction {
+    MOVE,
+    EAT_PELLET,
+    EAT_POWER_PELLET,
+    STOP
+}
+
+/**
+ * The result of the hero's movement.
+ */
+data class HeroMovementResult(val hero: Hero, val action: HeroAction)
