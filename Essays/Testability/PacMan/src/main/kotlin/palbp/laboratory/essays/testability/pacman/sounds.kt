@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package palbp.laboratory.essays.testability.pacman
 
 import pt.isel.canvas.Canvas
@@ -73,7 +75,6 @@ fun playSoundLoop(sound: String) {
 fun stopSoundLoop(sound: String) {
     sounds[sound.toSoundName()]?.stop()
 }
-
 
 private fun getInputStream(fileName:String) : InputStream {
     val file = File(fileName)

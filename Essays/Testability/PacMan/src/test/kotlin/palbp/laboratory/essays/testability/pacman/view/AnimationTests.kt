@@ -6,9 +6,11 @@ import kotlin.test.assertEquals
 
 class AnimationTests {
 
+    // To have realistic animations, the total number of steps should be a multiple of the scale
+    private val totalSteps = (SCALE * 2).toInt()
+
     @Test
     fun `computeMovementStepDelta on first step returns a single delta from the starting point`() {
-        val totalSteps = 3
         val step = Step(current = 0, total = totalSteps)
         val result = computeMovementStepDelta(step)
 
@@ -17,7 +19,6 @@ class AnimationTests {
 
     @Test
     fun `computeMovementStepDelta on second step returns a double delta from the starting point`() {
-        val totalSteps = 3
         val step = Step(current = 1, total = totalSteps)
         val result = computeMovementStepDelta(step)
 
@@ -26,7 +27,7 @@ class AnimationTests {
 
     @Test
     fun `computeMovementStepDelta should return 0 when step is the last one`() {
-        val step = Step(current = 2, total = 3)
+        val step = Step(current = 3, total = totalSteps)
         val result = computeMovementStepDelta(step)
 
         assertEquals(expected = 0, actual = result)

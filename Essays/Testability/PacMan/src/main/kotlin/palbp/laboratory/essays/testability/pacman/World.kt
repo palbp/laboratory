@@ -15,6 +15,7 @@ import palbp.laboratory.essays.testability.pacman.view.SCALE
 import palbp.laboratory.essays.testability.pacman.view.draw
 import palbp.laboratory.essays.testability.pacman.view.redraw
 import pt.isel.canvas.Canvas
+import pt.isel.canvas.playSound
 
 /**
  * Represents the game's world, which is composed of an arena and a movement step, used to determine when the hero
@@ -36,6 +37,12 @@ data class World(
 fun World.doStep(): World {
     val nextStep = movementStep.next()
     val nextArenaState = if (nextStep.isFirst()) arenaState.arena.moveHero() else arenaState
+
+    if (arenaState.action != HeroAction.EAT_PELLET && nextArenaState.action == HeroAction.EAT_PELLET) {
+        playSoundLoop("sounds/munch")
+    } else if (arenaState.action == HeroAction.EAT_PELLET && nextArenaState.action != HeroAction.EAT_PELLET) {
+        stopSoundLoop("sounds/munch")
+    }
 
     return World(
         arenaState = nextArenaState,
