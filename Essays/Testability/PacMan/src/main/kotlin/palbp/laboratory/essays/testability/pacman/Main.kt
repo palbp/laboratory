@@ -22,12 +22,13 @@ import pt.isel.canvas.onStart
 fun main() {
 
     onStart {
-        loadClips("sounds/munch", "sounds/siren_1")
+        loadClips(MUNCH_SOUND, SIREN_SOUND, POWER_PELLET_SOUND)
+
         val canvas = Canvas(width = ARENA_VIEW_WIDTH, height = ARENA_VIEW_HEIGHT, background = BLACK)
         var world = World(movementStep = Step(current = 0, total = SCALE.toInt() * 2))
         canvas.draw(world)
 
-        playSoundLoop("sounds/siren_1")
+        playSoundLoop(SIREN_SOUND)
 
         canvas.onKeyPressed {
             val direction: Direction? = when (it.code) {
@@ -42,11 +43,13 @@ fun main() {
             }
         }
 
-        canvas.onTimeProgress(1000 / 40) {
+        canvas.onTimeProgress(1000 / FPS) {
             world = world.doStep()
             canvas.redraw(world)
         }
     }
 
-    onFinish { }
+    onFinish {
+        stopsAllSounds()
+    }
 }

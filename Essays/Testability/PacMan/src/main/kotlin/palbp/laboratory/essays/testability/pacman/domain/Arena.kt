@@ -1,5 +1,8 @@
 package palbp.laboratory.essays.testability.pacman.domain
 
+import palbp.laboratory.essays.testability.pacman.domain.GhostsMode.CHASE
+import palbp.laboratory.essays.testability.pacman.domain.GhostsMode.SCATTER
+
 /**
  * The hero's starting position in the maze.
  * Whenever Pac-Man spawns, he does it at the exact same location.
@@ -19,18 +22,35 @@ data class Arena(val maze: Maze, val pacMan: Hero)
 fun createArena() = Arena(createMaze(), Hero(pacManStartingPosition, Direction.RIGHT))
 
 /**
+ * The mode the ghosts are in. This affects their behavior. When in [CHASE] mode, they chase the hero. When in
+ * [SCATTER] mode, they run away from the hero and can be eaten. Note that this is the general behaviour of the
+ * ghosts, but each ghost has its own specific behaviour. For example, if a ghost has already been eaten, it no longer
+ * runs away from the hero, even if the arena is in [SCATTER] mode.
+ */
+enum class GhostsMode { CHASE, SCATTER }
+
+/**
+ * Represents the arena state, which is composed of the arena contents and the last action performed by the hero.
+ */
+data class ArenaState(val arena: Arena, val action: HeroAction)
+
+/**
  * Moves the hero in the arena, according to the maze's rules.
  * @return the new arena state, after moving the actors.
  */
-fun Arena.moveHero(): ArenaState {
-    val heroMovementResult = pacMan.move(maze)
+fun ArenaState.moveHero(): ArenaState {
+    val heroMovementResult = arena.pacMan.move(arena.maze)
 
-    val newArena =
-        if (heroMovementResult.action == HeroAction.EAT_PELLET || heroMovementResult.action == HeroAction.EAT_POWER_PELLET)
-            copy(maze = maze.clearCell(heroMovementResult.hero.at), pacMan = heroMovementResult.hero)
-        else copy(pacMan = heroMovementResult.hero)
+    val newArenaState =
+        if (heroMovementResult.action == HeroAction.EAT_PELLET || heroMovementResult.action == HeroAction.EAT_POWER_PELLET) {
+            val newArena = arena.copy(maze = arena.maze.clearCell(heroMovementResult.hero.at), pacMan = heroMovementResult.hero)
+            if (heroMovementResult.action == HeroAction.EAT_POWER_PELLET)
+                copy(arena = newArena,action = heroMovementResult.action)
+            else copy(arena = newArena, action = heroMovementResult.action)
+        } else
+            copy(arena = arena.copy(pacMan = heroMovementResult.hero), action = heroMovementResult.action)
 
-    return ArenaState(newArena, heroMovementResult.action)
+    return newArenaState
 }
 
 /**
@@ -38,12 +58,12 @@ fun Arena.moveHero(): ArenaState {
  * @param to the new intended direction.
  * @return a new [Arena] instance with the hero intending to move to the new direction.
  */
-fun Arena.changeHeroDirection(to: Direction): Arena {
-    val nextPacMan = pacMan.changeIntent(to)
-    return copy(pacMan = nextPacMan)
+fun ArenaState.changeHeroDirection(to: Direction): ArenaState {
+    val nextPacMan = arena.pacMan.changeIntent(to)
+    return copy(arena = arena.copy(pacMan = nextPacMan))
 }
 
 /**
- * Represents the arena state, which is composed of the arena contents and the last action performed by the hero.
+ * Checks if the hero is moving.
  */
-data class ArenaState(val arena: Arena, val action: HeroAction)
+fun ArenaState.isHeroMoving(): Boolean = arena.pacMan.isMoving()

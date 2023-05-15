@@ -18,3 +18,8 @@ fun Step.next() = Step((current + 1) % total, total)
  * Returns true if this is the first step of the action.
  */
 fun Step.isFirst() = current == 0
+
+/**
+ * Returns true if this is the last step of the action.
+ */
+fun Step.isLast() = current == total - 1

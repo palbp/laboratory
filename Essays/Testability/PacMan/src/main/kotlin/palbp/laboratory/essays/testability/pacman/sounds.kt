@@ -15,12 +15,11 @@ private val sounds = mutableMapOf<String, Clip?>()
 /**
  * Loads the clip with the given name and returns it.
  */
-private fun loadClip(fileName: String) : Clip? {
+private fun loadClip(fileName: String): Clip? {
     return try {
-        val audio = AudioSystem.getAudioInputStream( BufferedInputStream( getInputStream(fileName) ) )
+        val audio = AudioSystem.getAudioInputStream(BufferedInputStream(getInputStream(fileName)))
         AudioSystem.getClip().also { it.open(audio) }
-    }
-    catch (ex: Exception) {
+    } catch (ex: Exception) {
         null
     }
 }
@@ -34,7 +33,7 @@ fun loadClips(vararg names: String) {
     }
 }
 
-private fun String.toSoundName() = if (lastIndexOf('.')>0) this else "$this.wav"
+private fun String.toSoundName() = if (lastIndexOf('.')> 0) this else "$this.wav"
 
 /**
  * Plays the sound with the given name exactly once. If the sound is already playing, it is stopped and restarted.
@@ -45,7 +44,7 @@ fun playSoundOnce(sound: String) {
         if (!sounds.contains(fileName)) loadClip(fileName).also { sounds[fileName] = it }
         else sounds[fileName]
 
-    if (clip!=null) {
+    if (clip != null) {
         clip.stop()
         clip.framePosition = 0
         clip.start()
@@ -62,7 +61,7 @@ fun playSoundLoop(sound: String) {
         if (!sounds.contains(fileName)) loadClip(fileName).also { sounds[fileName] = it }
         else sounds[fileName]
 
-    if (clip!=null) {
+    if (clip != null) {
         clip.stop()
         clip.framePosition = 0
         clip.loop(Clip.LOOP_CONTINUOUSLY)
@@ -76,7 +75,14 @@ fun stopSoundLoop(sound: String) {
     sounds[sound.toSoundName()]?.stop()
 }
 
-private fun getInputStream(fileName:String) : InputStream {
+/**
+ * Stops all the sounds.
+ */
+fun stopsAllSounds() {
+    sounds.values.forEach { it?.stop() }
+}
+
+private fun getInputStream(fileName: String): InputStream {
     val file = File(fileName)
     return if (file.canRead()) file.inputStream() else Canvas::class.java.getResourceAsStream("/$fileName")
         ?: throw FileNotFoundException("Cant open $fileName in working directory or in resources")

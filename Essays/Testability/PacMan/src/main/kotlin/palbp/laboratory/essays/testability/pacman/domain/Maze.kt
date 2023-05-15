@@ -58,12 +58,14 @@ data class Maze(val cells: List<Cell>)
 fun createMaze(from: String = MAZE_LAYOUT) = Maze(
     buildList {
         from.forEach { symbol ->
-            add(when {
-                isObstacle(symbol) -> Cell.WALL
-                isPellet(symbol) -> Cell.PELLET
-                isPowerPellet(symbol) -> Cell.POWER_PELLET
-                else -> Cell.EMPTY
-            })
+            add(
+                when {
+                    isObstacle(symbol) -> Cell.WALL
+                    isPellet(symbol) -> Cell.PELLET
+                    isPowerPellet(symbol) -> Cell.POWER_PELLET
+                    else -> Cell.EMPTY
+                }
+            )
         }
     }
 )
@@ -92,6 +94,8 @@ fun Maze.hasPowerPellet(at: Coordinate) = cells[at.toIndex()] == Cell.POWER_PELL
  * Clears the cell at the given coordinate.
  */
 fun Maze.clearCell(at: Coordinate) =
-    copy(cells = cells.mapIndexed { index, cell ->
-        if (index == at.toIndex()) Cell.EMPTY else cell
-    })
+    copy(
+        cells = cells.mapIndexed { index, cell ->
+            if (index == at.toIndex()) Cell.EMPTY else cell
+        }
+    )
