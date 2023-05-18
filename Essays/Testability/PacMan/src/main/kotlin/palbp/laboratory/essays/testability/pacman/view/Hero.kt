@@ -14,16 +14,21 @@ import java.lang.Integer.max
 const val ANIMATION_STEP_COUNT = 8
 
 /**
+ * The number of frames per hero move. The hero moves one cell per move.
+ */
+const val FRAMES_PER_HERO_MOVE = SCALE.toInt() * 2
+
+/**
  * Draws the hero on this canvas, clearing the canvas on the previous hero position.
  * @param hero the hero to be drawn
- * @param step the movement step (used to determine the hero's position on the canvas)
+ * @param frameNumber the current frame number
  * @param animationStep the hero animation step (used to determine the hero's sprite)
  */
-fun Canvas.redraw(hero: Hero, step: Step, animationStep: Step) {
+fun Canvas.redraw(hero: Hero, frameNumber: Int, animationStep: Step) {
 
     val spriteInfo = computeSpriteInfo(hero, animationStep)
 
-    val scaledStepDelta = computeMovementStepDelta(step)
+    val scaledStepDelta = computeMovementStepDelta(frameNumber)
     val (deltaX, deltaY) = if (hero.isMoving()) {
         when (hero.facing) {
             Direction.RIGHT -> Pair(-scaledStepDelta, 0)
@@ -107,9 +112,9 @@ private fun drawHeroSprite(canvas: Canvas, spriteAt: SpriteInfo, arenaPosition: 
  * (its hit box has already changed), but the animation is still in progress, so the actor is not yet in its final
  * position on the screen. This is only accomplished in the last step of the animation.
  */
-internal fun computeMovementStepDelta(step: Step): Int {
-    val stepSize = CELL_SIZE / step.total
-    return CELL_SIZE - ((step.current + 1) * stepSize)
+internal fun computeMovementStepDelta(frameNumber: Int): Int {
+    val stepSize = CELL_SIZE / FRAMES_PER_HERO_MOVE
+    return CELL_SIZE - (((frameNumber % FRAMES_PER_HERO_MOVE) + 1) * stepSize)
 }
 
 /**

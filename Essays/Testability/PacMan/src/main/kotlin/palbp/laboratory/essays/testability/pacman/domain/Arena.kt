@@ -43,9 +43,9 @@ fun ArenaState.moveHero(): ArenaState {
 
     val newArenaState =
         if (heroMovementResult.action == HeroAction.EAT_PELLET || heroMovementResult.action == HeroAction.EAT_POWER_PELLET) {
-            val newArena = arena.copy(maze = arena.maze.clearCell(heroMovementResult.hero.at), pacMan = heroMovementResult.hero)
+            val newArena = arena.copy(maze = arena.maze.removePellet(heroMovementResult.hero.at), pacMan = heroMovementResult.hero)
             if (heroMovementResult.action == HeroAction.EAT_POWER_PELLET)
-                copy(arena = newArena,action = heroMovementResult.action)
+                copy(arena = newArena, action = heroMovementResult.action)
             else copy(arena = newArena, action = heroMovementResult.action)
         } else
             copy(arena = arena.copy(pacMan = heroMovementResult.hero), action = heroMovementResult.action)

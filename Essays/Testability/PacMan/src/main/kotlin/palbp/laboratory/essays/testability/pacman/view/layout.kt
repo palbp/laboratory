@@ -48,6 +48,13 @@ fun Canvas.drawPowerPellet(originInArena: Point) {
 }
 
 /**
+ * Erases the cell on the given coordinates on this canvas.
+ */
+fun Canvas.eraseCell(originInArena: Point) {
+    drawLayoutSprite(originInArena, layoutSpriteIndexToPoint(EMPTY_SPRITE_CODE))
+}
+
+/**
  * Draws a single layout sprite on this canvas. See resources/sprites/layout.png to see the sprite sheet.
  * @param originInArena the coordinates where the sprite is to be drawn
  * @param originInSprite the coordinates of the sprite in the sprite sheet
