@@ -35,6 +35,7 @@ fun Canvas.draw(arena: Arena, frameNumber: Int, heroAnimationStep: Step) {
 fun Canvas.redraw(arena: Arena, frameNumber: Int, heroAnimationStep: Step) {
     if (arena.pacMan.isMoving())
         redraw(arena.pacMan, frameNumber, heroAnimationStep)
+    arena.ghosts.forEach { redraw(it, frameNumber) }
     redrawPowerPellets(frameNumber, arena.maze.powerPelletsLocations)
 }
 

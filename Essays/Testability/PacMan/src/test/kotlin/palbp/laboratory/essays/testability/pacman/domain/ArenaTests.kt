@@ -14,7 +14,7 @@ class ArenaTests {
 
     @Test
     fun `moveHero moves the hero to the intended direction`() {
-        val sut = ArenaState(arena = Arena(createMaze(), Hero(Coordinate(1, 1), Direction.RIGHT)), action = HeroAction.MOVE)
+        val sut = ArenaState(arena = Arena(createMaze(), Hero(Coordinate(1, 1), Direction.RIGHT), emptyList()), action = HeroAction.MOVE)
         val actual = sut.moveHero()
         assertEquals(expected = Coordinate(1, 2), actual = actual.arena.pacMan.at)
     }

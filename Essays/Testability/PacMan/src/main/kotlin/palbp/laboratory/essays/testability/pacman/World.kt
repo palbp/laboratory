@@ -79,7 +79,7 @@ fun World.doStep(): World {
         scatterModeEnd = nextScatterModeEnd
     )
 
-    computeSoundEffects(world = this, nextWorld = nextWorld)
+//    computeSoundEffects(world = this, nextWorld = nextWorld)
 
     return nextWorld
 }

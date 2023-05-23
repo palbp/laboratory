@@ -4,7 +4,6 @@ import palbp.laboratory.essays.testability.pacman.domain.Direction
 import palbp.laboratory.essays.testability.pacman.domain.Hero
 import palbp.laboratory.essays.testability.pacman.domain.Step
 import palbp.laboratory.essays.testability.pacman.domain.isMoving
-import pt.isel.canvas.BLACK
 import pt.isel.canvas.Canvas
 import java.lang.Integer.max
 
@@ -48,62 +47,9 @@ fun Canvas.redraw(hero: Hero, frameNumber: Int, animationStep: Step) {
         y = max(hero.previouslyAt.row * CELL_SIZE - actorsOffset.y, 0)
     )
 
-    clearHeroArea(previousPositionInArena)
-    clearHeroArea(positionInArena)
-    drawHeroSprite(this, spriteInfo, positionInArena)
-}
-
-/**
- * The size of each element in the actors sprite sheet (see resources/sprites/actors.png)
- * Note that there are larger elements on the sprite sheet, but they are not in use.
- */
-private const val ACTORS_SPRITE_SIZE = 16
-
-/**
- * The scaled actor size on the screen
- */
-private const val ACTOR_SIZE = (ACTORS_SPRITE_SIZE * SCALE).toInt()
-
-/**
- * Actors are drawn using an offset, so they seem to closely fit the arena's corridors
- */
-private val actorsOffset = Point(x = CELL_SIZE / 2, y = CELL_SIZE / 2)
-
-/**
- * Clears the area occupied by the hero on the canvas.
- */
-private fun Canvas.clearHeroArea(arenaPosition: Point) {
-    val correction = (SCALE * 2).toInt()
-    drawRect(
-        arenaPosition.x + correction / 2,
-        arenaPosition.y + correction / 2,
-        ACTOR_SIZE - correction,
-        ACTOR_SIZE - correction,
-        BLACK
-    )
-}
-
-/**
- * Draws the hero sprite specified by its coordinates on the sprite sheet (see resources/sprites/actors.png) at the given
- * position on the arena.
- *
- * @param canvas            the canvas where to draw
- * @param arenaPosition     the position on the arena where to draw the sprite
- */
-private fun drawHeroSprite(canvas: Canvas, spriteAt: SpriteInfo, arenaPosition: Point) {
-    val originInSprite = Point(
-        x = spriteAt.sheetColumn * ACTORS_SPRITE_SIZE,
-        y = spriteAt.sheetRow * ACTORS_SPRITE_SIZE
-    )
-
-    val spriteInfo = "${originInSprite.x},${originInSprite.y},$ACTORS_SPRITE_SIZE,$ACTORS_SPRITE_SIZE"
-    canvas.drawImage(
-        fileName = "sprites/actors|$spriteInfo",
-        xLeft = arenaPosition.x,
-        yTop = arenaPosition.y,
-        width = ACTOR_SIZE,
-        height = ACTOR_SIZE
-    )
+    clearActorArea(previousPositionInArena)
+    clearActorArea(positionInArena)
+    drawActorSprite(this, spriteInfo, positionInArena)
 }
 
 /**
@@ -139,8 +85,3 @@ internal fun computeSpriteInfo(hero: Hero, animationStep: Step): SpriteInfo {
 
     return SpriteInfo(spriteSheetRow, spriteSheetColumn)
 }
-
-/**
- * The information needed to select a sprite on the hero's sprite sheet (see resources/sprites/actors.png)
- */
-internal data class SpriteInfo(val sheetRow: Int, val sheetColumn: Int)

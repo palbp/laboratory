@@ -1,33 +1,25 @@
 package palbp.laboratory.essays.testability.pacman.domain
 
-import palbp.laboratory.essays.testability.pacman.domain.GhostsMode.CHASE
-import palbp.laboratory.essays.testability.pacman.domain.GhostsMode.SCATTER
-
-/**
- * The hero's starting position in the maze.
- * Whenever Pac-Man spawns, he does it at the exact same location.
- */
-val pacManStartingPosition = Coordinate(row = 23, column = 13)
-
 /**
  * Represents the game's arena, which is composed of a maze and a hero.
  * @property maze the maze that composes the arena.
  * @property pacMan the hero that moves around the maze.
  */
-data class Arena(val maze: Maze, val pacMan: Hero)
+data class Arena(val maze: Maze, val pacMan: Hero, val ghosts: List<Ghost>)
 
 /**
  * Creates a new [Arena] instance in its initial state.
  */
-fun createArena() = Arena(createMaze(), Hero(pacManStartingPosition, Direction.RIGHT))
-
-/**
- * The mode the ghosts are in. This affects their behavior. When in [CHASE] mode, they chase the hero. When in
- * [SCATTER] mode, they run away from the hero and can be eaten. Note that this is the general behaviour of the
- * ghosts, but each ghost has its own specific behaviour. For example, if a ghost has already been eaten, it no longer
- * runs away from the hero, even if the arena is in [SCATTER] mode.
- */
-enum class GhostsMode { CHASE, SCATTER }
+fun createArena() = Arena(
+    maze = createMaze(),
+    pacMan = Hero(heroStartingPosition, Direction.RIGHT),
+    ghosts = listOf(
+        Ghost(info = GhostInfo.SHADOW, at = GhostInfo.SHADOW.startsAt, facing = GhostInfo.SHADOW.startsFacing),
+        Ghost(info = GhostInfo.BASHFUL, at = GhostInfo.BASHFUL.startsAt, facing = GhostInfo.BASHFUL.startsFacing),
+        Ghost(info = GhostInfo.SPEEDY, at = GhostInfo.SPEEDY.startsAt, facing = GhostInfo.SPEEDY.startsFacing),
+        Ghost(info = GhostInfo.POKEY, at = GhostInfo.POKEY.startsAt, facing = GhostInfo.POKEY.startsFacing)
+    )
+)
 
 /**
  * Represents the arena state, which is composed of the arena contents and the last action performed by the hero.

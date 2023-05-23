@@ -26,7 +26,7 @@ fun main() {
         var world = World()
         canvas.draw(world)
 
-        playSoundLoop(SIREN_SOUND)
+//        playSoundLoop(SIREN_SOUND)
 
         canvas.onKeyPressed {
             val direction: Direction? = when (it.code) {
@@ -48,6 +48,6 @@ fun main() {
     }
 
     onFinish {
-        stopsAllSounds()
+//        stopsAllSounds()
     }
 }
