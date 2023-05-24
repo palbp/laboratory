@@ -14,10 +14,10 @@ fun createArena() = Arena(
     maze = createMaze(),
     pacMan = Hero(heroStartingPosition, Direction.RIGHT),
     ghosts = listOf(
-        Ghost(info = GhostInfo.SHADOW, at = GhostInfo.SHADOW.startsAt, facing = GhostInfo.SHADOW.startsFacing),
-        Ghost(info = GhostInfo.BASHFUL, at = GhostInfo.BASHFUL.startsAt, facing = GhostInfo.BASHFUL.startsFacing),
-        Ghost(info = GhostInfo.SPEEDY, at = GhostInfo.SPEEDY.startsAt, facing = GhostInfo.SPEEDY.startsFacing),
-        Ghost(info = GhostInfo.POKEY, at = GhostInfo.POKEY.startsAt, facing = GhostInfo.POKEY.startsFacing)
+        Ghost(id = GhostId.SHADOW, at = ghostsStartingPosition, facing = ghostsStartingFacing),
+        Ghost(id = GhostId.POKEY, at = ghostsStartingPosition, facing = ghostsStartingFacing),
+        Ghost(id = GhostId.BASHFUL, at = ghostsStartingPosition, facing = ghostsStartingFacing),
+        Ghost(id = GhostId.SPEEDY, at = ghostsStartingPosition, facing = ghostsStartingFacing)
     )
 )
 
@@ -43,6 +43,14 @@ fun ArenaState.moveHero(): ArenaState {
             copy(arena = arena.copy(pacMan = heroMovementResult.hero), action = heroMovementResult.action)
 
     return newArenaState
+}
+
+/**
+ * Moves the ghosts in the arena, according to the maze's rules.
+ */
+fun ArenaState.moveGhosts(): ArenaState {
+    val newGhosts = arena.ghosts.map { it.move(arena.maze) }
+    return copy(arena = arena.copy(ghosts = newGhosts))
 }
 
 /**

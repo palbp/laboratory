@@ -6,6 +6,7 @@ import palbp.laboratory.essays.testability.pacman.domain.Coordinate
 import palbp.laboratory.essays.testability.pacman.domain.MAZE_HEIGHT
 import palbp.laboratory.essays.testability.pacman.domain.MAZE_WIDTH
 import palbp.laboratory.essays.testability.pacman.domain.Step
+import palbp.laboratory.essays.testability.pacman.domain.hasPellet
 import palbp.laboratory.essays.testability.pacman.domain.isMoving
 import pt.isel.canvas.Canvas
 
@@ -35,7 +36,11 @@ fun Canvas.draw(arena: Arena, frameNumber: Int, heroAnimationStep: Step) {
 fun Canvas.redraw(arena: Arena, frameNumber: Int, heroAnimationStep: Step) {
     if (arena.pacMan.isMoving())
         redraw(arena.pacMan, frameNumber, heroAnimationStep)
+
     arena.ghosts.forEach { redraw(it, frameNumber) }
+
+    redrawPellets(arena)
+
     redrawPowerPellets(frameNumber, arena.maze.powerPelletsLocations)
 }
 
@@ -49,4 +54,13 @@ private fun Canvas.redrawPowerPellets(frameNumber: Int, powerPelletsLocations: L
         else if (frameNumber % (FPS / 4) == 0)
             eraseCell(it.toPoint())
     }
+}
+
+/**
+ * Redraws the pellets that were being hidden by the ghosts
+ */
+private fun Canvas.redrawPellets(arena: Arena) {
+    arena.ghosts.map { it.previouslyAt }
+        .filter { arena.maze.hasPellet(it) }
+        .forEach { drawPellet(it.toPoint()) }
 }
