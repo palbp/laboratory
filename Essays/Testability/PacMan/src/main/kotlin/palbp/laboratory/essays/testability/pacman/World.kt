@@ -56,7 +56,7 @@ const val SCATTER_MODE_DURATION = 8 * FPS
 data class World(
     val arenaState: ArenaState = ArenaState(createArena(), HeroAction.MOVE),
     val heroAnimationStep: Step = Step(current = 0, total = ANIMATION_STEP_COUNT),
-    val frameNumber: Int = 0,
+    val frameNumber: Int = -1,
     val scatterModeEnd: Int? = null,
 )
 
@@ -83,7 +83,7 @@ fun World.doStep(): World {
         scatterModeEnd = nextScatterModeEnd
     )
 
-//    computeSoundEffects(world = this, nextWorld = nextWorld)
+    computeSoundEffects(world = this, nextWorld = nextWorld)
 
     return nextWorld
 }

@@ -7,12 +7,12 @@ import pt.isel.canvas.Canvas
 /**
  * The number of frames per ghost move. The ghost moves one cell per move.
  */
-const val FRAMES_PER_GHOST_MOVE = SCALE.toInt() * 3
+const val FRAMES_PER_GHOST_MOVE = (SCALE * 3).toInt()
 
 /**
  * Draws the given ghost in the canvas.
  */
-fun Canvas.redraw(ghost: Ghost, frameNumber: Int) {
+fun Canvas.draw(ghost: Ghost, frameNumber: Int) {
     val spriteInfo = computeSpriteInfo(ghost, frameNumber)
 
     val scaledStepDelta = computeGhostMovementStepDelta(frameNumber)
@@ -28,14 +28,22 @@ fun Canvas.redraw(ghost: Ghost, frameNumber: Int) {
         y = Integer.max(ghost.at.row * CELL_SIZE - actorsOffset.y + deltaY, 0)
     )
 
-    val previousPositionInArena = Point(
-        x = Integer.max(ghost.previouslyAt.column * CELL_SIZE - actorsOffset.x + deltaX, 0),
-        y = Integer.max(ghost.previouslyAt.row * CELL_SIZE - actorsOffset.y + deltaX, 0)
-    )
-
-    clearActorArea(previousPositionInArena)
-    clearActorArea(positionInArena)
     drawActorSprite(this, spriteInfo, positionInArena)
+}
+
+/**
+ * Clears the given ghost from the canvas. This is done by clearing the area where the ghost was previously drawn.
+ */
+fun Canvas.clear(ghost: Ghost) {
+
+    ghost.previouslyAt?.let {
+        val previousPositionInArena = Point(
+            x = Integer.max(ghost.previouslyAt.column * CELL_SIZE - actorsOffset.x, 0),
+            y = Integer.max(ghost.previouslyAt.row * CELL_SIZE - actorsOffset.y, 0)
+        )
+
+        clearActorArea(previousPositionInArena)
+    }
 }
 
 /**
@@ -55,12 +63,10 @@ internal fun computeSpriteInfo(ghost: Ghost, frameNumber: Int): SpriteInfo {
     return SpriteInfo(spriteSheetRow, spriteSheetColumn)
 }
 
-/**
- * Computes the scaled step delta (used to determine the ghost's position on the canvas). Returns the variation of the
- * step, in pixels, that should be applied to the actor's position. Note that the actor has already actually moved
- * (its hit box has already changed), but the animation is still in progress, so the actor is not yet in its final
- * position on the screen. This is only accomplished in the last step of the animation.
- */
 internal fun computeGhostMovementStepDelta(frameNumber: Int): Int {
-    return 0
+    val totalSteps = FRAMES_PER_GHOST_MOVE / 2
+    val stepSize = CELL_SIZE / totalSteps
+    val currentStep = (frameNumber % FRAMES_PER_GHOST_MOVE) / 2
+    return if (currentStep == totalSteps - 1) 0
+    else (CELL_SIZE - (currentStep + 1) * stepSize)
 }

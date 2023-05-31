@@ -17,7 +17,7 @@ data class Ghost(
     val id: GhostId,
     val at: Coordinate,
     val facing: Direction,
-    val previouslyAt: Coordinate = at,
+    val previouslyAt: Coordinate? = null,
 )
 
 /**

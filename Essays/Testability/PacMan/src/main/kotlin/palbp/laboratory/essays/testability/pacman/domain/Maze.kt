@@ -122,7 +122,7 @@ fun Maze.removePellet(at: Coordinate): Maze =
                 if (index == at.toIndex()) Cell.EMPTY else cell
             },
             powerPelletsLocations =
-                if (hasPowerPellet(at)) powerPelletsLocations.filter { it != at }
-                else powerPelletsLocations
+            if (hasPowerPellet(at)) powerPelletsLocations.filter { it != at }
+            else powerPelletsLocations
         )
     } else this
