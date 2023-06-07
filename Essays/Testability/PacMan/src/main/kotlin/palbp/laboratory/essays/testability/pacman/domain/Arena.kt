@@ -48,8 +48,8 @@ fun ArenaState.moveHero(): ArenaState {
 /**
  * Moves the ghosts in the arena, according to the maze's rules.
  */
-fun ArenaState.moveGhosts(): ArenaState {
-    val newGhosts = arena.ghosts.map { it.move(arena.maze) }
+fun ArenaState.moveGhosts(prevArena: Arena, enteredScatterMode: Boolean): ArenaState {
+    val newGhosts = arena.ghosts.map { it.move(prevArena, enteredScatterMode) }
     return copy(arena = arena.copy(ghosts = newGhosts))
 }
 
@@ -67,3 +67,19 @@ fun ArenaState.changeHeroDirection(to: Direction): ArenaState {
  * Checks if the hero is moving.
  */
 fun ArenaState.isHeroMoving(): Boolean = arena.pacMan.isMoving()
+
+/**
+ * Enters the ghosts into scatter mode.
+ */
+fun ArenaState.enterScatterMode(): ArenaState {
+    val newGhosts = arena.ghosts.map { it.enterScatterMode() }
+    return copy(arena = arena.copy(ghosts = newGhosts))
+}
+
+/**
+ * Enters the ghosts into chase mode.
+ */
+fun ArenaState.enterChaseMode(): ArenaState {
+    val newGhosts = arena.ghosts.map { it.enterChaseMode() }
+    return copy(arena = arena.copy(ghosts = newGhosts))
+}

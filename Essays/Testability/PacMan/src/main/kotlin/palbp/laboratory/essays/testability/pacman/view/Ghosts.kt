@@ -2,6 +2,7 @@ package palbp.laboratory.essays.testability.pacman.view
 
 import palbp.laboratory.essays.testability.pacman.domain.Direction
 import palbp.laboratory.essays.testability.pacman.domain.Ghost
+import palbp.laboratory.essays.testability.pacman.domain.GhostMode
 import pt.isel.canvas.Canvas
 
 /**
@@ -50,6 +51,10 @@ fun Canvas.clear(ghost: Ghost) {
  * Computes the location of the ghost's sprite on the actor's sprite sheet (see resources/sprites/actors.png).
  */
 internal fun computeSpriteInfo(ghost: Ghost, frameNumber: Int): SpriteInfo {
+
+    if (ghost.mode == GhostMode.SCATTER)
+        return SpriteInfo(4, 8)
+
     val ghostsInitialSpriteRow = 4
     val spriteSheetRow = ghostsInitialSpriteRow + ghost.id.ordinal
 

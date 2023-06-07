@@ -6,6 +6,8 @@ import palbp.laboratory.essays.testability.pacman.domain.HeroAction
 import palbp.laboratory.essays.testability.pacman.domain.Step
 import palbp.laboratory.essays.testability.pacman.domain.changeHeroDirection
 import palbp.laboratory.essays.testability.pacman.domain.createArena
+import palbp.laboratory.essays.testability.pacman.domain.enterChaseMode
+import palbp.laboratory.essays.testability.pacman.domain.enterScatterMode
 import palbp.laboratory.essays.testability.pacman.domain.isHeroMoving
 import palbp.laboratory.essays.testability.pacman.domain.moveGhosts
 import palbp.laboratory.essays.testability.pacman.domain.moveHero
@@ -67,17 +69,25 @@ fun World.doStep(): World {
 
     val nextFrameNumber = frameNumber + 1
 
-    val arenaAfterGhostsMove = if (nextFrameNumber % FRAMES_PER_GHOST_MOVE == 0) arenaState.moveGhosts() else arenaState
-    val nextArenaState = if (nextFrameNumber % FRAMES_PER_HERO_MOVE == 0) arenaAfterGhostsMove.moveHero() else arenaAfterGhostsMove
-
+    val arenaAfterHeroMove = if (nextFrameNumber % FRAMES_PER_HERO_MOVE == 0) arenaState.moveHero() else arenaState
     val nextScatterModeEnd = when {
-        nextArenaState.action == HeroAction.EAT_POWER_PELLET -> frameNumber + SCATTER_MODE_DURATION
+        arenaAfterHeroMove.action == HeroAction.EAT_POWER_PELLET -> frameNumber + SCATTER_MODE_DURATION
         scatterModeEnd == frameNumber -> null
         else -> scatterModeEnd
     }
 
+    val nextArenaState = if (scatterModeEnd != nextScatterModeEnd) {
+        if (nextScatterModeEnd == null) arenaAfterHeroMove.enterChaseMode()
+        else arenaAfterHeroMove.enterScatterMode()
+    } else arenaAfterHeroMove
+
+    val arenaAfterGhostsMove =
+        if (nextFrameNumber % FRAMES_PER_GHOST_MOVE == 0)
+            nextArenaState.moveGhosts(arenaAfterHeroMove.arena, nextScatterModeEnd != null && scatterModeEnd != nextScatterModeEnd)
+        else nextArenaState
+
     val nextWorld = World(
-        arenaState = nextArenaState,
+        arenaState = arenaAfterGhostsMove,
         heroAnimationStep = if (arenaState.isHeroMoving()) heroAnimationStep.next() else heroAnimationStep,
         frameNumber = nextFrameNumber,
         scatterModeEnd = nextScatterModeEnd
