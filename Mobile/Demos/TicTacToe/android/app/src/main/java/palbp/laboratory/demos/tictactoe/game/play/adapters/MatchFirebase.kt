@@ -94,8 +94,6 @@ class MatchFirebase(private val db: FirebaseFirestore) : Match {
             val game = it.copy(first = it.first.makeMove(at))
             updateGame(game.first, game.second)
         }
-
-
     }
 
     override suspend fun forfeit() {
