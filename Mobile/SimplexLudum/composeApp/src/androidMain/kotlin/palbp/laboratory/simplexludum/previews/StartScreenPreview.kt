@@ -1,11 +1,11 @@
 package palbp.laboratory.simplexludum.previews
 
-import palbp.laboratory.simplexludum.App
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import palbp.laboratory.simplexludum.StartScreen
 
 @Preview
 @Composable
-fun AppPreview() {
-    App()
+fun StartScreenPreview() {
+    StartScreen(onGetStartedIntent = { })
 }
