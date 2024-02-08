@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum
+package palbp.laboratory.simplexludum.ui
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -6,6 +6,8 @@ import androidx.compose.ui.test.performClick
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import palbp.laboratory.simplexludum.ui.GET_STARTED_BUTTON_TAG
+import palbp.laboratory.simplexludum.ui.StartScreen
 
 class StartScreenTests {
 

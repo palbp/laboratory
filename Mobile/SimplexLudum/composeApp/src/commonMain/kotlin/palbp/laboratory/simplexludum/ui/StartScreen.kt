@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum
+package palbp.laboratory.simplexludum.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,13 +17,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import palbp.laboratory.simplexludum.theme.SimplexLudumTheme
+import palbp.laboratory.simplexludum.stringResource
+import palbp.laboratory.simplexludum.ui.theme.SimplexLudumTheme
 
 const val GET_STARTED_BUTTON_TAG = "get-started-button"
-
-const val HOME_URI: String = "/"
 
 // Resource identifiers
 const val APP_TITLE: String = "app_title"
@@ -79,3 +81,17 @@ fun StartScreen(onGetStartedIntent: () -> Unit) {
         }
     }
 }
+
+/**
+ * Implementation of the Voyager navigation contract
+ */
+object StartScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        StartScreen(
+            onGetStartedIntent = { navigator.push(MyCollectionScreen) }
+        )
+    }
+}
+

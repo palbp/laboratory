@@ -1,3 +1,12 @@
+
+## Main design ideas
+* Immutable domain model (we use values instead of objects) 
+* Domain behaviour expressed through pure and total functions
+* Query command separation principle [CQS](https://martinfowler.com/bliki/CommandQuerySeparation.html)
+* Simplified onion architecture
+
+## Auto generated documentation ensues 
+
 This is a Kotlin Multiplatform project targeting Android, iOS.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.

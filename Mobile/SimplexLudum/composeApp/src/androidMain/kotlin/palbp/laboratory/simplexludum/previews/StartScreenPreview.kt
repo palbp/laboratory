@@ -2,7 +2,7 @@ package palbp.laboratory.simplexludum.previews
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import palbp.laboratory.simplexludum.StartScreen
+import palbp.laboratory.simplexludum.ui.StartScreen
 
 @Preview
 @Composable
