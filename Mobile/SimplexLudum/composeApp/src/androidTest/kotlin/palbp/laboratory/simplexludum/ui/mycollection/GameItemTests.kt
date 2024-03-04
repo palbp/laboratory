@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui
+package palbp.laboratory.simplexludum.ui.mycollection
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag

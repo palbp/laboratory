@@ -1,11 +1,11 @@
-package palbp.laboratory.simplexludum
+package palbp.laboratory.simplexludum.ui.common
 
-import palbp.laboratory.simplexludum.ui.APP_MOTTO_TEXT
-import palbp.laboratory.simplexludum.ui.APP_TITLE
-import palbp.laboratory.simplexludum.ui.GET_STARTED_TEXT
-import palbp.laboratory.simplexludum.ui.LATEST_TITLE
-import palbp.laboratory.simplexludum.ui.MY_COLLECTION_TITLE
-import palbp.laboratory.simplexludum.ui.SEE_ALL
+import palbp.laboratory.simplexludum.ui.start.APP_MOTTO_TEXT
+import palbp.laboratory.simplexludum.ui.start.APP_TITLE
+import palbp.laboratory.simplexludum.ui.start.GET_STARTED_TEXT
+import palbp.laboratory.simplexludum.ui.mycollection.LATEST_TITLE
+import palbp.laboratory.simplexludum.ui.mycollection.MY_COLLECTION_TITLE
+import palbp.laboratory.simplexludum.ui.mycollection.SEE_ALL
 
 /**
  * Temporary utility to be replaced once we have a proper resource management

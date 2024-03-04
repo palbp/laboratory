@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui
+package palbp.laboratory.simplexludum.ui.mycollection
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
-import palbp.laboratory.simplexludum.stringResource
-import palbp.laboratory.simplexludum.ui.theme.SimplexLudumTheme
+import palbp.laboratory.simplexludum.ui.common.stringResource
+import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 
 // Resource identifiers
 const val MY_COLLECTION_TITLE: String = "my_collection_title"
@@ -66,9 +66,14 @@ fun MyCollectionScreen(
     }
 }
 
+/**
+ * Implementation of the Voyager navigation contract
+ */
 object MyCollectionScreen : Screen {
     @Composable
     override fun Content() {
+        val screenModel = MyCollectionScreenModel()
+        // TODO: use screenModel to get the data
         MyCollectionScreen(
             lists = emptyList(),
             latest = emptyList(),

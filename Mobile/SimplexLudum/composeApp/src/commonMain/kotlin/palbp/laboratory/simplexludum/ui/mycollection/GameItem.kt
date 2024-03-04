@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui
+package palbp.laboratory.simplexludum.ui.mycollection
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

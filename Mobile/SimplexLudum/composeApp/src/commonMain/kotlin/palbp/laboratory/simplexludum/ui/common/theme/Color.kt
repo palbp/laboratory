@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui.theme
+package palbp.laboratory.simplexludum.ui.common.theme
 
 import androidx.compose.ui.graphics.Color
 

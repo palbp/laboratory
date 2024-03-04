@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui
+package palbp.laboratory.simplexludum.ui.start
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import palbp.laboratory.simplexludum.stringResource
-import palbp.laboratory.simplexludum.ui.theme.SimplexLudumTheme
+import palbp.laboratory.simplexludum.ui.common.stringResource
+import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
+import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 
 const val GET_STARTED_BUTTON_TAG = "get-started-button"
 
@@ -88,10 +90,9 @@ fun StartScreen(onGetStartedIntent: () -> Unit) {
 object StartScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator: Navigator = LocalNavigator.currentOrThrow
         StartScreen(
             onGetStartedIntent = { navigator.push(MyCollectionScreen) }
         )
     }
 }
-

@@ -7,7 +7,7 @@ import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
-import palbp.laboratory.simplexludum.ui.MyCollectionScreen
+import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
 
 @Preview(showBackground = true, showSystemUi = true, name = "My Collection")
 @Composable

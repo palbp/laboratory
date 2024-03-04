@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui
+package palbp.laboratory.simplexludum.ui.common
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -6,6 +6,12 @@ import palbp.laboratory.simplexludum.domain.Distribution
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
+import palbp.laboratory.simplexludum.ui.mycollection.DVD_RESOURCE
+import palbp.laboratory.simplexludum.ui.mycollection.PS4_RESOURCE
+import palbp.laboratory.simplexludum.ui.mycollection.PS5_RESOURCE
+import palbp.laboratory.simplexludum.ui.mycollection.PS_STORE_RESOURCE
+import palbp.laboratory.simplexludum.ui.mycollection.getDistributionResource
+import palbp.laboratory.simplexludum.ui.mycollection.getPlatformResource
 
 class ResourceResolutionTests {
 
