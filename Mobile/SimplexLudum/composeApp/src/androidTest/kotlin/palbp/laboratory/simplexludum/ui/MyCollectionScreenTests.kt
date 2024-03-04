@@ -6,11 +6,32 @@ import androidx.compose.ui.test.performClick
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import palbp.laboratory.simplexludum.domain.Distribution
+import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
+import palbp.laboratory.simplexludum.domain.Genre
+import palbp.laboratory.simplexludum.domain.Platform
 
 private val gameLists = listOf(
     GameListSummary("name1", 1),
     GameListSummary("name2", 2)
+)
+
+private val latest = listOf(
+    Game(
+        name = "name1",
+        developer = "developer1",
+        genres = listOf(Genre.ADVENTURE),
+        platform = Platform.PS4,
+        distribution = Distribution.PHYSICAL
+    ),
+    Game(
+        name = "name2",
+        developer = "developer1",
+        genres = listOf(Genre.ACTION),
+        platform = Platform.PS5,
+        distribution = Distribution.SUBSCRIPTION
+    ),
 )
 
 class MyCollectionScreenTests {
@@ -25,14 +46,16 @@ class MyCollectionScreenTests {
         composeTree.setContent {
             MyCollectionScreen(
                 lists = emptyList(),
+                latest = latest,
                 onOpenGameDetailsIntent = { onOpenDetailsIntentCalled = true },
                 onOpenGameListIntent = { }
             )
         }
 
         // Act
+        val gameItemTag = "$GAME_ITEM_BASE_TAG-${latest.first().name}"
         composeTree
-            .onNodeWithTag("$GAME_ITEM_BASE_TAG-0", true)
+            .onNodeWithTag(gameItemTag, true)
             .performClick()
 
         // Assert
@@ -47,6 +70,7 @@ class MyCollectionScreenTests {
         composeTree.setContent {
             MyCollectionScreen(
                 lists = listOf(gameList),
+                latest = latest,
                 onOpenGameListIntent = { onOpenListIntentCalled = true },
                 onOpenGameDetailsIntent = { }
             )
@@ -70,6 +94,7 @@ class MyCollectionScreenTests {
         composeTree.setContent {
             MyCollectionScreen(
                 lists = listOf(gameList),
+                latest = latest,
                 onOpenGameListIntent = {
                     onOpenListIntentCalled = true
                     onOpenIntentParam = it
@@ -96,6 +121,7 @@ class MyCollectionScreenTests {
         composeTree.setContent {
             MyCollectionScreen(
                 lists = gameLists,
+                latest = latest,
                 onOpenGameListIntent = { onOpenListIntentCalled = true },
                 onOpenGameDetailsIntent = { }
             )

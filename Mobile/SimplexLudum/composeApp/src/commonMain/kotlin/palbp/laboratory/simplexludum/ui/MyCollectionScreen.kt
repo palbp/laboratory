@@ -25,8 +25,9 @@ const val SEE_ALL: String = "see_all"
 @Composable
 fun MyCollectionScreen(
     lists: List<GameListSummary>,
+    latest: List<Game>,
     onOpenGameListIntent: (GameListSummary) -> Unit,
-    onOpenGameDetailsIntent: (Game) -> Unit
+    onOpenGameDetailsIntent: (Game) -> Unit,
 ) {
     SimplexLudumTheme {
 
@@ -55,6 +56,12 @@ fun MyCollectionScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
+
+            Column {
+                latest.forEach { game ->
+                    GameItem(game = game, onOpenGameDetailsIntent = onOpenGameDetailsIntent)
+                }
+            }
         }
     }
 }
@@ -64,6 +71,7 @@ object MyCollectionScreen : Screen {
     override fun Content() {
         MyCollectionScreen(
             lists = emptyList(),
+            latest = emptyList(),
             onOpenGameListIntent = { /* TODO */ },
             onOpenGameDetailsIntent = { /* TODO */ }
         )

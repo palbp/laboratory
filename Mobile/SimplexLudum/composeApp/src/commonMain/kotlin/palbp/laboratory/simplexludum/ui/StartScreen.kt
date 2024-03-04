@@ -43,7 +43,7 @@ fun StartScreen(onGetStartedIntent: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    painter = painterResource("sl-logo.png"),
+                    painter = painterResource("sl_logo.png"),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
