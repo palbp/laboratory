@@ -23,7 +23,12 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import palbp.laboratory.simplexludum.domain.Game
 
-const val GAME_ITEM_BASE_TAG = "get-item"
+private const val GAME_ITEM_BASE_TAG = "get-item"
+
+/**
+ * Computes the test tag for the game item used to display the game in the list.
+ */
+fun computeGameItemTag(game: Game) = "$GAME_ITEM_BASE_TAG-${game.name}"
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -32,7 +37,7 @@ fun GameItem(game: Game, onOpenGameDetailsIntent: (Game) -> Unit) {
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 8.dp)
             .clickable { onOpenGameDetailsIntent(game) }
-            .testTag("$GAME_ITEM_BASE_TAG-${game.name}")
+            .testTag(computeGameItemTag(game))
             .fillMaxWidth()
             .heightIn(min = 100.dp, max = 120.dp)
     ) {
@@ -42,7 +47,7 @@ fun GameItem(game: Game, onOpenGameDetailsIntent: (Game) -> Unit) {
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.fillMaxHeight(),
         )
-        Column(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
+        Column(modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp)) {
             GameItemTitle(game = game)
             GameItemDeveloper(game = game)
             GameItemLaunchDate(game = game)

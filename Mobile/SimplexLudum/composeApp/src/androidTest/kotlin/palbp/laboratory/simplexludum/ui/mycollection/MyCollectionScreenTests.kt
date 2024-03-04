@@ -53,9 +53,8 @@ class MyCollectionScreenTests {
         }
 
         // Act
-        val gameItemTag = "$GAME_ITEM_BASE_TAG-${latest.first().name}"
         composeTree
-            .onNodeWithTag(gameItemTag, true)
+            .onNodeWithTag(computeGameItemTag(latest.first()), true)
             .performClick()
 
         // Assert
@@ -78,7 +77,7 @@ class MyCollectionScreenTests {
 
         // Act
         composeTree
-            .onNodeWithTag("$GAME_LIST_SELECTOR_TAG-${gameList.name}", true)
+            .onNodeWithTag(computeGameListSelectorTag(gameList), true)
             .performClick()
 
         // Assert
@@ -105,7 +104,7 @@ class MyCollectionScreenTests {
 
         // Act
         composeTree
-            .onNodeWithTag("$GAME_LIST_SELECTOR_NAV_ICON_TAG-${gameList.name}", true)
+            .onNodeWithTag(computeGameListSelectorNavIconTag(gameList), true)
             .performClick()
 
         // Assert
@@ -129,7 +128,7 @@ class MyCollectionScreenTests {
 
         // Act
         composeTree
-            .onNodeWithTag("$GAME_LIST_SELECTOR_TAG-${gameList.name}", true)
+            .onNodeWithTag(computeGameListSelectorTag(gameList), true)
             .performClick()
 
         // Assert

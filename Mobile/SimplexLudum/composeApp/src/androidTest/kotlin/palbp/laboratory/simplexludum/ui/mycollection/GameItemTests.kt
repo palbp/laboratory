@@ -11,15 +11,6 @@ import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
 
-private val game = Game(
-    name = "name1",
-    developer = "developer1",
-    genres = listOf(Genre.ADVENTURE),
-    platform = Platform.PS4,
-    distribution = Distribution.PHYSICAL
-)
-
-
 class GameItemTests {
 
     @get:Rule
@@ -38,10 +29,19 @@ class GameItemTests {
 
         // Act
         composeTree
-            .onNodeWithTag("$GAME_ITEM_BASE_TAG-${game.name}", true)
+            .onNodeWithTag(computeGameItemTag(game), true)
             .performClick()
 
         // Assert
         assertTrue(onOpenDetailsIntentCalled)
     }
 }
+
+private val game = Game(
+    name = "name1",
+    developer = "developer1",
+    genres = listOf(Genre.ADVENTURE),
+    platform = Platform.PS4,
+    distribution = Distribution.PHYSICAL
+)
+

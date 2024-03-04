@@ -25,8 +25,18 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import palbp.laboratory.simplexludum.domain.GameListSummary
 
-const val GAME_LIST_SELECTOR_TAG = "game-list-selector"
-const val GAME_LIST_SELECTOR_NAV_ICON_TAG = "game-list-selector-nav-icon"
+private const val GAME_LIST_SELECTOR_TAG = "game-list-selector"
+private const val GAME_LIST_SELECTOR_NAV_ICON_TAG = "game-list-selector-nav-icon"
+
+/**
+ * Computes the test tag for the game list selector.
+ */
+fun computeGameListSelectorTag(listInfo: GameListSummary) = "$GAME_LIST_SELECTOR_TAG-${listInfo.name}"
+
+/**
+ * Computes the test tag for the game list selector navigation icon.
+ */
+fun computeGameListSelectorNavIconTag(listInfo: GameListSummary) = "$GAME_LIST_SELECTOR_NAV_ICON_TAG-${listInfo.name}"
 
 @Composable
 fun GameListSelector(
@@ -39,7 +49,7 @@ fun GameListSelector(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onGameListSelected(listInfo) }
-            .testTag("$GAME_LIST_SELECTOR_TAG-${listInfo.name}")
+            .testTag(computeGameListSelectorTag(listInfo))
     ) {
         Icon(imageVector = listInfo.toIcon(), contentDescription = "list id icon")
         Column(
@@ -57,8 +67,7 @@ fun GameListSelector(
         Icon(
             imageVector = Icons.Outlined.NavigateNext,
             contentDescription = "open list icon",
-            modifier = Modifier
-                .testTag("$GAME_LIST_SELECTOR_NAV_ICON_TAG-${listInfo.name}")
+            modifier = Modifier.testTag(computeGameListSelectorNavIconTag(listInfo))
         )
     }
 }
