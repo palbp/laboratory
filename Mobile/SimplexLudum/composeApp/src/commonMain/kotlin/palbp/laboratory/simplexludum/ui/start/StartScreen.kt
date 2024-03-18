@@ -24,8 +24,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import palbp.laboratory.simplexludum.ui.common.stringResource
-import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
+import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
 
 const val GET_STARTED_BUTTON_TAG = "get-started-button"
 

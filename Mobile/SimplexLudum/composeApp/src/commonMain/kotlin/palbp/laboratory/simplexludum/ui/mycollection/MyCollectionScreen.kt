@@ -9,11 +9,15 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
+import palbp.laboratory.simplexludum.infrastructure.getFakeGameLists
+import palbp.laboratory.simplexludum.infrastructure.getFakeLatestGames
 import palbp.laboratory.simplexludum.ui.common.stringResource
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 
@@ -22,6 +26,9 @@ const val MY_COLLECTION_TITLE: String = "my_collection_title"
 const val LATEST_TITLE: String = "latest_title"
 const val SEE_ALL: String = "see_all"
 
+/**
+ * The View in the Model-View-ViewModel pattern for the MyCollection screen
+ */
 @Composable
 fun MyCollectionScreen(
     lists: List<GameListSummary>,
@@ -70,15 +77,30 @@ fun MyCollectionScreen(
  * Implementation of the Voyager navigation contract
  */
 object MyCollectionScreen : Screen {
+
     @Composable
     override fun Content() {
-        val screenModel = MyCollectionScreenModel()
-        // TODO: use screenModel to get the data
+        val screenModel = rememberScreenModel<MyCollectionScreenModel> {
+            MyCollectionScreenModel(
+                getGamesList = ::getFakeGameLists,
+                getLatestGames = ::getFakeLatestGames
+            )
+        }
+
+        LaunchedEffect(screenModel.state) {
+            if (screenModel.state is ScreenState.Idle) {
+                screenModel.fetchScreenData()
+            }
+        }
+
+        val gameLists = (screenModel.state as? ScreenState.Loaded)?.lists ?: emptyList()
+        val latestGames = (screenModel.state as? ScreenState.Loaded)?.latest ?: emptyList()
+
         MyCollectionScreen(
-            lists = emptyList(),
-            latest = emptyList(),
-            onOpenGameListIntent = { /* TODO */ },
-            onOpenGameDetailsIntent = { /* TODO */ }
+            lists = gameLists,
+            latest = latestGames,
+            onOpenGameListIntent = { TODO() },
+            onOpenGameDetailsIntent = { TODO() }
         )
     }
 }

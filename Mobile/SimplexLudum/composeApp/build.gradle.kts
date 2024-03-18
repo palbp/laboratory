@@ -85,8 +85,9 @@ android {
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
-        debugImplementation("androidx.compose.ui:ui-test-manifest")
+        debugImplementation(libs.compose.ui.test.manifest)
         androidTestImplementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
+        androidTestImplementation(libs.kotlin.test)
     }
 }
 
