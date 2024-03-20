@@ -1,5 +1,8 @@
-package palbp.laboratory.simplexludum.domain
+package palbp.laboratory.simplexludum.domain.primitives
 
+/**
+ * Represents non blank strings on our domain.
+ */
 data class NonBlankString(val value: String) {
     init {
         require(value.isNotBlank()) { "String cannot be blank" }

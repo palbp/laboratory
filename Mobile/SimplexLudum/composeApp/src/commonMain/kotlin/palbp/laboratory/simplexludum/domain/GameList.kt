@@ -1,5 +1,7 @@
 package palbp.laboratory.simplexludum.domain
 
+import palbp.laboratory.simplexludum.domain.primitives.NonBlankString
+
 /**
  * Represents a list of games on our domain
  * @property name the name of the list of games. It must be unique.

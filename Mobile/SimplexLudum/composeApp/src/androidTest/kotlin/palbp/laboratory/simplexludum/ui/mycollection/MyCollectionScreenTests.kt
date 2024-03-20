@@ -11,6 +11,9 @@ import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
+import palbp.laboratory.simplexludum.ui.common.computeGameItemTag
+import palbp.laboratory.simplexludum.ui.common.computeGameListSelectorNavIconTag
+import palbp.laboratory.simplexludum.ui.common.computeGameListSelectorTag
 
 private val gameLists = listOf(
     GameListSummary("name1", 1),

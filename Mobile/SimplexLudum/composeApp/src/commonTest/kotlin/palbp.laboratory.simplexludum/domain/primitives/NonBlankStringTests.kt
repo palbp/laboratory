@@ -1,5 +1,6 @@
-package palbp.laboratory.simplexludum.domain
+package palbp.laboratory.simplexludum.domain.primitives
 
+import palbp.laboratory.simplexludum.domain.primitives.NonBlankString
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 

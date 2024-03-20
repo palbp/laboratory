@@ -1,5 +1,8 @@
 package palbp.laboratory.simplexludum.domain
 
+import palbp.laboratory.simplexludum.domain.primitives.NonBlankString
+import palbp.laboratory.simplexludum.domain.primitives.NonEmptyList
+
 /**
  * Represents a game on our domain. If we want to represent a game in
  * multiple platforms, then distinct instances of this class should be created.

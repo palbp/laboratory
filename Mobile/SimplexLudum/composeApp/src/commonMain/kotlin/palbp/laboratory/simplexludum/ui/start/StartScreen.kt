@@ -34,6 +34,9 @@ const val APP_TITLE: String = "app_title"
 const val APP_MOTTO_TEXT: String = "app_motto"
 const val GET_STARTED_TEXT: String = "get_started"
 
+/**
+ * The View in the Model-View-ViewModel pattern for the Start screen
+ */
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun StartScreen(onGetStartedIntent: () -> Unit) {
@@ -85,14 +88,14 @@ fun StartScreen(onGetStartedIntent: () -> Unit) {
 }
 
 /**
- * Implementation of the Voyager navigation contract
+ * The actual screen implementation, which contains the screen's navigation.
  */
-object StartScreen : Screen {
+class StartScreen : Screen {
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
         StartScreen(
-            onGetStartedIntent = { navigator.push(MyCollectionScreen) }
+            onGetStartedIntent = { navigator.push(MyCollectionScreen()) }
         )
     }
 }

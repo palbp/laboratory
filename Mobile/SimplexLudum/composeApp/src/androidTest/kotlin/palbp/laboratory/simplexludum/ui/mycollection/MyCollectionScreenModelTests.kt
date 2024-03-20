@@ -1,43 +1,28 @@
 package palbp.laboratory.simplexludum.ui.mycollection
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import palbp.laboratory.simplexludum.domain.Distribution
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
+import palbp.laboratory.simplexludum.ui.MainDispatcherTestRule
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class MyCollectionScreenModelTests {
 
-    private val testDispatcher = StandardTestDispatcher()
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Before
-    fun setup() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
+    private val testRule = MainDispatcherTestRule()
 
     @Test
-    fun initially_the_state_is_idle() = runTest(testDispatcher) {
+    fun initially_the_state_is_idle() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::getFakeGameLists,
-            getLatestGames = ::getFakeLatestGames
+            getGamesList = ::fakeGetGameLists,
+            getLatestGames = ::fakeGetLatestGames
         )
         // Act
 
@@ -46,38 +31,55 @@ class MyCollectionScreenModelTests {
     }
 
     @Test
-    fun fetch_screen_data_transitions_to_loading() = runTest(testDispatcher) {
+    fun fetch_screen_data_transitions_to_loading() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::getFakeGameLists,
-            getLatestGames = ::getFakeLatestGames,
+            getGamesList = ::fakeGetGameLists,
+            getLatestGames = ::fakeGetLatestGames,
         )
 
         // Act
-        model.fetchScreenData()
+        val job = model.fetchScreenData()
 
         // Assert
+        assertNotNull(job)
         assertIs<ScreenState.Loading>(model.state)
     }
 
     @Test
-    fun fetch_screen_data_transitions_to_loaded_once_is_obtained() = runTest(testDispatcher) {
+    fun fetch_screen_data_transitions_to_loaded_once_is_obtained() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::getFakeGameLists,
-            getLatestGames = ::getFakeLatestGames,
+            getGamesList = ::fakeGetGameLists,
+            getLatestGames = ::fakeGetLatestGames,
         )
 
         // Act
-        model.fetchScreenData()
-        testScheduler.advanceUntilIdle()
+        model.fetchScreenData()?.join()
 
         // Assert
         assertIs<ScreenState.Loaded>(model.state)
     }
+
+    @Test
+    fun fetch_screen_data_only_fetches_when_not_loading() = runTest(testRule.dispatcher) {
+        // Arrange
+        val model = MyCollectionScreenModel(
+            getGamesList = ::fakeGetGameLists,
+            getLatestGames = ::fakeGetLatestGames,
+        )
+
+        // Act
+        model.fetchScreenData()
+        val job = model.fetchScreenData()
+
+        // Assert
+        assertNull(job)
+        assertIs<ScreenState.Loading>(model.state)
+    }
 }
 
-private fun getFakeGameLists(): List<GameListSummary> = listOf(
+private fun fakeGetGameLists(): List<GameListSummary> = listOf(
     GameListSummary("Platinum", 19),
     GameListSummary("Completed", 36),
     GameListSummary("Backlog", 23),
@@ -85,7 +87,7 @@ private fun getFakeGameLists(): List<GameListSummary> = listOf(
     GameListSummary("Collections", 3)
 )
 
-private fun getFakeLatestGames(): List<Game> = listOf(
+private fun fakeGetLatestGames(): List<Game> = listOf(
     Game(
         name = "name1",
         developer = "developer1",

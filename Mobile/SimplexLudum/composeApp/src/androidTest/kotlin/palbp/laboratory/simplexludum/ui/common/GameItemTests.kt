@@ -1,9 +1,9 @@
-package palbp.laboratory.simplexludum.ui.mycollection
+package palbp.laboratory.simplexludum.ui.common
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import org.junit.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import palbp.laboratory.simplexludum.domain.Distribution
@@ -19,6 +19,13 @@ class GameItemTests {
     @Test
     fun pressing_a_game_item_emits_open_details() {
         // Arrange
+        val game = Game(
+            name = "name1",
+            developer = "developer1",
+            genres = listOf(Genre.ADVENTURE),
+            platform = Platform.PS4,
+            distribution = Distribution.PHYSICAL
+        )
         var onOpenDetailsIntentCalled = false
         composeTree.setContent {
             GameItem(
@@ -33,15 +40,6 @@ class GameItemTests {
             .performClick()
 
         // Assert
-        assertTrue(onOpenDetailsIntentCalled)
+        Assert.assertTrue(onOpenDetailsIntentCalled)
     }
 }
-
-private val game = Game(
-    name = "name1",
-    developer = "developer1",
-    genres = listOf(Genre.ADVENTURE),
-    platform = Platform.PS4,
-    distribution = Distribution.PHYSICAL
-)
-

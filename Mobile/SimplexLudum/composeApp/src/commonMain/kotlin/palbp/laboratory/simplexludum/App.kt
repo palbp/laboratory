@@ -6,5 +6,5 @@ import palbp.laboratory.simplexludum.ui.start.StartScreen
 
 @Composable
 fun App() {
-    Navigator(StartScreen)
+    Navigator(StartScreen())
 }

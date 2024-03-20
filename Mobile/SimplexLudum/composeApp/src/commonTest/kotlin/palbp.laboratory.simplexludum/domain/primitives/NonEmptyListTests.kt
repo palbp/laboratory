@@ -1,5 +1,7 @@
-package palbp.laboratory.simplexludum.domain
+package palbp.laboratory.simplexludum.domain.primitives
 
+import palbp.laboratory.simplexludum.domain.primitives.NonEmptyList
+import palbp.laboratory.simplexludum.domain.primitives.plus
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue

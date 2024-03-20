@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0"
+agp = "8.2.0"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -10,7 +10,7 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.11.0"
 androidx-test-junit = "1.1.5"
-compose = "1.6.0"
+compose = "1.6.3"
 compose-compiler = "1.5.6"
 compose-plugin = "1.5.11"
 junit = "4.13.2"
@@ -18,6 +18,7 @@ kotlin = "1.9.21"
 voyager = "1.0.0"
 kotlinx-datetime = "0.5.0"
 uiToolingPreviewAndroid = "1.6.3"
+kermit-logger = "2.0.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -41,6 +42,7 @@ compose-material = { module = "androidx.compose.material:material", version.ref 
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+kermit-logger = { module = "co.touchlab:kermit", version.ref = "kermit-logger" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

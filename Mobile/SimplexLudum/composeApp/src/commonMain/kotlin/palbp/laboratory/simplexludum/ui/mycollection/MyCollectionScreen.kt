@@ -16,8 +16,12 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
+import palbp.laboratory.simplexludum.domain.GetGameLists
+import palbp.laboratory.simplexludum.domain.GetLatestGames
 import palbp.laboratory.simplexludum.infrastructure.getFakeGameLists
 import palbp.laboratory.simplexludum.infrastructure.getFakeLatestGames
+import palbp.laboratory.simplexludum.ui.common.GameItem
+import palbp.laboratory.simplexludum.ui.common.GameListSelector
 import palbp.laboratory.simplexludum.ui.common.stringResource
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 
@@ -28,6 +32,10 @@ const val SEE_ALL: String = "see_all"
 
 /**
  * The View in the Model-View-ViewModel pattern for the MyCollection screen
+ * @param lists The list of game lists to be displayed
+ * @param latest The list of latest games to be displayed
+ * @param onOpenGameListIntent The function to be called when the user selects a game list
+ * @param onOpenGameDetailsIntent The function to be called when the user selects a game
  */
 @Composable
 fun MyCollectionScreen(
@@ -74,17 +82,21 @@ fun MyCollectionScreen(
 }
 
 /**
- * Implementation of the Voyager navigation contract
+ * The actual screen implementation, which contains the screen's navigation and
+ * is responsible for fetching the screen data and passing it to the view.
+ * Dependencies are injected to enable testing.
+ * @property getGamesList The function responsible for obtaining the game lists
+ * @property getLatestGames The function responsible for obtaining the latest games
  */
-object MyCollectionScreen : Screen {
+class MyCollectionScreen(
+    private val getGamesList: GetGameLists = ::getFakeGameLists,
+    private val getLatestGames: GetLatestGames = ::getFakeLatestGames
+) : Screen {
 
     @Composable
     override fun Content() {
         val screenModel = rememberScreenModel<MyCollectionScreenModel> {
-            MyCollectionScreenModel(
-                getGamesList = ::getFakeGameLists,
-                getLatestGames = ::getFakeLatestGames
-            )
+            MyCollectionScreenModel(getGamesList, getLatestGames)
         }
 
         LaunchedEffect(screenModel.state) {

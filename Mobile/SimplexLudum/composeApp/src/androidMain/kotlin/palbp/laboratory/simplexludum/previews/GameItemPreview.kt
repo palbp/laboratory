@@ -6,7 +6,7 @@ import palbp.laboratory.simplexludum.domain.Distribution
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
-import palbp.laboratory.simplexludum.ui.mycollection.GameItem
+import palbp.laboratory.simplexludum.ui.common.GameItem
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 
 @Preview(showBackground = true)

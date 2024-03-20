@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.domain
+package palbp.laboratory.simplexludum.domain.primitives
 
 /**
  * Represents a non empty list of elements.

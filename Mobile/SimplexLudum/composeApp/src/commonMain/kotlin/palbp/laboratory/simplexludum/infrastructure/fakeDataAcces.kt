@@ -17,7 +17,7 @@ suspend fun getFakeGameLists(): List<GameListSummary> {
         GameListSummary("Platinum", 19),
         GameListSummary("Completed", 36),
         GameListSummary("Backlog", 23),
-        GameListSummary("Wishlist", 10),
+        GameListSummary("Wish List", 10),
         GameListSummary("Collections", 3)
     )
 }
