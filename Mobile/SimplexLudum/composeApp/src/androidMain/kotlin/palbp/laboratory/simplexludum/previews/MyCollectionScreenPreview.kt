@@ -7,7 +7,7 @@ import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
-import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
+import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionView
 
 @Preview(showBackground = true, showSystemUi = true, name = "My Collection")
 @Composable
@@ -35,7 +35,7 @@ fun MyCollectionScreenPreview() {
             distribution = Distribution.SUBSCRIPTION
         ),
     )
-    MyCollectionScreen(
+    MyCollectionView(
         lists = gameLists,
         latest = latest,
         onOpenGameListIntent = { },

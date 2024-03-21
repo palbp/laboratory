@@ -1,6 +1,5 @@
 package palbp.laboratory.simplexludum.ui.mycollection
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import palbp.laboratory.simplexludum.domain.Distribution
@@ -21,7 +20,7 @@ class MyCollectionScreenModelTests {
     fun initially_the_state_is_idle() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::fakeGetGameLists,
+            getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames
         )
         // Act
@@ -34,7 +33,7 @@ class MyCollectionScreenModelTests {
     fun fetch_screen_data_transitions_to_loading() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::fakeGetGameLists,
+            getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames,
         )
 
@@ -50,7 +49,7 @@ class MyCollectionScreenModelTests {
     fun fetch_screen_data_transitions_to_loaded_once_is_obtained() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::fakeGetGameLists,
+            getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames,
         )
 
@@ -65,7 +64,7 @@ class MyCollectionScreenModelTests {
     fun fetch_screen_data_only_fetches_when_not_loading() = runTest(testRule.dispatcher) {
         // Arrange
         val model = MyCollectionScreenModel(
-            getGamesList = ::fakeGetGameLists,
+            getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames,
         )
 

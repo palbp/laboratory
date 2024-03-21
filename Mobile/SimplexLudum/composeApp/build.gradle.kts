@@ -1,3 +1,4 @@
+import org.jetbrains.compose.ComposePlugin.CommonComponentsDependencies.resources
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.compose
 
@@ -72,9 +73,21 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE**}"
         }
     }
+
+    testOptions {
+        packaging {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE**}"
+            }
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -89,6 +102,7 @@ android {
         debugImplementation(libs.compose.ui.test.manifest)
         androidTestImplementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
         androidTestImplementation(libs.kotlin.test)
+        androidTestImplementation(libs.mockk.android)
     }
 }
 

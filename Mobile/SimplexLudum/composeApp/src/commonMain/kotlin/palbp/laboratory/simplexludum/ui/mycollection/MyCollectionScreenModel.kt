@@ -23,11 +23,11 @@ sealed interface ScreenState {
 
 /**
  * The View-model for the MyCollection screen
- * @param getGamesList The function to be called to get the game lists
- * @param getLatestGames The function to be called to get the latest gamesΩ
+ * @param getGameLists The function to be called to get the game lists
+ * @param getLatestGames The function to be called to get the latest games
  */
 class MyCollectionScreenModel(
-    private val getGamesList: GetGameLists,
+    private val getGameLists: GetGameLists,
     private val getLatestGames: GetLatestGames,
 ) : ScreenModel {
 
@@ -43,7 +43,7 @@ class MyCollectionScreenModel(
             state = ScreenState.Loading
             screenModelScope.launch {
                 // TODO: Handle errors
-                val gameLists = getGamesList()
+                val gameLists = getGameLists()
                 val latestGames = getLatestGames()
                 state = ScreenState.Loaded(lists = gameLists, latest = latestGames)
             }
