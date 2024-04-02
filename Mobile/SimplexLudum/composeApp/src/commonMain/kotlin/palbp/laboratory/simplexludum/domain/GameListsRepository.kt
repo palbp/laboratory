@@ -1,7 +1,5 @@
 package palbp.laboratory.simplexludum.domain
 
-// TODO: Represent errors
-
 /**
  * Type used to represent functions responsible for obtaining game lists.
  */

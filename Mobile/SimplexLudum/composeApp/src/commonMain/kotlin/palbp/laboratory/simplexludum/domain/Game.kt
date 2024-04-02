@@ -2,6 +2,7 @@ package palbp.laboratory.simplexludum.domain
 
 import palbp.laboratory.simplexludum.domain.primitives.NonBlankString
 import palbp.laboratory.simplexludum.domain.primitives.NonEmptyList
+import palbp.laboratory.simplexludum.domain.primitives.NonEmptySet
 
 /**
  * Represents a game on our domain. If we want to represent a game in
@@ -15,21 +16,20 @@ import palbp.laboratory.simplexludum.domain.primitives.NonEmptyList
 data class Game(
     val name: NonBlankString,
     val developer: NonBlankString,
-    // TODO: Replace with NonEmptySet
-    val genres: NonEmptyList<Genre>,
+    val genres: NonEmptySet<Genre>,
     val platform: Platform,
     val distribution: Distribution
 ) {
     constructor(
         name: String,
         developer: String,
-        genres: List<Genre>,
+        genres: Set<Genre>,
         platform: Platform,
         distribution: Distribution
     ) : this(
         name = NonBlankString(name),
         developer = NonBlankString(developer),
-        genres = NonEmptyList(genres),
+        genres = NonEmptySet(genres),
         platform = platform,
         distribution = distribution
     )
