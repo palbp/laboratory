@@ -62,7 +62,7 @@ fun MyCollectionView(
 
             Column {
                 latest.forEach { game ->
-                    GameItem(game = game, onOpenGameDetailsIntent = onOpenGameDetailsIntent)
+                    GameItem(game = game, onGameItemSelected = onOpenGameDetailsIntent)
                 }
             }
         }

@@ -17,11 +17,11 @@ fun GameItemPreview() {
             game = Game(
                 name = "The Witcher 3: Wild Hunt",
                 developer = "CD Projekt Red",
-                genres = listOf(Genre.ACTION, Genre.RPG, Genre.ADVENTURE),
+                genres = setOf(Genre.ACTION, Genre.RPG, Genre.ADVENTURE),
                 platform = Platform.PS4,
                 distribution = Distribution.PHYSICAL
             ),
-            onOpenGameDetailsIntent = { }
+            onGameItemSelected = { }
         )
     }
 }

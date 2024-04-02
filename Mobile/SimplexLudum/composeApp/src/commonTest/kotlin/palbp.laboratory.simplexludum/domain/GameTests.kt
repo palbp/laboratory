@@ -12,7 +12,7 @@ class GameTests {
         val game = Game(
             name = "name",
             developer = "developer",
-            genres = listOf(Genre.ADVENTURE),
+            genres = setOf(Genre.ADVENTURE),
             platform = Platform.PS5,
             distribution = Distribution.DIGITAL
         )
@@ -28,7 +28,7 @@ class GameTests {
         val game = Game(
             name = "name",
             developer = "developer",
-            genres = listOf(Genre.ADVENTURE),
+            genres = setOf(Genre.ADVENTURE),
             platform = Platform.PS4,
             distribution = Distribution.DIGITAL
         )
@@ -44,7 +44,7 @@ class GameTests {
         val game = Game(
             name = "name",
             developer = "developer",
-            genres = listOf(Genre.ADVENTURE),
+            genres = setOf(Genre.ADVENTURE),
             platform = Platform.PC,
             distribution = Distribution.DIGITAL
         )

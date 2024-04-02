@@ -128,14 +128,14 @@ private val latest = listOf(
     Game(
         name = "name1",
         developer = "developer1",
-        genres = listOf(Genre.ADVENTURE),
+        genres = setOf(Genre.ADVENTURE),
         platform = Platform.PS4,
         distribution = Distribution.PHYSICAL
     ),
     Game(
         name = "name2",
         developer = "developer1",
-        genres = listOf(Genre.ACTION),
+        genres = setOf(Genre.ACTION),
         platform = Platform.PS5,
         distribution = Distribution.SUBSCRIPTION
     ),

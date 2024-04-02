@@ -22,7 +22,7 @@ class GameItemTests {
         val game = Game(
             name = "name1",
             developer = "developer1",
-            genres = listOf(Genre.ADVENTURE),
+            genres = setOf(Genre.ADVENTURE),
             platform = Platform.PS4,
             distribution = Distribution.PHYSICAL
         )
@@ -30,7 +30,7 @@ class GameItemTests {
         composeTree.setContent {
             GameItem(
                 game = game,
-                onOpenGameDetailsIntent = { onOpenDetailsIntentCalled = true }
+                onGameItemSelected = { onOpenDetailsIntentCalled = true }
             )
         }
 

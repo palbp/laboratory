@@ -32,11 +32,11 @@ fun computeGameItemTag(game: Game) = "$GAME_ITEM_BASE_TAG-${game.name}"
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun GameItem(game: Game, onOpenGameDetailsIntent: (Game) -> Unit) {
+fun GameItem(game: Game, onGameItemSelected: (Game) -> Unit) {
     Row(
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 8.dp)
-            .clickable { onOpenGameDetailsIntent(game) }
+            .clickable { onGameItemSelected(game) }
             .testTag(computeGameItemTag(game))
             .fillMaxWidth()
             .heightIn(min = 100.dp, max = 120.dp)
