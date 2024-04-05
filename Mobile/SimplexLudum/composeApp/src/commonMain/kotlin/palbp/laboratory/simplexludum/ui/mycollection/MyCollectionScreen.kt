@@ -1,8 +1,7 @@
 package palbp.laboratory.simplexludum.ui.mycollection
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import palbp.laboratory.simplexludum.infrastructure.getFakeGameLists
 import palbp.laboratory.simplexludum.infrastructure.getFakeLatestGames
@@ -27,13 +26,13 @@ class MyCollectionScreen(
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel<MyCollectionScreenModel> { screenModel }
-
-        LaunchedEffect(screenModel.state) {
-            if (screenModel.state is ScreenState.Idle) {
-                screenModel.fetchScreenData()
+        LifecycleEffect(
+            onStarted = {
+                if (screenModel.state is ScreenState.Idle) {
+                    screenModel.fetchScreenData()
+                }
             }
-        }
+        )
 
         val gameLists = (screenModel.state as? ScreenState.Loaded)?.lists ?: emptyList()
         val latestGames = (screenModel.state as? ScreenState.Loaded)?.latest ?: emptyList()
