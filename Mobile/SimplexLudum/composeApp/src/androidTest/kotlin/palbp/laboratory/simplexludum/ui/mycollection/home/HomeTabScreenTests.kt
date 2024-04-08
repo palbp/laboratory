@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui.mycollection
+package palbp.laboratory.simplexludum.ui.mycollection.home
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import io.mockk.every
@@ -7,7 +7,7 @@ import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
 
-class MyCollectionScreenTests {
+class HomeTabScreenTests {
 
     @get:Rule
     val composeTree = createComposeRule()
@@ -15,10 +15,10 @@ class MyCollectionScreenTests {
     @Test
     fun screen_data_is_fetched_once_the_screen_enters_the_composition() {
         // Arrange
-        val screenModel = mockk<MyCollectionScreenModel>(relaxed = true) {
-            every { state } returns ScreenState.Idle
+        val screenModel = mockk<HomeTabScreenModel>(relaxed = true) {
+            every { state } returns HomeTabScreenState.Idle
         }
-        val sut = MyCollectionScreen(screenModel)
+        val sut = HomeTabScreen(screenModel)
 
         // Act
         composeTree.setContent { sut.Content() }
@@ -27,6 +27,4 @@ class MyCollectionScreenTests {
         // Assert
         verify { screenModel.fetchScreenData() }
     }
-
-    // TODO: Add navigation tests
 }

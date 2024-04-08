@@ -7,11 +7,11 @@ import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
-import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionView
+import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTabView
 
 @Preview(showBackground = true, showSystemUi = true, name = "My Collection")
 @Composable
-fun MyCollectionScreenPreview() {
+fun HomeTabContentPreview() {
     val gameLists = listOf(
         GameListSummary("Platinum", 19),
         GameListSummary("Completed", 36),
@@ -35,7 +35,7 @@ fun MyCollectionScreenPreview() {
             distribution = Distribution.SUBSCRIPTION
         ),
     )
-    MyCollectionView(
+    HomeTabView(
         lists = gameLists,
         latest = latest,
         onOpenGameListIntent = { },

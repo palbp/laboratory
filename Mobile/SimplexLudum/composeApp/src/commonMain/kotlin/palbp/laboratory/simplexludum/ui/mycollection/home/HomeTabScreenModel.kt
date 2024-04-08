@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui.mycollection
+package palbp.laboratory.simplexludum.ui.mycollection.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,12 +13,12 @@ import palbp.laboratory.simplexludum.domain.GetGameLists
 import palbp.laboratory.simplexludum.domain.GetLatestGames
 
 /**
- * Sum type representing the possible states of the MyCollection screen
+ * Sum type representing the possible states of the Home tab of the MyCollection screen
  */
-sealed interface ScreenState {
-    data object Idle : ScreenState
-    data object Loading : ScreenState
-    data class Loaded(val lists: List<GameListSummary>, val latest: List<Game>) : ScreenState
+sealed interface HomeTabScreenState {
+    data object Idle : HomeTabScreenState
+    data object Loading : HomeTabScreenState
+    data class Loaded(val lists: List<GameListSummary>, val latest: List<Game>) : HomeTabScreenState
 }
 
 /**
@@ -26,12 +26,12 @@ sealed interface ScreenState {
  * @param getGameLists The function to be called to get the game lists
  * @param getLatestGames The function to be called to get the latest games
  */
-class MyCollectionScreenModel(
+class HomeTabScreenModel(
     private val getGameLists: GetGameLists,
     private val getLatestGames: GetLatestGames,
 ) : ScreenModel {
 
-    var state: ScreenState by mutableStateOf(ScreenState.Idle)
+    var state: HomeTabScreenState by mutableStateOf(HomeTabScreenState.Idle)
         private set
 
     /**
@@ -39,13 +39,13 @@ class MyCollectionScreenModel(
      * @return The job that is fetching the data, or null if the screen is already loading
      */
     fun fetchScreenData(): Job? =
-        if (state != ScreenState.Loading) {
-            state = ScreenState.Loading
+        if (state != HomeTabScreenState.Loading) {
+            state = HomeTabScreenState.Loading
             screenModelScope.launch {
                 // TODO: Handle errors
                 val gameLists = getGameLists()
                 val latestGames = getLatestGames()
-                state = ScreenState.Loaded(lists = gameLists, latest = latestGames)
+                state = HomeTabScreenState.Loaded(lists = gameLists, latest = latestGames)
             }
         }
         else {

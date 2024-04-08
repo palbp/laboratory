@@ -10,9 +10,9 @@ import palbp.laboratory.simplexludum.domain.isPlaystationVariant
 import palbp.laboratory.simplexludum.ui.start.APP_MOTTO_TEXT
 import palbp.laboratory.simplexludum.ui.start.APP_TITLE
 import palbp.laboratory.simplexludum.ui.start.GET_STARTED_TEXT
-import palbp.laboratory.simplexludum.ui.mycollection.LATEST_TITLE
-import palbp.laboratory.simplexludum.ui.mycollection.MY_COLLECTION_TITLE
-import palbp.laboratory.simplexludum.ui.mycollection.SEE_ALL
+import palbp.laboratory.simplexludum.ui.mycollection.home.LATEST_TITLE
+import palbp.laboratory.simplexludum.ui.mycollection.home.HOME_TAB_TITLE
+import palbp.laboratory.simplexludum.ui.mycollection.home.SEE_ALL
 
 /**
  * Temporary utility to be replaced once we have a proper resource management
@@ -23,9 +23,11 @@ fun stringResource(resourceId: String): String {
         APP_TITLE -> "Simplex\nLudum"
         APP_MOTTO_TEXT -> "Keep track of your video games collection. The easy way."
         GET_STARTED_TEXT -> "Get Started"
-        MY_COLLECTION_TITLE -> "My Collection"
+        HOME_TAB_TITLE -> "My Collection"
         LATEST_TITLE -> "Latest"
         SEE_ALL -> "See all"
+        SEARCH_LABEL -> "Search"
+        CLEAR_SEARCH -> "Cancel"
         else -> "Unknown resource"
     }
 }

@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui.mycollection
+package palbp.laboratory.simplexludum.ui.mycollection.home
 
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -12,27 +12,27 @@ import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class MyCollectionScreenModelTests {
+class HomeTabScreenModelTests {
 
     private val testRule = MainDispatcherTestRule()
 
     @Test
     fun initially_the_state_is_idle() = runTest(testRule.dispatcher) {
         // Arrange
-        val model = MyCollectionScreenModel(
+        val model = HomeTabScreenModel(
             getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames
         )
         // Act
 
         // Assert
-        assertIs<ScreenState.Idle>(model.state)
+        assertIs<HomeTabScreenState.Idle>(model.state)
     }
 
     @Test
     fun fetch_screen_data_transitions_to_loading() = runTest(testRule.dispatcher) {
         // Arrange
-        val model = MyCollectionScreenModel(
+        val model = HomeTabScreenModel(
             getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames,
         )
@@ -42,13 +42,13 @@ class MyCollectionScreenModelTests {
 
         // Assert
         assertNotNull(job)
-        assertIs<ScreenState.Loading>(model.state)
+        assertIs<HomeTabScreenState.Loading>(model.state)
     }
 
     @Test
     fun fetch_screen_data_transitions_to_loaded_once_is_obtained() = runTest(testRule.dispatcher) {
         // Arrange
-        val model = MyCollectionScreenModel(
+        val model = HomeTabScreenModel(
             getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames,
         )
@@ -57,13 +57,13 @@ class MyCollectionScreenModelTests {
         model.fetchScreenData()?.join()
 
         // Assert
-        assertIs<ScreenState.Loaded>(model.state)
+        assertIs<HomeTabScreenState.Loaded>(model.state)
     }
 
     @Test
     fun fetch_screen_data_only_fetches_when_not_loading() = runTest(testRule.dispatcher) {
         // Arrange
-        val model = MyCollectionScreenModel(
+        val model = HomeTabScreenModel(
             getGameLists = ::fakeGetGameLists,
             getLatestGames = ::fakeGetLatestGames,
         )
@@ -74,7 +74,7 @@ class MyCollectionScreenModelTests {
 
         // Assert
         assertNull(job)
-        assertIs<ScreenState.Loading>(model.state)
+        assertIs<HomeTabScreenState.Loading>(model.state)
     }
 }
 

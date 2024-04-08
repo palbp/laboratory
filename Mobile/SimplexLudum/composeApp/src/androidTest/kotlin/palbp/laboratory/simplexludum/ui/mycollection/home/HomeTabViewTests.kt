@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.ui.mycollection
+package palbp.laboratory.simplexludum.ui.mycollection.home
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -15,7 +15,7 @@ import palbp.laboratory.simplexludum.ui.common.computeGameItemTag
 import palbp.laboratory.simplexludum.ui.common.computeGameListSelectorNavIconTag
 import palbp.laboratory.simplexludum.ui.common.computeGameListSelectorTag
 
-class MyCollectionViewTests {
+class HomeTabViewTests {
 
     @get:Rule
     val composeTree = createComposeRule()
@@ -25,7 +25,7 @@ class MyCollectionViewTests {
         // Arrange
         var onOpenDetailsIntentCalled = false
         composeTree.setContent {
-            MyCollectionView(
+            HomeTabView(
                 lists = emptyList(),
                 latest = latest,
                 onOpenGameDetailsIntent = { onOpenDetailsIntentCalled = true },
@@ -48,7 +48,7 @@ class MyCollectionViewTests {
         var onOpenListIntentCalled = false
         val gameList = gameLists.last()
         composeTree.setContent {
-            MyCollectionView(
+            HomeTabView(
                 lists = listOf(gameList),
                 latest = latest,
                 onOpenGameListIntent = { onOpenListIntentCalled = true },
@@ -72,7 +72,7 @@ class MyCollectionViewTests {
         var onOpenIntentParam: GameListSummary? = null
         val gameList = GameListSummary("name", 0)
         composeTree.setContent {
-            MyCollectionView(
+            HomeTabView(
                 lists = listOf(gameList),
                 latest = latest,
                 onOpenGameListIntent = {
@@ -99,7 +99,7 @@ class MyCollectionViewTests {
         var onOpenListIntentCalled = false
         val gameList = gameLists.first()
         composeTree.setContent {
-            MyCollectionView(
+            HomeTabView(
                 lists = gameLists,
                 latest = latest,
                 onOpenGameListIntent = { onOpenListIntentCalled = true },
