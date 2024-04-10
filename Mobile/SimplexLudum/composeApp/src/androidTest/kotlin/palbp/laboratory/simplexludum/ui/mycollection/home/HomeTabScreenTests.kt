@@ -18,7 +18,7 @@ class HomeTabScreenTests {
         val screenModel = mockk<HomeTabScreenModel>(relaxed = true) {
             every { state } returns HomeTabScreenState.Idle
         }
-        val sut = HomeTabScreen(screenModel)
+        val sut = HomeTabScreen(tabIndex = 0u, tabModel = screenModel)
 
         // Act
         composeTree.setContent { sut.Content() }

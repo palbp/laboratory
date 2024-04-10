@@ -25,6 +25,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import palbp.laboratory.simplexludum.ui.common.stringResource
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
+import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
 import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTabScreen
 
 const val GET_STARTED_BUTTON_TAG = "get-started-button"
@@ -95,7 +96,7 @@ class StartScreen : Screen {
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
         StartScreen(
-            onGetStartedIntent = { navigator.push(HomeTabScreen()) }
+            onGetStartedIntent = { navigator.push(MyCollectionScreen()) }
         )
     }
 }

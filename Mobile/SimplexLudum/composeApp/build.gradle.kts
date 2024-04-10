@@ -46,6 +46,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenModel)
+            implementation(libs.voyager.tabNavigator)
             implementation(libs.kermit.logger)
         }
 
