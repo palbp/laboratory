@@ -14,6 +14,7 @@ import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 import palbp.laboratory.simplexludum.ui.mycollection.explore.ExploreLibraryTabScreen
 import palbp.laboratory.simplexludum.ui.mycollection.find.FindGamesTabScreen
 import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTabScreen
@@ -37,31 +38,33 @@ class MyCollectionScreen : Screen {
 
     @Composable
     override fun Content() {
-        TabNavigator(
-            tab = homeTabScreen
-        ) { tabNavigator ->
-            Scaffold(
-                content = { CurrentTab() },
-                bottomBar = {
-                    NavigationBar {
-                        TabNavigationItem(
-                            tab = homeTabScreen,
-                            onTabSelected = { tabNavigator.current = homeTabScreen },
-                            testTag = HOME_TAB_TAG
-                        )
-                        TabNavigationItem(
-                            tab = exploreTabScreen,
-                            onTabSelected = { tabNavigator.current = exploreTabScreen },
-                            testTag = EXPLORE_LIBRARY_TAB_TAG
-                        )
-                        TabNavigationItem(
-                            tab = findTabScreen,
-                            onTabSelected = { tabNavigator.current = findTabScreen },
-                            testTag = FIND_GAMES_TAB_TAG
-                        )
+        SimplexLudumTheme {
+            TabNavigator(
+                tab = homeTabScreen
+            ) { tabNavigator ->
+                Scaffold(
+                    content = { CurrentTab() },
+                    bottomBar = {
+                        NavigationBar {
+                            TabNavigationItem(
+                                tab = homeTabScreen,
+                                onTabSelected = { tabNavigator.current = homeTabScreen },
+                                testTag = HOME_TAB_TAG
+                            )
+                            TabNavigationItem(
+                                tab = exploreTabScreen,
+                                onTabSelected = { tabNavigator.current = exploreTabScreen },
+                                testTag = EXPLORE_LIBRARY_TAB_TAG
+                            )
+                            TabNavigationItem(
+                                tab = findTabScreen,
+                                onTabSelected = { tabNavigator.current = findTabScreen },
+                                testTag = FIND_GAMES_TAB_TAG
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

@@ -11,26 +11,16 @@ import androidx.compose.runtime.Composable
  * color roles in Material Design 3.
  */
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
+private val DarkColorScheme = darkColorScheme()
 
 private val LightColorScheme = lightColorScheme(
-    primary = DarkRed,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = LightRed,
+    onSecondaryContainer = LightRed,
+    onSurface = DarkRed,
+    primaryContainer = LightGray,
+    surface = LightGray,
+    surfaceTint = LightGray,
+    secondaryContainer = LightGray,
 )
 
 @Composable
