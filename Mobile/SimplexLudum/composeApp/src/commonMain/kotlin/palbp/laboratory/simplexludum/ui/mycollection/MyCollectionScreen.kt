@@ -43,7 +43,7 @@ class MyCollectionScreen : Screen {
                 tab = homeTabScreen
             ) { tabNavigator ->
                 Scaffold(
-                    content = { CurrentTab() },
+                    content = { paddingValues -> TabContentHolder(paddingValues) { CurrentTab() } },
                     bottomBar = {
                         NavigationBar {
                             TabNavigationItem(

@@ -42,6 +42,20 @@ suspend fun getFakeLatestGames(): List<Game> {
             genres = setOf(Genre.ACTION),
             platform = Platform.PS5,
             distribution = Distribution.SUBSCRIPTION
-        )
+        ),
+        Game(
+            name = "name3",
+            developer = "developer3",
+            genres = setOf(Genre.RPG),
+            platform = Platform.PS4,
+            distribution = Distribution.DIGITAL
+        ),
+        Game(
+            name = "name4",
+            developer = "developer1",
+            genres = setOf(Genre.RPG),
+            platform = Platform.PS5,
+            distribution = Distribution.PHYSICAL
+        ),
     )
 }

@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +20,7 @@ import palbp.laboratory.simplexludum.ui.common.GameItem
 import palbp.laboratory.simplexludum.ui.common.GameListSelector
 import palbp.laboratory.simplexludum.ui.common.stringResource
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
+import palbp.laboratory.simplexludum.ui.mycollection.ContentPadding
 
 // Resource identifiers
 const val HOME_TITLE: String = "home_title"
@@ -42,11 +45,11 @@ fun HomeTabView(
     onOpenGameDetailsIntent: (Game) -> Unit,
 ) {
     SimplexLudumTheme {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 16.dp)
+                .padding(ContentPadding.current)
+                .padding(horizontal = 16.dp)
                 .testTag(HOME_TAG)
         ) {
             Text(
@@ -54,12 +57,10 @@ fun HomeTabView(
                 text = stringResource(HOME_TITLE),
                 style = MaterialTheme.typography.headlineLarge
             )
-            lists.dropLast(n = 1).forEach {
+            lists.forEachIndexed { index, it ->
                 GameListSelector(listInfo = it, onGameListSelected = onOpenGameListIntent)
-                Divider()
-            }
-            lists.lastOrNull()?.let {
-                GameListSelector(listInfo = it, onGameListSelected = onOpenGameListIntent)
+                if (index < lists.size - 1)
+                    Divider()
             }
 
             Row(
@@ -74,8 +75,8 @@ fun HomeTabView(
                 )
             }
 
-            Column {
-                latest.forEach { game ->
+            LazyColumn {
+                items(latest) { game ->
                     GameItem(game = game, onGameItemSelected = onOpenGameDetailsIntent)
                 }
             }
