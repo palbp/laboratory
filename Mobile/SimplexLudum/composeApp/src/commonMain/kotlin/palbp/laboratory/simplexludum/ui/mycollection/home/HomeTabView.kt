@@ -19,7 +19,6 @@ import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.ui.common.GameItem
 import palbp.laboratory.simplexludum.ui.common.GameListSelector
 import palbp.laboratory.simplexludum.ui.common.stringResource
-import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 import palbp.laboratory.simplexludum.ui.mycollection.ContentPadding
 
 // Resource identifiers
@@ -44,41 +43,39 @@ fun HomeTabView(
     onOpenGameListIntent: (GameListSummary) -> Unit,
     onOpenGameDetailsIntent: (Game) -> Unit,
 ) {
-    SimplexLudumTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ContentPadding.current)
-                .padding(horizontal = 16.dp)
-                .testTag(HOME_TAG)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(ContentPadding.current)
+            .padding(horizontal = 16.dp)
+            .testTag(HOME_TAG)
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 32.dp),
+            text = stringResource(HOME_TITLE),
+            style = MaterialTheme.typography.headlineLarge
+        )
+        lists.forEachIndexed { index, it ->
+            GameListSelector(listInfo = it, onGameListSelected = onOpenGameListIntent)
+            if (index < lists.size - 1)
+                Divider()
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
         ) {
+            Text(text = stringResource(HOME_LATEST_TITLE), style = MaterialTheme.typography.titleMedium)
             Text(
-                modifier = Modifier.padding(vertical = 32.dp),
-                text = stringResource(HOME_TITLE),
-                style = MaterialTheme.typography.headlineLarge
+                text = stringResource(HOME_SEE_ALL_LABEL),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
             )
-            lists.forEachIndexed { index, it ->
-                GameListSelector(listInfo = it, onGameListSelected = onOpenGameListIntent)
-                if (index < lists.size - 1)
-                    Divider()
-            }
+        }
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
-            ) {
-                Text(text = stringResource(HOME_LATEST_TITLE), style = MaterialTheme.typography.titleMedium)
-                Text(
-                    text = stringResource(HOME_SEE_ALL_LABEL),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            LazyColumn {
-                items(latest) { game ->
-                    GameItem(game = game, onGameItemSelected = onOpenGameDetailsIntent)
-                }
+        LazyColumn {
+            items(latest) { game ->
+                GameItem(game = game, onGameItemSelected = onOpenGameDetailsIntent)
             }
         }
     }

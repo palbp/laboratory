@@ -7,10 +7,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 
-// Tag used to identify the Find Games tab content
-// TODO: Move this definition to the view
-const val FIND_GAMES_TAG = "find"
-
 /**
  * The actual implementation of the content of the Find tab for the MyCollection screen.
  * @param tabIndex The index of the tab in the tab navigator
@@ -18,7 +14,7 @@ const val FIND_GAMES_TAG = "find"
 class FindGamesTabScreen(private val tabIndex: UInt) : Tab {
     @Composable
     override fun Content() {
-        // TODO: Implement
+        FindGamesTabView()
     }
 
     override val options: TabOptions
