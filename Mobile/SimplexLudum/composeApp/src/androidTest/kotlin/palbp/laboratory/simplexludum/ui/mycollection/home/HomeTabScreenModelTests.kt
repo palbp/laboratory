@@ -46,7 +46,7 @@ class HomeTabScreenModelTests {
     }
 
     @Test
-    fun fetch_screen_data_transitions_to_loaded_once_is_obtained() = runTest(testRule.dispatcher) {
+    fun fetch_screen_data_transitions_to_loaded_once_it_is_obtained() = runTest(testRule.dispatcher) {
         // Arrange
         val model = HomeTabScreenModel(
             getGameLists = ::fakeGetGameLists,
