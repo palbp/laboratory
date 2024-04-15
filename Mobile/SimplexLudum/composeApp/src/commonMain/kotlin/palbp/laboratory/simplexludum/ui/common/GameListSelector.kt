@@ -79,7 +79,7 @@ fun GameListSelector(
 fun GameListSummary.toIcon(): ImageVector =
     when (name.toString()) {
         "Platinum" -> Icons.Outlined.EmojiEvents
-        "Wishlist" -> Icons.Default.FavoriteBorder
+        "Wish List" -> Icons.Default.FavoriteBorder
         "Collections" -> Icons.Default.LibraryBooks
         "Completed" -> Icons.Default.TaskAlt
         "Backlog" -> Icons.Default.FormatListBulleted
