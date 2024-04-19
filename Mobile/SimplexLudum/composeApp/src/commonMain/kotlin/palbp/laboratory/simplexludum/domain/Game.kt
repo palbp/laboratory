@@ -64,12 +64,14 @@ enum class Genre {
     PUZZLE,
     RACING,
     RPG,
+    HORROR,
     SHOOTER,
     SIMULATION,
     SPORTS,
     STRATEGY,
     SURVIVAL,
     TURN_BASED,
+    INDIE,
     OTHER
 }
 
