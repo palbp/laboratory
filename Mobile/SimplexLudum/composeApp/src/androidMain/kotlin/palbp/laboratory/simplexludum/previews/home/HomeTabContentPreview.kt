@@ -1,4 +1,4 @@
-package palbp.laboratory.simplexludum.previews
+package palbp.laboratory.simplexludum.previews.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
