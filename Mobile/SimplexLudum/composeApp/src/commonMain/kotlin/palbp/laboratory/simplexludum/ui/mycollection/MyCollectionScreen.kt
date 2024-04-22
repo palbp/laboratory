@@ -2,8 +2,10 @@ package palbp.laboratory.simplexludum.ui.mycollection
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,6 +87,10 @@ private fun RowScope.TabNavigationItem(
             }
         },
         label = { Text(tab.options.title) },
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = MaterialTheme.colorScheme.primary,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
+        ),
         modifier = Modifier.testTag(testTag)
     )
 }

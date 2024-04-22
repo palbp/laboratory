@@ -65,7 +65,11 @@ fun HomeTabView(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
         ) {
-            Text(text = stringResource(HOME_LATEST_TITLE), style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = stringResource(HOME_LATEST_TITLE),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
             Text(
                 text = stringResource(HOME_SEE_ALL_LABEL),
                 style = MaterialTheme.typography.titleSmall,

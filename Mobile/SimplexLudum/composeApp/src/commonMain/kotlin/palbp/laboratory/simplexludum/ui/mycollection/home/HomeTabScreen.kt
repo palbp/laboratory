@@ -15,9 +15,9 @@ const val HOME_TAB_TITLE: String = "home_tab_title"
 
 /**
  * The actual implementation of the content of the Home tab for the MyCollection screen.
- * The tab's view-model is injected to enable testing.
+ * The tab's view-model is injected to enable testing. The parameter's default value
+ * is the view-model used in production.
  * @param tabIndex The index of the tab in the tab navigator
- * @param tabModel The view-model for the tab
  */
 class HomeTabScreen(
     private val tabIndex: UInt,

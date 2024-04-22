@@ -57,16 +57,16 @@ fun StartScreen(onGetStartedIntent: () -> Unit) {
                         .align(Alignment.CenterHorizontally)
                 )
                 Text(
-                    style = MaterialTheme.typography.titleLarge,
                     text = stringResource(APP_TITLE),
+                    style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 32.dp)
                         .align(Alignment.CenterHorizontally)
                 )
                 Text(
-                    style = MaterialTheme.typography.bodyLarge,
                     text = stringResource(APP_MOTTO_TEXT),
+                    style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 32.dp, vertical = 16.dp)

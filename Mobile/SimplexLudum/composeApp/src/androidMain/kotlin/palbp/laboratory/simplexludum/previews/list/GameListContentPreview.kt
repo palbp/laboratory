@@ -1,25 +1,18 @@
-package palbp.laboratory.simplexludum.previews.home
+package palbp.laboratory.simplexludum.previews.list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 import palbp.laboratory.simplexludum.domain.Distribution
 import palbp.laboratory.simplexludum.domain.Game
-import palbp.laboratory.simplexludum.domain.GameListSummary
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
-import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTabView
+import palbp.laboratory.simplexludum.ui.list.GameListView
 
-@Preview(showBackground = true, showSystemUi = true, name = "Home Tab")
+@Preview(showBackground = true, showSystemUi = true, name = "Game List")
 @Composable
-fun HomeTabContentPreview() {
-    val gameLists = listOf(
-        GameListSummary("Platinum", 19),
-        GameListSummary("Completed", 36),
-        GameListSummary("Backlog", 23),
-        GameListSummary("Wishlist", 10),
-        GameListSummary("Collections", 3)
-    )
-    val latest = listOf(
+fun GameListContentPreview() {
+    val games = listOf(
         Game(
             name = "name1",
             developer = "developer1",
@@ -35,10 +28,14 @@ fun HomeTabContentPreview() {
             distribution = Distribution.SUBSCRIPTION
         ),
     )
-    HomeTabView(
-        lists = gameLists,
-        latest = latest,
-        onOpenGameListIntent = { },
-        onOpenGameDetailsIntent = { }
-    )
+
+    SimplexLudumTheme {
+        GameListView(
+            listTitle = "Backlog",
+            games = games,
+            onSearchIntent = { },
+            onOpenGameDetailsIntent = { },
+            onNavigateBackIntent = { }
+        )
+    }
 }

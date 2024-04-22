@@ -107,7 +107,6 @@ private fun GameItemProperty(value: String, modifier: Modifier = Modifier) {
         text = value,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.secondary,
         modifier = modifier.padding(top = 4.dp)
     )
 }
