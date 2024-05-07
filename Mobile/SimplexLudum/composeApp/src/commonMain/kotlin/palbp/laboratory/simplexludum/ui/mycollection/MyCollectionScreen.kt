@@ -19,7 +19,7 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 import palbp.laboratory.simplexludum.ui.mycollection.explore.ExploreLibraryTabScreen
 import palbp.laboratory.simplexludum.ui.mycollection.find.FindGamesTabScreen
-import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTabScreen
+import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTab
 
 // Tags used to identify semantically relevant parts of the UI, in this case,
 // the tabs in the navigation bar
@@ -34,7 +34,7 @@ const val FIND_GAMES_TAB_TAG = "find_tab"
  */
 class MyCollectionScreen : Screen {
 
-    private val homeTabScreen by lazy { HomeTabScreen(tabIndex = 0u) }
+    private val homeTabScreen by lazy { HomeTab(tabIndex = 0u) }
     private val exploreTabScreen by lazy { ExploreLibraryTabScreen(tabIndex = 1u) }
     private val findTabScreen by lazy { FindGamesTabScreen(tabIndex = 2u) }
 

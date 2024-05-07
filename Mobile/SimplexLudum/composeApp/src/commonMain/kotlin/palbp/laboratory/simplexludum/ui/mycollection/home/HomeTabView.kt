@@ -51,7 +51,7 @@ fun HomeTabView(
             .testTag(HOME_TAG)
     ) {
         Text(
-            modifier = Modifier.padding(vertical = 32.dp),
+            modifier = Modifier.padding(vertical = 16.dp),
             text = stringResource(HOME_TITLE),
             style = MaterialTheme.typography.headlineLarge
         )
@@ -63,7 +63,7 @@ fun HomeTabView(
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
         ) {
             Text(
                 text = stringResource(HOME_LATEST_TITLE),

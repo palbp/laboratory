@@ -11,7 +11,7 @@ import palbp.laboratory.simplexludum.domain.Platform
  * Fake implementation of the data access function responsible for getting the
  * existing game lists
  */
-suspend fun getFakeGameLists(): List<GameListSummary> {
+suspend fun fakeGetGameLists(): List<GameListSummary> {
     delay(1000L)
     return listOf(
         GameListSummary("Platinum", 19),
@@ -26,7 +26,7 @@ suspend fun getFakeGameLists(): List<GameListSummary> {
  * Fake implementation of the data access function responsible for getting the
  * latest games
  */
-suspend fun getFakeLatestGames(): List<Game> {
+suspend fun fakeGetLatestGames(): List<Game> {
     delay(1000L)
     return listOf(
         Game(
@@ -94,7 +94,7 @@ suspend fun getFakeLatestGames(): List<Game> {
         ),
         Game(
             name = "Resident Evil 4",
-            developer = "CAPCOM Co., Ltd.",
+            developer = "Capcom",
             genres = setOf(Genre.ACTION, Genre.HORROR),
             platform = Platform.PS5,
             distribution = Distribution.DIGITAL
@@ -158,8 +158,75 @@ suspend fun getFakeLatestGames(): List<Game> {
     )
 }
 
-suspend fun getFakeGameListWithQuery(query: String): List<Game> =
-    getFakeLatestGames().let { allGames ->
+suspend fun fakeGetGameListWithQuery(query: String): List<Game> =
+    fakeGetLatestGames().let { allGames ->
         if (query.isBlank()) allGames
         else allGames.filter { it.name.toString().contains(query, ignoreCase = true) }
     }
+
+suspend fun fakeGetGameList(name: String): List<Game> {
+    delay(1000L)
+    return when (name) {
+        "Platinum" -> listOf(
+            Game(
+                name = "Elden Ring",
+                developer = "FromSoftware",
+                genres = setOf(Genre.ADVENTURE, Genre.RPG),
+                platform = Platform.PS5,
+                distribution = Distribution.PHYSICAL
+            ),
+            Game(
+                name = "Blasphemous",
+                developer = "The Game Kitchen",
+                genres = setOf(Genre.ADVENTURE, Genre.RPG, Genre.PLATFORM),
+                platform = Platform.PS4,
+                distribution = Distribution.SUBSCRIPTION
+            )
+        )
+
+        "Completed" -> listOf(
+            Game(
+                name = "Sea of Stars",
+                developer = "Sabotage Studio",
+                genres = setOf(Genre.ADVENTURE, Genre.RPG, Genre.TURN_BASED),
+                platform = Platform.PS5,
+                distribution = Distribution.SUBSCRIPTION
+            ),
+            Game(
+                name = "Remnant: From the Ashes",
+                developer = "Gunfire Games",
+                genres = setOf(Genre.ADVENTURE, Genre.RPG, Genre.SHOOTER),
+                platform = Platform.PS4,
+                distribution = Distribution.SUBSCRIPTION
+            ),
+            Game(
+                name = "Final Fantasy XVI",
+                developer = "Square Enix",
+                genres = setOf(Genre.ADVENTURE, Genre.RPG),
+                platform = Platform.PS5,
+                distribution = Distribution.PHYSICAL
+            ),
+            Game(
+                name = "The Callisto Protocol",
+                developer = "Striking Distance Studios",
+                genres = setOf(Genre.ADVENTURE, Genre.HORROR),
+                platform = Platform.PS5,
+                distribution = Distribution.DIGITAL
+            )
+        )
+
+        "Backlog" -> listOf(
+            Game(
+                name = "Blasphemous II",
+                developer = "The Game Kitchen",
+                genres = setOf(Genre.ADVENTURE, Genre.RPG, Genre.PLATFORM),
+                platform = Platform.PS5,
+                distribution = Distribution.PHYSICAL
+            ),
+        )
+
+        "Wishlist" -> emptyList()
+        "Collections" -> emptyList()
+        else -> emptyList()
+    }
+}

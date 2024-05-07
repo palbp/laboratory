@@ -12,7 +12,7 @@ import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class HomeTabScreenModelTests {
+class HomeTabModelTests {
 
     private val testRule = MainDispatcherTestRule()
 

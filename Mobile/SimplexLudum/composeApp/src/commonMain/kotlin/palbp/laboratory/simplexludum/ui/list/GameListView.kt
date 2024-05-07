@@ -24,6 +24,7 @@ import palbp.laboratory.simplexludum.ui.common.SearchBox
 
 // Tags used to identify semantically relevant parts of the UI
 const val BACK_BUTTON_TAG = "back_button"
+const val LIST_TITLE_TAG = "list_title"
 
 /**
  * The View in the Model-View-ViewModel pattern for the Game List screen
@@ -55,7 +56,7 @@ fun GameListView(
                             .testTag(BACK_BUTTON_TAG)
                     )
                 },
-                title = { Text(text = listTitle) }
+                title = { Text(text = listTitle, modifier = Modifier.testTag(LIST_TITLE_TAG)) }
             )
         }
     ) { paddingValues ->

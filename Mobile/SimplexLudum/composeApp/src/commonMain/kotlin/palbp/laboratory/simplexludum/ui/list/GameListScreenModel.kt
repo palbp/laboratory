@@ -6,13 +6,10 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.GetGameListWithQuery
-import palbp.laboratory.simplexludum.infrastructure.getFakeGameListWithQuery
 
 /**
  * Sum type representing the possible states of the Game List screen
@@ -43,7 +40,7 @@ class GameListScreenModel(
      * @param query The query to filter the game list with
      * @return The job that is fetching the data
      */
-    fun fetchFilteredGameList(query: String = ""): Job =
+    fun fetchFilteredGameList(query: String): Job =
         state.let {
             if (it is GameListScreenState.Loading) {
                 it.job.cancel()

@@ -1,12 +1,12 @@
 package palbp.laboratory.simplexludum.ui.list
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import palbp.laboratory.simplexludum.domain.Distribution
 import palbp.laboratory.simplexludum.domain.Game
 import palbp.laboratory.simplexludum.domain.Genre
 import palbp.laboratory.simplexludum.domain.Platform
-import palbp.laboratory.simplexludum.infrastructure.getFakeGameListWithQuery
 import palbp.laboratory.simplexludum.ui.MainDispatcherTestRule
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
@@ -32,7 +32,7 @@ class GameListScreenModelTests {
         val model = GameListScreenModel(getGameList = { fakeGetGames() })
 
         // Act
-        val job = model.fetchFilteredGameList()
+        val job = model.fetchFilteredGameList(query = "")
 
         // Assert
         assertNotNull(job)
@@ -45,7 +45,7 @@ class GameListScreenModelTests {
         val model = GameListScreenModel(getGameList = { fakeGetGames() })
 
         // Act
-        model.fetchFilteredGameList().join()
+        model.fetchFilteredGameList(query = "").join()
 
         // Assert
         assertIs<GameListScreenState.Loaded>(model.state)
@@ -57,8 +57,8 @@ class GameListScreenModelTests {
         val model = GameListScreenModel(getGameList = { fakeGetGames() })
 
         // Act
-        val firstJob = model.fetchFilteredGameList()
-        model.fetchFilteredGameList().join()
+        val firstJob = model.fetchFilteredGameList(query = "")
+        model.fetchFilteredGameList(query = "").join()
 
         // Assert
         assertTrue(firstJob.isCancelled)
@@ -66,19 +66,24 @@ class GameListScreenModelTests {
     }
 }
 
-private fun fakeGetGames(): List<Game> = listOf(
-    Game(
-        name = "name1",
-        developer = "developer1",
-        genres = setOf(Genre.ADVENTURE),
-        platform = Platform.PS4,
-        distribution = Distribution.PHYSICAL
-    ),
-    Game(
-        name = "name2",
-        developer = "developer1",
-        genres = setOf(Genre.ACTION),
-        platform = Platform.PS5,
-        distribution = Distribution.SUBSCRIPTION
+private suspend fun fakeGetGames(): List<Game> {
+
+    delay(1000)
+
+    return listOf(
+        Game(
+            name = "name1",
+            developer = "developer1",
+            genres = setOf(Genre.ADVENTURE),
+            platform = Platform.PS4,
+            distribution = Distribution.PHYSICAL
+        ),
+        Game(
+            name = "name2",
+            developer = "developer1",
+            genres = setOf(Genre.ACTION),
+            platform = Platform.PS5,
+            distribution = Distribution.SUBSCRIPTION
+        )
     )
-)
+}

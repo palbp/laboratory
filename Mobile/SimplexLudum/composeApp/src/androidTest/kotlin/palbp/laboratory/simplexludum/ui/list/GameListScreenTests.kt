@@ -6,6 +6,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.fail
 
 class GameListScreenTests {
 
@@ -25,6 +26,16 @@ class GameListScreenTests {
         composeTree.waitForIdle()
 
         // Assert
-        verify { screenModel.fetchFilteredGameList() }
+        verify { screenModel.fetchFilteredGameList(query = "") }
+    }
+
+    @Test
+    fun pressing_navigate_back_destroys_the_screen() {
+        fail("Not yet implemented")
+    }
+
+    @Test
+    fun pressing_a_game_item_navigates_to_its_details_screen() {
+        fail("To be implemented")
     }
 }

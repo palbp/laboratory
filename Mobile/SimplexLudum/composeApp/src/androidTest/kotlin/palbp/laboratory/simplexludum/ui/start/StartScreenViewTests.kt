@@ -6,8 +6,6 @@ import androidx.compose.ui.test.performClick
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import palbp.laboratory.simplexludum.ui.start.GET_STARTED_BUTTON_TAG
-import palbp.laboratory.simplexludum.ui.start.StartScreen
 
 class StartScreenTests {
 
@@ -19,7 +17,7 @@ class StartScreenTests {
         // Arrange
         var onStartIntentCalled = false
         composeTree.setContent {
-            StartScreen(onGetStartedIntent = { onStartIntentCalled = true })
+            StartScreenView(onGetStartedIntent = { onStartIntentCalled = true })
         }
 
         // Act

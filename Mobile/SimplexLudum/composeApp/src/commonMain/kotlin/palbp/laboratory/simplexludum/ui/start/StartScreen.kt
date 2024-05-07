@@ -26,7 +26,6 @@ import org.jetbrains.compose.resources.painterResource
 import palbp.laboratory.simplexludum.ui.common.stringResource
 import palbp.laboratory.simplexludum.ui.common.theme.SimplexLudumTheme
 import palbp.laboratory.simplexludum.ui.mycollection.MyCollectionScreen
-import palbp.laboratory.simplexludum.ui.mycollection.home.HomeTabScreen
 
 const val GET_STARTED_BUTTON_TAG = "get-started-button"
 
@@ -40,7 +39,7 @@ const val GET_STARTED_TEXT: String = "get_started"
  */
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun StartScreen(onGetStartedIntent: () -> Unit) {
+fun StartScreenView(onGetStartedIntent: () -> Unit) {
     SimplexLudumTheme {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Column(
@@ -95,7 +94,7 @@ class StartScreen : Screen {
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
-        StartScreen(
+        StartScreenView(
             onGetStartedIntent = { navigator.push(MyCollectionScreen()) }
         )
     }
