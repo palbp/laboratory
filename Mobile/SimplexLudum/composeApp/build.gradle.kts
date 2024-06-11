@@ -1,19 +1,19 @@
-import org.jetbrains.compose.ComposePlugin.CommonComponentsDependencies.resources
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinMultiplatform) 
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     
@@ -31,9 +31,8 @@ kotlin {
     sourceSets {
         
         androidMain.dependencies {
+            implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.compose.ui.tooling)
         }
 
         commonMain.dependencies {
@@ -42,12 +41,11 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
-            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.screenModel)
-            implementation(libs.voyager.tabNavigator)
-            implementation(libs.kermit.logger)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.navigation)
+            implementation(libs.compose.lifecycle)
+            implementation(libs.compose.lifecycle.viewmodel)
         }
 
         commonTest.dependencies {
@@ -57,7 +55,7 @@ kotlin {
 }
 
 android {
-    namespace = "palbp.laboratory.simplexludum"
+    namespace = "palbp.laboratory.simplex"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -65,7 +63,7 @@ android {
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
-        applicationId = "palbp.laboratory.simplexludum"
+        applicationId = "palbp.laboratory.simplex"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -74,36 +72,27 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE**}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
-    testOptions {
-        packaging {
-            jniLibs {
-                useLegacyPackaging = true
-            }
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE**}"
-            }
-        }
-    }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        compose = true
     }
     dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+        debugImplementation(compose.uiTooling)
         debugImplementation(libs.compose.ui.test.manifest)
-        androidTestImplementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
-        androidTestImplementation(libs.kotlin.test)
-        androidTestImplementation(libs.mockk.android)
+        @OptIn(ExperimentalComposeLibrary::class)
+        androidTestImplementation(compose.uiTest)
+        androidTestImplementation(libs.kotlin.test.junit)
     }
 }
 

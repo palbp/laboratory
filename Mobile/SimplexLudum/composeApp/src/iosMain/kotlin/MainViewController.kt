@@ -1,4 +1,4 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import palbp.laboratory.simplexludum.App
+import palbp.laboratory.simplex.App
 
 fun MainViewController() = ComposeUIViewController { App() }

@@ -1,57 +1,27 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
-androidx-activityCompose = "1.8.2"
-androidx-appcompat = "1.6.1"
-androidx-constraintlayout = "2.1.4"
-androidx-core-ktx = "1.12.0"
-androidx-espresso-core = "3.5.1"
-androidx-material = "1.11.0"
-androidx-test-junit = "1.1.5"
-compose = "1.6.3"
-compose-compiler = "1.5.6"
-compose-plugin = "1.5.11"
-junit = "4.13.2"
-kotlin = "1.9.21"
-voyager = "1.0.0"
-kotlinx-datetime = "0.5.0"
-uiToolingPreviewAndroid = "1.6.3"
-kermit-logger = "2.0.3"
-mockk = "1.13.10"
-arrow = "1.2.1"
+androidx-activityCompose = "1.9.0"
+compose-plugin = "1.6.10"
+compose-ui-test = "1.6.7"
+lifecycle = "2.8.0"
+navigation = "2.8.0-alpha02"
+kotlin = "2.0.0"
 
 [libraries]
-arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
-androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-test" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
-voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
-voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
-voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
-
-androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
-kermit-logger = { module = "co.touchlab:kermit", version.ref = "kermit-logger" }
-mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
+compose-lifecycle = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+compose-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

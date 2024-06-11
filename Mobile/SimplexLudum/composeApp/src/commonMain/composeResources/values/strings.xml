@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="app_name">Simplex Ludum</string>
+    <string name="app_motto">Keep track of your video games collection. The easy way.</string>
+    <!-- Search composable -->
+    <string name="do_search">Search</string>
+    <string name="clear_search">Cancel</string>
+
+    <!-- Start screen -->
+    <string name="get_started">Get Started</string>
+
+    <!-- My Collection -->
+    <string name="home_tab">Home</string>
+    <string name="find_tab">Find</string>
+    <string name="explore_tab">Explore</string>
+
+    <!-- Home tab -->
+    <string name="home_title">My Collection</string>
+    <string name="latest_title">Latest</string>"
+    <string name="see_all_title">See all</string>
+
+
+
+</resources>
