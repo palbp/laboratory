@@ -21,7 +21,7 @@ const val USE_PERSISTENT_LISTS = true
  * Used for demo purposes only. The idea is to show the consequences of using persistent data structures
  * instead of using the standard Kotlin immutable collections.
  */
-fun <T> getListOf() = if (USE_PERSISTENT_LISTS) persistentListOf<T>() else listOf<T>()
+fun <T> getListOf(): List<T> = if (USE_PERSISTENT_LISTS) persistentListOf() else listOf()
 
 /**
  * Implementation of simplification of Atari's Missile Command
