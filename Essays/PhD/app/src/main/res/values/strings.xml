@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Maze Path Finder</string>
+    <string name="button_start_text">Find Path</string>
+    <string name="button_searching_text">Searching …</string>
+    <string name="button_pause_searching_text">Pause</string>
+    <string name="button_resume_searching_text">Resume</string>
+    <string name="button_reset_text">Reset</string>
+    <string name="maze_start_label">Start</string>
+    <string name="maze_goal_label">Goal</string>
+
+    <string name="search_algorithm_breadth_first">Breadth First Search</string>
+    <string name="search_algorithm_depth_first">Depth First Search</string>
+    <string name="search_algorithm_breadth_first_randomized">Breadth First Search Randomized</string>
+    <string name="search_algorithm_depth_first_randomized">Depth First Search Randomized</string>
+    <string name="search_algorithm_greedy_search_manhattan">Greedy Search (Manhattan distance)</string>
+    <string name="search_algorithm_greedy_search_euclidean">Greedy Search (Euclidean distance)</string>
+    <string name="search_algorithm_a_star_manhattan">A* (Manhattan distance)</string>
+    <string name="search_algorithm_a_star_euclidean">A* (Euclidean distance)</string>
+
+    <string name="message_no_path">No path found!</string>
+    <string name="title_activity_algorithm_selection">Select Algorithm</string>
+</resources>
