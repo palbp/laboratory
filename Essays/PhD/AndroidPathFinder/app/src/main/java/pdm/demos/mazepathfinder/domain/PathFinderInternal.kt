@@ -57,8 +57,6 @@ internal fun findPath(maze: Maze, openSet: OpenSet): Flow<SearchState> = flow {
 
         val current = openSet.remove() ?: break
 
-        //print("current=$current | openSet = ${openSet.contents}")
-
         closedSet.add(current)
         emit(SearchState.Searching(visited = closedSet.map { it.cell }))
 
@@ -78,8 +76,6 @@ internal fun findPath(maze: Maze, openSet: OpenSet): Flow<SearchState> = flow {
                     )
                 }
         )
-
-        //println(" | expanded=${openSet.contents}")
     }
 
     emit(SearchState.NotFound(visited = closedSet.map { it.cell }))
