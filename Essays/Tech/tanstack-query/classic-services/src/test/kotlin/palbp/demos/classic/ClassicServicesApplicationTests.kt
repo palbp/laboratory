@@ -9,5 +9,4 @@ class ClassicServicesApplicationTests {
 	@Test
 	fun contextLoads() {
 	}
-
 }
