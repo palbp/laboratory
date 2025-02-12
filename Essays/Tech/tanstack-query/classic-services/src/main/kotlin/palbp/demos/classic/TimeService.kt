@@ -13,6 +13,7 @@ class TimeService {
 
     @GetMapping("/api/time")
     fun getTime(): TimeOutputModel = with(LocalDateTime.now()) {
+        Thread.sleep(5000)
         TimeOutputModel(hour, minute, second).also {
             logger.info("Returning time: $it")
         }

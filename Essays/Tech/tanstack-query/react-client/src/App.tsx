@@ -2,7 +2,7 @@ import reactLogo from './assets/react.svg'
 import tanstackLogo from './assets/tanstackLogo.png'
 import viteLogo from '/vite.svg'
 import './App.css'
-import TimePage from './time/TimePageV0'
+import TimePage from './time/TimePageV1'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()

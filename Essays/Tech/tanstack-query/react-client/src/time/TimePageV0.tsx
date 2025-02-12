@@ -24,7 +24,7 @@ export default function TimePage() {
   const { data, error, isLoading, refetch } = useQuery<TimeData>({
     queryKey: ['time'], 
     queryFn: fetchTime,
-    refetchInterval: 1000,
+    refetchInterval: 5000,
   })
 
   return (
