@@ -10,10 +10,8 @@ private const val N_OF_THREADS = 6
 private const val N_OF_REPS = 1_000_000
 
 class LockFreeStackTests {
-
     @Test
     fun `multiple threads pushing to a shared stack`() {
-
         val sharedStack = LockFreeStack<Int>()
 
         (0 until N_OF_THREADS).map {
@@ -32,5 +30,4 @@ class LockFreeStackTests {
 
         assertEquals(expected = N_OF_REPS * N_OF_THREADS, actual = poppedCounter)
     }
-
 }

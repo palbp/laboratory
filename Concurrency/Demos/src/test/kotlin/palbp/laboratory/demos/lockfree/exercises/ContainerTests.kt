@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ContainerTests {
-
     private fun combineResults(results: MutableList<Map<String, Int>>): Map<String, Int> {
         val allKeys = results.fold(emptySet<String>()) { acc, map -> acc + map.keys }
         return buildMap {
@@ -34,25 +33,31 @@ class ContainerTests {
 
     @Test
     fun `concurrent consumes do not produce phantom results nor loss of values`() {
-
         val threadCount = 4
         val workers = Executors.newFixedThreadPool(threadCount)
         val latch = CountDownLatch(threadCount)
 
-        val iselKey = "isel"; val iselCount = 30_000
-        val pcKey = "pc"; val pcCount = 45_000
-        val testKey = "test"; val testCount = 20_000
-        val container = Container(
-            arrayOf(
-                Value(iselKey, iselCount),
-                Value(pcKey, pcCount),
-                Value(testKey, testCount)
+        val iselKey = "isel"
+        val iselCount = 30_000
+        val pcKey = "pc"
+        val pcCount = 45_000
+        val testKey = "test"
+        val testCount = 20_000
+        val container =
+            Container(
+                arrayOf(
+                    Value(iselKey, iselCount),
+                    Value(pcKey, pcCount),
+                    Value(testKey, testCount),
+                ),
             )
-        )
 
         val partialResults = MutableList<Map<String, Int>>(threadCount) { emptyMap() }
         repeat(threadCount) {
-            workers.execute { partialResults[it] = consumerWork(container); latch.countDown() }
+            workers.execute {
+                partialResults[it] = consumerWork(container)
+                latch.countDown()
+            }
         }
 
         assertTrue(latch.await(10, TimeUnit.SECONDS))

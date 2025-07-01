@@ -31,11 +31,10 @@ import kotlin.time.Duration
  * or timeout) on a [tryDequeue] operation.
  */
 class MessageQueue<T> {
-
     private class DequeueRequest<T>(
         val nOfMessages: Int,
         val condition: Condition,
-        var messages: List<T>? = null
+        var messages: List<T>? = null,
     )
 
     private val guard = ReentrantLock()
@@ -51,10 +50,14 @@ class MessageQueue<T> {
     }
 
     @Throws(InterruptedException::class)
-    fun tryDequeue(nOfMessages: Int, timeout: Duration): List<T>? {
+    fun tryDequeue(
+        nOfMessages: Int,
+        timeout: Duration,
+    ): List<T>? {
         guard.withLock {
-            if (dequeueRequests.isEmpty() && messages.size >= nOfMessages)
+            if (dequeueRequests.isEmpty() && messages.size >= nOfMessages) {
                 return takeMessages(nOfMessages)
+            }
 
             val myRequest = DequeueRequest<T>(nOfMessages, guard.newCondition())
             dequeueRequests.addLast(myRequest)
@@ -64,8 +67,9 @@ class MessageQueue<T> {
                 while (true) {
                     remainingTime = myRequest.condition.awaitNanos(remainingTime)
 
-                    if (myRequest.messages != null)
+                    if (myRequest.messages != null) {
                         return myRequest.messages
+                    }
 
                     if (remainingTime <= 0) {
                         dequeueRequests.remove(myRequest)
@@ -73,9 +77,8 @@ class MessageQueue<T> {
                         return null
                     }
                 }
-            }
-            catch (ie: InterruptedException) {
-                if(dequeueRequests.remove(myRequest)) {
+            } catch (ie: InterruptedException) {
+                if (dequeueRequests.remove(myRequest)) {
                     tryCompletePendingDequeues()
                     throw ie
                 }
@@ -85,12 +88,13 @@ class MessageQueue<T> {
         }
     }
 
-    private fun takeMessages(nOfMessages: Int) = List(nOfMessages) {
-        messages.removeFirst()
-    }
+    private fun takeMessages(nOfMessages: Int) =
+        List(nOfMessages) {
+            messages.removeFirst()
+        }
 
     private fun tryCompletePendingDequeues() {
-        while(dequeueRequests.isNotEmpty() && messages.size >= dequeueRequests.first.nOfMessages) {
+        while (dequeueRequests.isNotEmpty() && messages.size >= dequeueRequests.first.nOfMessages) {
             val completedRequest = dequeueRequests.removeFirst()
             completedRequest.messages = takeMessages(completedRequest.nOfMessages)
             completedRequest.condition.signal()

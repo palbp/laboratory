@@ -6,7 +6,6 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class HandlerThreadTests {
-
     @Test
     fun handlerThreadExecutesActions() {
         val handler = HandlerThread(capacity = 10).apply { start() }

@@ -1,4 +1,4 @@
-package palbp.laboratory.demos.synch;
+package palbp.laboratory.demos.synch
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.Condition
@@ -19,7 +19,6 @@ import kotlin.concurrent.withLock
  *  following scenario: calls to set - reset in rapid succession. What would happen?
  */
 class ManualResetEventFlawed(val initialSignaledState: Boolean) {
-
     /**
      * Holds information on whether the object is signaled (true) or not (false).
      */
@@ -34,7 +33,7 @@ class ManualResetEventFlawed(val initialSignaledState: Boolean) {
      */
     fun set() {
         mLock.withLock {
-            if(!signaled) {
+            if (!signaled) {
                 signaled = true
                 mCondition.signalAll()
             }
@@ -46,8 +45,9 @@ class ManualResetEventFlawed(val initialSignaledState: Boolean) {
      */
     fun reset() {
         mLock.withLock {
-            if(signaled)
-                signaled = false;
+            if (signaled) {
+                signaled = false
+            }
         }
     }
 
@@ -59,22 +59,28 @@ class ManualResetEventFlawed(val initialSignaledState: Boolean) {
      * @throws InterruptedException If the blocked thread has been signaled for cancellation.
      */
     @Throws(InterruptedException::class)
-    fun waitOne(timeout: Long, unit: TimeUnit): Boolean {
+    fun waitOne(
+        timeout: Long,
+        unit: TimeUnit,
+    ): Boolean {
         mLock.withLock {
             // Check event signaled state.
-            if(signaled)
+            if (signaled) {
                 return true
+            }
 
             // Otherwise, block calling thread until the required conditions are met
             var remainingTime = unit.toNanos(timeout)
-            while(true) {
+            while (true) {
                 remainingTime = mCondition.awaitNanos(remainingTime)
 
-                if(signaled)
+                if (signaled) {
                     return true
+                }
 
-                if(remainingTime <= 0)
+                if (remainingTime <= 0) {
                     return false
+                }
             }
         }
     }

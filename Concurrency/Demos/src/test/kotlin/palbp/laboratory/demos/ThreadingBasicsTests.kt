@@ -22,7 +22,6 @@ private fun threadCode() {
  * Test suite containing examples of how to create, start and synchronize with thread termination.
  */
 class ThreadingBasicsTests {
-
     @Test
     fun `create, start and join with a thread`() {
         log.info("Starting test on thread ${currentThread().name}")
@@ -37,11 +36,12 @@ class ThreadingBasicsTests {
     fun `multiple threads, one function`() {
         log.info("Starting test on thread ${currentThread().name}")
 
-        val threads = listOf(
-            Thread(::threadCode),
-            Thread(::threadCode),
-            Thread(::threadCode),
-        )
+        val threads =
+            listOf(
+                Thread(::threadCode),
+                Thread(::threadCode),
+                Thread(::threadCode),
+            )
         threads.forEach { it.start() }
         threads.forEach { it.join() }
 
@@ -53,10 +53,11 @@ class ThreadingBasicsTests {
         val someValue = 95
         log.info("Starting test on thread ${currentThread().name}")
 
-        val thread = Thread {
-            log.info("someValue = $someValue")
-            threadCode()
-        }
+        val thread =
+            Thread {
+                log.info("someValue = $someValue")
+                threadCode()
+            }
         thread.start()
         thread.join()
 

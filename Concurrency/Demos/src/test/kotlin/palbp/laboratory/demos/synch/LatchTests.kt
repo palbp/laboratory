@@ -7,7 +7,6 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class LatchTests {
-
     @Test
     fun `await blocks until signaled`() {
         val completed = Latch()
@@ -29,13 +28,14 @@ class LatchTests {
     @Test
     fun `await blocks until interrupted`() {
         val completed = Latch()
-        val toBeCancelled = Thread {
-            val sut = Latch()
-            assertThrows<InterruptedException> {
-                sut.await(5, TimeUnit.SECONDS)
-            }
-            completed.signal()
-        }.apply { start() }
+        val toBeCancelled =
+            Thread {
+                val sut = Latch()
+                assertThrows<InterruptedException> {
+                    sut.await(5, TimeUnit.SECONDS)
+                }
+                completed.signal()
+            }.apply { start() }
         Thread.sleep(1000)
         toBeCancelled.interrupt()
         assertTrue { completed.await(10, TimeUnit.SECONDS) }

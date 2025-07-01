@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicInteger
 
 @Suppress("ControlFlowWithEmptyBody")
 class LockFreeCounter(initialValue: Int = 0) {
-
     private val _value = AtomicInteger(initialValue)
 
     val value: Int
@@ -14,11 +13,13 @@ class LockFreeCounter(initialValue: Int = 0) {
         while (true) {
             val observedValue = _value.get()
             val newValue = operation(observedValue)
-            if (_value.compareAndSet(observedValue, newValue))
+            if (_value.compareAndSet(observedValue, newValue)) {
                 return newValue
+            }
         }
     }
 
     fun increment(): Int = doSafely { it + 1 }
+
     fun decrement(): Int = doSafely { it - 1 }
 }

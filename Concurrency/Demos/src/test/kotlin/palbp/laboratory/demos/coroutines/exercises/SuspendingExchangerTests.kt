@@ -10,7 +10,6 @@ import kotlin.test.assertContentEquals
 private val logger = LoggerFactory.getLogger(SuspendingExchangerTests::class.java)
 
 class SuspendingExchangerTests {
-
     private fun twoCoroutinesExchangingWith(exchanger: ISuspendingExchanger<Int>) {
         val oneList = buildList { for (i in 0 until 10 step 2) add(i) }
         val otherList = buildList { for (i in 1 until 10 step 2) add(i) }
@@ -31,11 +30,12 @@ class SuspendingExchangerTests {
             return others
         }
 
-        val result = runBlocking {
-            val oneJob = async { exchangeAll(oneList) }
-            val otherJob = async {exchangeAll(otherList) }
-            Pair(oneJob.await(), otherJob.await())
-        }
+        val result =
+            runBlocking {
+                val oneJob = async { exchangeAll(oneList) }
+                val otherJob = async { exchangeAll(otherList) }
+                Pair(oneJob.await(), otherJob.await())
+            }
 
         assertContentEquals(oneList, result.second)
         assertContentEquals(otherList, result.first)

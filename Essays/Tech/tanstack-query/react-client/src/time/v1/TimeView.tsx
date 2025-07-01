@@ -28,7 +28,7 @@ export function TimeView({ state: { data, error, isLoading }, onRefresh }: TimeV
         </div>}
       </h1>
       <div className="card">
-        <button data-testid={TEST_TAGS.REFRESH_BUTTON} onClick={onRefresh}>Refresh</button>
+        <button data-testid={TEST_TAGS.REFRESH_BUTTON} disabled={isLoading} onClick={onRefresh}>Refresh</button>
       </div>
     </>
   );

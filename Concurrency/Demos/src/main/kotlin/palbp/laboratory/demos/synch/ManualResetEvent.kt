@@ -16,7 +16,6 @@ import kotlin.concurrent.withLock
  * Gate closed 	<=> manual reset event not signaled
  */
 class ManualResetEvent(val initialSignaledState: Boolean) {
-
     /**
      * Holds information on whether the object is signaled (true) or not (false).
      */
@@ -37,7 +36,7 @@ class ManualResetEvent(val initialSignaledState: Boolean) {
      */
     fun set() {
         mLock.withLock {
-            if(!isSignaled) {
+            if (!isSignaled) {
                 isSignaled = true
                 notifyBlockedThreads()
             }
@@ -61,10 +60,14 @@ class ManualResetEvent(val initialSignaledState: Boolean) {
      * @throws InterruptedException If the blocked thread has been signaled for cancellation.
      */
     @Throws(InterruptedException::class)
-    fun waitOne(timeout: Long, unit: TimeUnit): Boolean {
+    fun waitOne(
+        timeout: Long,
+        unit: TimeUnit,
+    ): Boolean {
         mLock.withLock {
-            if (isSignaled)
+            if (isSignaled) {
                 return true
+            }
 
             // Going to block. Hold-on to the generation count
             val myGeneration = lastGeneration
@@ -73,11 +76,13 @@ class ManualResetEvent(val initialSignaledState: Boolean) {
             while (true) {
                 remainingTime = mCondition.awaitNanos(remainingTime)
 
-                if (myGeneration != lastGeneration)
+                if (myGeneration != lastGeneration) {
                     return true
+                }
 
-                if (remainingTime <= 0)
+                if (remainingTime <= 0) {
                     return false
+                }
             }
         }
     }

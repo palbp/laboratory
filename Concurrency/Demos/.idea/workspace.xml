@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7234ad3f-b8b6-4393-9e40-8c258fe22f96" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/Main.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/cache/Memoizer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/cache/Memoizer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchanger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchanger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/suspendingFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeCounter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeCounter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeStack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/exercises/Container.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/exercises/Container.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Future.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Future.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/HandlerThread.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/HandlerThread.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Latch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Latch.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventFlawed.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventFlawed.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventKS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventKS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Promise.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Promise.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedBuffer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedBuffer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueue.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueueKS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueueKS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueue.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/syncFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/SyncFunctions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ParallelismTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ParallelismTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingBasicsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingBasicsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTestsFixed.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTestsFixed.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/async/AsyncIOTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/async/AsyncIOTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/cache/MemoizerTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/cache/MemoizerTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/CoroutinesBasicsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/CoroutinesBasicsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/FlowsBasicsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/FlowsBasicsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/SuspendCoroutineTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/SuspendCoroutineTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchangerTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchangerTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctionsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctionsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/LockFreeCounterTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/SafeCounterTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/LockFreeStackTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/LockFreeStackTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/exercises/ContainerTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/exercises/ContainerTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/mm/MemoryModelTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/mm/MemoryModelTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/AFutureImplTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/AFutureImplTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/HandlerThreadTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/HandlerThreadTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/LatchTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/LatchTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/MonitorSemanticsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/MonitorSemanticsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueueTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueueTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/syncFunctionsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/SyncFunctionsTests.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/Query.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/Query.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimePageV0.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimePageV1.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimeView.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimeView.tsx" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Demos" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Demos" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Demos" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="formatting" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Demos" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="verification" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="Kotlin File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2ybJNTKb7HmVc4iFGPhRDm3zyh1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build Demos.executor": "Run",
+    "Gradle.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down.executor": "Run",
+    "Gradle.CyclicCountDownLatchTests.executor": "Run",
+    "Gradle.Demos [ktlintCheck].executor": "Run",
+    "Gradle.Demos [ktlintFormat].executor": "Run",
+    "Gradle.Demos [test].executor": "Run",
+    "Gradle.SimpleSafeStackTests.executor": "Run",
+    "Kotlin.PeriodicMessageKt.executor": "Run",
+    "Kotlin.SimpleSafeStackKt.executor": "Run",
+    "Kotlin.SuspendingFunctionsKt.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/palbp/Work/Laboratory/Concurrency/Demos/src/main/kotlin/palbp/laboratory/solutions/en2425",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="palbp.laboratory.demos.coroutines.exercises.en2425" />
+      <recent name="palbp.laboratory.demos.coroutines.exercises" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Kotlin.SuspendingFunctionsKt">
+    <configuration name="CyclicCountDownLatchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;palbp.laboratory.demos.synch.exercises.CyclicCountDownLatchTests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;palbp.laboratory.demos.synch.exercises.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="PeriodicMessageKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="palbp.laboratory.demos.coroutines.exercises.PeriodicMessageKt" />
+      <module name="Demos.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SuspendingFunctionsKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="palbp.laboratory.demos.coroutines.exercises.SuspendingFunctionsKt" />
+      <module name="Demos.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.SuspendingFunctionsKt" />
+        <item itemvalue="Kotlin.PeriodicMessageKt" />
+        <item itemvalue="Gradle.CyclicCountDownLatchTests" />
+        <item itemvalue="Gradle.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7234ad3f-b8b6-4393-9e40-8c258fe22f96" name="Changes" comment="" />
+      <created>1750097299481</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750097299481</updated>
+      <workItem from="1750097300534" duration="10967000" />
+      <workItem from="1750156998485" duration="2934000" />
+      <workItem from="1750191371088" duration="198000" />
+      <workItem from="1750440871038" duration="465000" />
+      <workItem from="1750671750879" duration="5975000" />
+      <workItem from="1750696995890" duration="3866000" />
+      <workItem from="1750759861311" duration="713000" />
+      <workItem from="1750967663029" duration="3474000" />
+      <workItem from="1751282612821" duration="13049000" />
+      <workItem from="1751374921421" duration="10234000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

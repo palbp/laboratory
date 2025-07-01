@@ -9,7 +9,6 @@ import kotlin.concurrent.withLock
  * of asynchronous operations when the caller waits explicitly for the result.
  */
 interface AFuture<T> {
-
     /**
      * Gets the future's result. If the result is not yet available, blocks the calling thread until it's
      * interrupted or the result becomes available.
@@ -28,7 +27,10 @@ interface AFuture<T> {
      * @return the operation's result or null if the specified time has elapsed
      */
     @Throws(InterruptedException::class, Throwable::class)
-    fun get(timeout: Long, unit: TimeUnit): T?
+    fun get(
+        timeout: Long,
+        unit: TimeUnit,
+    ): T?
 
     /**
      * Indicates whether the result is already available or not
@@ -41,7 +43,6 @@ interface AFuture<T> {
  * and the set of methods required by the result producer ([setSuccess], [setFailure])
  */
 class AFutureImpl<T> : AFuture<T> {
-
     // The future's possible results
     @Volatile private var result: T? = null
     private var error: Throwable? = null
@@ -71,29 +72,36 @@ class AFutureImpl<T> : AFuture<T> {
     }
 
     @Throws(InterruptedException::class)
-    override fun get(timeout: Long, unit: TimeUnit): T? {
+    override fun get(
+        timeout: Long,
+        unit: TimeUnit,
+    ): T? {
         mLock.withLock {
             // Do we have a result?
-            if (isDone)
+            if (isDone) {
                 return result ?: throw error as Throwable
+            }
 
             var remainingTime = unit.toNanos(timeout)
             while (true) {
                 remainingTime = mCondition.awaitNanos(remainingTime)
 
                 // Do we have a result?
-                if (isDone)
+                if (isDone) {
                     return result ?: throw error as Throwable
+                }
 
                 // Has the wait time expired?
-                if (remainingTime <= 0)
+                if (remainingTime <= 0) {
                     return null
+                }
             }
         }
     }
 
     override var isDone: Boolean = false
         get() = mLock.withLock { field }
+
         // mLock must be held when accessing the property's setter
         private set
 

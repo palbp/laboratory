@@ -13,20 +13,26 @@ class Latch {
     private val mCondition: Condition = mLock.newCondition()
 
     @Throws(InterruptedException::class)
-    fun await(timeout: Long, unit: TimeUnit): Boolean {
+    fun await(
+        timeout: Long,
+        unit: TimeUnit,
+    ): Boolean {
         mLock.withLock {
-            if (signaled)
+            if (signaled) {
                 return true
+            }
 
             var remainingTime = unit.toNanos(timeout)
             while (true) {
                 remainingTime = mCondition.awaitNanos(remainingTime)
 
-                if(signaled)
+                if (signaled) {
                     return true
+                }
 
-                if (remainingTime <= 0)
+                if (remainingTime <= 0) {
                     return false
+                }
             }
         }
     }

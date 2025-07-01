@@ -11,7 +11,6 @@ private const val N_OF_THREADS = 6
 private const val N_OF_REPS = 100_000
 
 class SafeCounterTests {
-
     @Test
     fun `increments are not lost`() {
         val sharedCounter = LockFreeCounter(0)
@@ -26,7 +25,7 @@ class SafeCounterTests {
     }
 
     @Test
-   fun `increment produces the original value plus one`() {
+    fun `increment produces the original value plus one`() {
         val allCounterValues = ConcurrentHashMap<Int, Boolean>()
         val sharedCounter = LockFreeCounter(0)
         (0 until N_OF_THREADS).map {

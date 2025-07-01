@@ -28,10 +28,11 @@ suspend fun <T> CompletableFuture<T>.await(): T {
         logger.info("suspendCancellableCoroutine starts")
         whenComplete { result, error ->
             logger.info("whenComplete start and coroutine is cancelled = ${continuation.isCancelled}")
-            if (error != null)
+            if (error != null) {
                 continuation.resumeWithException(error)
-            else
+            } else {
                 continuation.resume(result)
+            }
         }
     }
 }
@@ -39,7 +40,6 @@ suspend fun <T> CompletableFuture<T>.await(): T {
 suspend fun simulateReadLine(input: String): String = simulateAsyncReadLine(input).await()
 
 class SuspendCoroutineTests {
-
     @Test
     fun `adapt to future based API`() {
         logger.info("Test starts")
@@ -55,13 +55,14 @@ class SuspendCoroutineTests {
         logger.info("Test starts")
         runBlocking {
             logger.info("Father starts")
-            val child = launch {
-                logger.info("Child starts")
-                logger.info("Got ${simulateReadLine("the first input")}")
-                delay(5000)
-                logger.info("Got ${simulateReadLine("the second input")}")
-                logger.info("Child ends")
-            }
+            val child =
+                launch {
+                    logger.info("Child starts")
+                    logger.info("Got ${simulateReadLine("the first input")}")
+                    delay(5000)
+                    logger.info("Got ${simulateReadLine("the second input")}")
+                    logger.info("Child ends")
+                }
             delay(3000)
             logger.info("Father cancels child after a delay")
             child.cancelAndJoin()

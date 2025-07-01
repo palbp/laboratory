@@ -32,22 +32,23 @@ class Value<T>(val value: T, initialLives: Int) {
     val lives = AtomicInteger(initialLives)
 }
 
-class Container<T>(private val values: Array<Value<T>>){
-
+class Container<T>(private val values: Array<Value<T>>) {
     private val index = AtomicInteger(0)
 
     fun consume(): T? {
-        while(true) {
+        while (true) {
             val observedIndex = index.get()
-            if (observedIndex >= values.size)
+            if (observedIndex >= values.size) {
                 return null
+            }
 
             val observedValue = values[observedIndex]
             val observedLives = observedValue.lives.get()
 
             if (observedLives != 0) {
-                if (observedValue.lives.compareAndSet(observedLives, observedLives - 1))
+                if (observedValue.lives.compareAndSet(observedLives, observedLives - 1)) {
                     return observedValue.value
+                }
             } else {
                 index.compareAndExchange(observedIndex, observedIndex + 1)
             }

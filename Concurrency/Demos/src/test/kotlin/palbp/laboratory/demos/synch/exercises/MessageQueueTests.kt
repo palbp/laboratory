@@ -8,10 +8,8 @@ import kotlin.test.assertNotNull
 import kotlin.time.Duration.Companion.seconds
 
 class MessageQueueTests {
-
     @Test
     fun `blocked threads are serviced in a FIFO manner`() {
-
         val messagesToProduce = 15
         val queue = MessageQueue<Int>()
 
@@ -21,17 +19,19 @@ class MessageQueueTests {
         val consumer2MessageCount = messagesToProduce / 3
 
         val isFirstWaiting = CountDownLatch(1)
-        val consumer1 = Thread {
-            isFirstWaiting.countDown()
-            consumer1Result = queue.tryDequeue(consumer1MessageCount, timeout = 10.seconds)
-        }.apply { start() }
+        val consumer1 =
+            Thread {
+                isFirstWaiting.countDown()
+                consumer1Result = queue.tryDequeue(consumer1MessageCount, timeout = 10.seconds)
+            }.apply { start() }
         isFirstWaiting.await()
 
         val isSecondWaiting = CountDownLatch(1)
-        val consumer2 = Thread {
-            isSecondWaiting.countDown()
-            consumer2Result = queue.tryDequeue(consumer2MessageCount, timeout = 10.seconds)
-        }.apply { start() }
+        val consumer2 =
+            Thread {
+                isSecondWaiting.countDown()
+                consumer2Result = queue.tryDequeue(consumer2MessageCount, timeout = 10.seconds)
+            }.apply { start() }
         isSecondWaiting.await()
 
         repeat(messagesToProduce) {
@@ -54,23 +54,24 @@ class MessageQueueTests {
 
     @Test
     fun `interrupting first waiting thread enables servicing of the next`() {
-
         val messagesToProduce = 5
         val queue = MessageQueue<Int>()
         var consumerResult: List<Int>? = null
 
         val isFirstWaiting = CountDownLatch(1)
-        val consumerToCancel = Thread {
-            isFirstWaiting.countDown()
-            queue.tryDequeue(messagesToProduce * 2, timeout = 10.seconds)
-        }.apply { start() }
+        val consumerToCancel =
+            Thread {
+                isFirstWaiting.countDown()
+                queue.tryDequeue(messagesToProduce * 2, timeout = 10.seconds)
+            }.apply { start() }
         isFirstWaiting.await()
 
         val isSecondWaiting = CountDownLatch(1)
-        val consumer = Thread {
-            isSecondWaiting.countDown()
-            consumerResult = queue.tryDequeue(messagesToProduce, timeout = 10.seconds)
-        }.apply { start() }
+        val consumer =
+            Thread {
+                isSecondWaiting.countDown()
+                consumerResult = queue.tryDequeue(messagesToProduce, timeout = 10.seconds)
+            }.apply { start() }
         isSecondWaiting.await()
 
         repeat(messagesToProduce) {

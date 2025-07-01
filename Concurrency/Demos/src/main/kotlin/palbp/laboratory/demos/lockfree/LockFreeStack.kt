@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicReference
  * The implementation uses Treiber's algorithm (https://en.wikipedia.org/wiki/Treiber_stack)
  */
 class LockFreeStack<T> {
-
     private class Node<T>(val item: T, var next: Node<T>? = null)
 
     private val top = AtomicReference<Node<T>>()
@@ -24,8 +23,9 @@ class LockFreeStack<T> {
         var observedTop: Node<T>? = null
         do {
             observedTop = top.get()
-            if (observedTop == null)
+            if (observedTop == null) {
                 return null
+            }
             val newTop = observedTop.next
         } while (!top.compareAndSet(observedTop, newTop))
         return observedTop?.item

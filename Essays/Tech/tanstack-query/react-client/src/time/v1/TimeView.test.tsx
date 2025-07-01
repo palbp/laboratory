@@ -13,12 +13,14 @@ describe('TimeView', () => {
   it('renders loading state', () => {
     render(<TimeView state={{ data: null, error: null, isLoading: true }} onRefresh={dummyHandler} />)
     expect(screen.getByTestId(TEST_TAGS.LOADING)).toBeInTheDocument()
+    expect(screen.queryByTestId(TEST_TAGS.DATA)).not.toBeInTheDocument()
     expect(screen.queryByTestId(TEST_TAGS.ERROR)).not.toBeInTheDocument()
   })
 
   it('renders error state', () => {
     render(<TimeView state={{ data: null, error: testError, isLoading: false }} onRefresh={dummyHandler} />)
     expect(screen.getByTestId(TEST_TAGS.ERROR)).toBeInTheDocument()
+    expect(screen.queryByTestId(TEST_TAGS.DATA)).not.toBeInTheDocument()
     expect(screen.queryByTestId(TEST_TAGS.LOADING)).not.toBeInTheDocument()
   })
 

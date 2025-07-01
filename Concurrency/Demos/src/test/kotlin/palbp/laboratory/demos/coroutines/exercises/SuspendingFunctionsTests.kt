@@ -13,21 +13,28 @@ private val logger = LoggerFactory.getLogger(SuspendingFunctionsTests::class.jav
 
 @OptIn(ExperimentalTime::class)
 class SuspendingFunctionsTests {
-
     @Test
     fun `race between fast f0 and slow f1 returns f0 result`() {
         val f0Time = 1000
         val f1Time = 5000
-        val elapsedTime = measureTime {
-            val result = runBlocking {
-                race(
-                    f0 = { delay(f0Time.toLong()); f0Time },
-                    f1 = { delay(f1Time.toLong()); f1Time }
-                )
-            }
+        val elapsedTime =
+            measureTime {
+                val result =
+                    runBlocking {
+                        race(
+                            f0 = {
+                                delay(f0Time.toLong())
+                                f0Time
+                            },
+                            f1 = {
+                                delay(f1Time.toLong())
+                                f1Time
+                            },
+                        )
+                    }
 
-            assertEquals(f0Time, result)
-        }
+                assertEquals(f0Time, result)
+            }
 
         assertTrue(elapsedTime.inWholeMilliseconds < f1Time)
     }
@@ -36,16 +43,24 @@ class SuspendingFunctionsTests {
     fun `race between slow f0 and fast f1 returns f1 result`() {
         val f0Time = 5000
         val f1Time = 1000
-        val elapsedTime = measureTime {
-            val result = runBlocking {
-                race(
-                    f0 = { delay(f0Time.toLong()); f0Time },
-                    f1 = { delay(f1Time.toLong()); f1Time }
-                )
-            }
+        val elapsedTime =
+            measureTime {
+                val result =
+                    runBlocking {
+                        race(
+                            f0 = {
+                                delay(f0Time.toLong())
+                                f0Time
+                            },
+                            f1 = {
+                                delay(f1Time.toLong())
+                                f1Time
+                            },
+                        )
+                    }
 
-            assertEquals(f1Time, result)
-        }
+                assertEquals(f1Time, result)
+            }
 
         assertTrue(elapsedTime.inWholeMilliseconds < f0Time)
     }

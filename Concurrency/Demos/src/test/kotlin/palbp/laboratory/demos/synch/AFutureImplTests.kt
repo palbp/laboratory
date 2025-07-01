@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class AFutureImplTests {
-
     private val successText = "Yeah"
     private val error = IOException()
 
@@ -20,10 +19,11 @@ class AFutureImplTests {
         val result = AFutureImpl<String>()
         Thread {
             Thread.sleep(2000)
-            if (simulateFailure)
+            if (simulateFailure) {
                 result.setFailure(error)
-            else
+            } else {
                 result.setSuccess(successText)
+            }
         }.start()
         return result
     }
@@ -48,4 +48,3 @@ class AFutureImplTests {
         assertNull(futureText.get(1, TimeUnit.SECONDS))
     }
 }
-

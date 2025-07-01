@@ -36,7 +36,6 @@ interface ISuspendingExchanger<T> {
  * future becomes completed.
  */
 class SuspendingExchangerAsPerMyClasses<T> : ISuspendingExchanger<T> {
-
     private data class Request<T>(val value: T, val result: CompletableFuture<T>)
 
     private val guard = ReentrantLock()
@@ -44,18 +43,23 @@ class SuspendingExchangerAsPerMyClasses<T> : ISuspendingExchanger<T> {
 
     private fun internalExchange(value: T): CompletableFuture<T> {
         val myLazyRequest = lazy { Request(value, CompletableFuture()) }
-        val waitingRequest = guard.withLock {
-            val other = waiting
-            if (other == null) { waiting = myLazyRequest.value; null }
-            else { waiting = null; other}
-        }
+        val waitingRequest =
+            guard.withLock {
+                val other = waiting
+                if (other == null) {
+                    waiting = myLazyRequest.value
+                    null
+                } else {
+                    waiting = null
+                    other
+                }
+            }
 
         return if (waitingRequest != null) {
             val exchangedValue = waitingRequest.value
             waitingRequest.result.complete(value)
             CompletableFuture.completedFuture(exchangedValue)
-        }
-        else {
+        } else {
             myLazyRequest.value.result
         }
     }
@@ -63,10 +67,11 @@ class SuspendingExchangerAsPerMyClasses<T> : ISuspendingExchanger<T> {
     override suspend fun exchange(value: T): T {
         return suspendCoroutine { continuation ->
             internalExchange(value).whenComplete { value, error ->
-                if (error != null)
+                if (error != null) {
                     continuation.resumeWithException(error)
-                else
+                } else {
                     continuation.resume(value)
+                }
             }
         }
     }
@@ -77,7 +82,6 @@ class SuspendingExchangerAsPerMyClasses<T> : ISuspendingExchanger<T> {
  * [Mutex] and [suspendCoroutine].
  */
 class SuspendingExchanger<T> : ISuspendingExchanger<T> {
-
     private data class Request<T>(val value: T, val continuation: Continuation<T>)
 
     private val guard = Mutex()
@@ -98,10 +102,10 @@ class SuspendingExchanger<T> : ISuspendingExchanger<T> {
                 other.continuation.resume(value)
                 other.value
             }
-        }
-        finally {
-            if (guard.isLocked)
+        } finally {
+            if (guard.isLocked) {
                 guard.unlock()
+            }
         }
     }
 }

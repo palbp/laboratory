@@ -18,8 +18,12 @@ import kotlin.concurrent.withLock
  * (i.e. Lock and Condition implementations).
  */
 @Suppress("UNCHECKED_CAST")
-fun <A, B, C> run(f0: () -> A, f1: () -> B, f2: (A, B) -> C, executor: Executor): C {
-
+fun <A, B, C> run(
+    f0: () -> A,
+    f1: () -> B,
+    f2: (A, B) -> C,
+    executor: Executor,
+): C {
     /**
      * The implementation of this synchronizer relies on it being local to the function.
      * Note that it doesn't try to enforce its contract. It presumes that the using code respects it. If the class
@@ -33,12 +37,16 @@ fun <A, B, C> run(f0: () -> A, f1: () -> B, f2: (A, B) -> C, executor: Executor)
         private val results: Array<Any?> = Array(expectedResults) { null }
         private var publishedResults = 0
 
-        fun putResultAt(index: Int, value: Any?) {
+        fun putResultAt(
+            index: Int,
+            value: Any?,
+        ) {
             guard.withLock {
                 results[index] = value
                 publishedResults += 1
-                if (publishedResults == expectedResults)
+                if (publishedResults == expectedResults) {
                     hasAllResults.signalAll()
+                }
             }
         }
 

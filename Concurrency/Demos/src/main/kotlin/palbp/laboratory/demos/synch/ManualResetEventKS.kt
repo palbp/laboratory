@@ -18,7 +18,6 @@ import kotlin.concurrent.withLock
  * The implementation uses a "kernel style" solution pattern, also named "execution delegation" pattern.
  */
 class ManualResetEventKS(val initialSignaledState: Boolean) {
-
     /**
      * Holds information on whether the object is signaled (true) or not (false).
      */
@@ -29,6 +28,7 @@ class ManualResetEventKS(val initialSignaledState: Boolean) {
     private val mCondition: Condition = mLock.newCondition()
 
     private class SignaledState(var isSignaled: Boolean = false)
+
     private val waitingThreads: MutableList<SignaledState> = mutableListOf()
 
     private fun notifyBlockedThreads() {
@@ -42,7 +42,7 @@ class ManualResetEventKS(val initialSignaledState: Boolean) {
      */
     fun set() {
         mLock.withLock {
-            if(!isSignaled) {
+            if (!isSignaled) {
                 isSignaled = true
                 notifyBlockedThreads()
             }
@@ -66,10 +66,14 @@ class ManualResetEventKS(val initialSignaledState: Boolean) {
      * @throws InterruptedException If the blocked thread has been signaled for cancellation.
      */
     @Throws(InterruptedException::class)
-    fun waitOne(timeout: Long, unit: TimeUnit): Boolean {
+    fun waitOne(
+        timeout: Long,
+        unit: TimeUnit,
+    ): Boolean {
         mLock.withLock {
-            if (isSignaled)
+            if (isSignaled) {
                 return true
+            }
 
             // Going to block. Publish the thread's signaled state
             val status = SignaledState(isSignaled = false)
@@ -79,17 +83,18 @@ class ManualResetEventKS(val initialSignaledState: Boolean) {
             while (true) {
                 try {
                     remainingTime = mCondition.awaitNanos(remainingTime)
-                }
-                catch (ie: InterruptedException) {
+                } catch (ie: InterruptedException) {
                     waitingThreads.remove(status)
                     throw ie
                 }
 
-                if (status.isSignaled)
+                if (status.isSignaled) {
                     return true
+                }
 
-                if (remainingTime <= 0)
+                if (remainingTime <= 0) {
                     return false
+                }
             }
         }
     }

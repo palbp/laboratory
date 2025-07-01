@@ -11,13 +11,12 @@ import org.slf4j.LoggerFactory
 
 private val logger: Logger = LoggerFactory.getLogger("Coroutines")
 
-
 fun main() {
     runBlocking {
         val count = 2
         logger.info("Inside runBlocking: starting $count coroutines ")
         repeat(count) {
-            launch(CoroutineName("${it+1}"), start = CoroutineStart.DEFAULT) {
+            launch(CoroutineName("${it + 1}"), start = CoroutineStart.DEFAULT) {
                 val name = this.coroutineContext[CoroutineName]?.name
                 logger.info("Running coroutine $name")
             }

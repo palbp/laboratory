@@ -6,7 +6,6 @@ import kotlin.test.Test
 private val log = LoggerFactory.getLogger(MemoryModelTests::class.java)
 
 class MemoryModelTests {
-
     var done = false
     var value = 0
 
@@ -20,7 +19,6 @@ class MemoryModelTests {
 
     @Test
     fun `tests visibility`() {
-
         Thread(::run).start()
 
         Thread.sleep(10000)

@@ -1,7 +1,7 @@
 package palbp.laboratory.demos
 
 import org.slf4j.LoggerFactory
-import java.lang.Thread.*
+import java.lang.Thread.currentThread
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.test.Test
@@ -19,12 +19,10 @@ private const val N_OF_REPS = 1000000
  */
 private val sharedCounter: AtomicInteger = AtomicInteger(0)
 
-
 /**
  * Test suite containing the fixes (using synchronization) for the thread safety hazards from [ThreadingHazardsTests].
  */
 class ThreadingHazardsTestsFixed {
-
     /**
      * Visibility issues, fixed. (More on this later, when we study the underlying memory model)
      */
@@ -61,8 +59,8 @@ class ThreadingHazardsTestsFixed {
     }
 
     class ThreadSafeMutableStack<T> {
-
         private data class Node<T>(val value: T, val next: Node<T>? = null)
+
         private var top: Node<T>? = null
         private val lock = ReentrantLock()
 
@@ -74,12 +72,14 @@ class ThreadingHazardsTestsFixed {
 
         fun pop(): T? {
             lock.lock()
-            val result = if(top != null) {
-                val value = top?.value
-                top = top?.next
-                value
-            }
-            else null
+            val result =
+                if (top != null) {
+                    val value = top?.value
+                    top = top?.next
+                    value
+                } else {
+                    null
+                }
             lock.unlock()
             return result
         }
@@ -111,5 +111,4 @@ class ThreadingHazardsTestsFixed {
         log.info("poppedCounter = $poppedCounter")
         log.info("Ending test on thread ${currentThread().name}")
     }
-
 }

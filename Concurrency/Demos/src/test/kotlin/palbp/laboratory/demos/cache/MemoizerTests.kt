@@ -2,9 +2,7 @@ package palbp.laboratory.demos.cache
 
 import org.slf4j.LoggerFactory
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.random.Random
@@ -21,7 +19,6 @@ const val TIME_BUDGET_MS = 20 * 1000L
 private val log = LoggerFactory.getLogger(MemoizerTests::class.java)
 
 class MemoizerTests {
-
     val pool = Executors.newFixedThreadPool(N_THREADS)
 
     fun doIt(computation: Computation<Int, Int>) {

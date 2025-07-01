@@ -1,7 +1,7 @@
 package palbp.laboratory.demos
 
 import org.slf4j.LoggerFactory
-import java.lang.Thread.*
+import java.lang.Thread.currentThread
 import kotlin.test.Test
 
 private val log = LoggerFactory.getLogger(ThreadingHazardsTests::class.java)
@@ -22,7 +22,6 @@ private var sharedCounter = 0
  * the proper synchronization.
  */
 class ThreadingHazardsTests {
-
     /**
      * Visibility issues. (More on this later, when we study the underlying memory model)
      */
@@ -59,8 +58,8 @@ class ThreadingHazardsTests {
     }
 
     class MutableStack<T> {
-
         private data class Node<T>(val value: T, val next: Node<T>? = null)
+
         private var top: Node<T>? = null
 
         fun push(value: T) {
@@ -68,12 +67,13 @@ class ThreadingHazardsTests {
         }
 
         fun pop(): T? {
-            return if(top != null) {
+            return if (top != null) {
                 val value = top?.value
                 top = top?.next
                 value
+            } else {
+                null
             }
-            else null
         }
     }
 

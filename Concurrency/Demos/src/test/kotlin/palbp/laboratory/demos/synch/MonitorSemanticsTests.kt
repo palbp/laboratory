@@ -14,15 +14,15 @@ class MonitorSemanticsTests {
         val resultToAssert = CompletableFuture<Boolean>()
         val sutLock = ReentrantLock()
         val sutCondition = sutLock.newCondition()
-        val t = Thread {
-            try {
-                sutLock.withLock { sutCondition.await() }
-                resultToAssert.complete(Thread.interrupted())
-            }
-            catch (t: Throwable) {
-                resultToAssert.completeExceptionally(t)
-            }
-        }.apply { start() }
+        val t =
+            Thread {
+                try {
+                    sutLock.withLock { sutCondition.await() }
+                    resultToAssert.complete(Thread.interrupted())
+                } catch (t: Throwable) {
+                    resultToAssert.completeExceptionally(t)
+                }
+            }.apply { start() }
 
         Thread.sleep(1000)
         sutLock.withLock {

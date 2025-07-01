@@ -24,7 +24,7 @@ export default function TimePage() {
   const { data, error, isLoading, refetch } = useQuery<TimeData>({
     queryKey: ['time'], 
     queryFn: fetchTime,
-    refetchInterval: 5000,
+    //refetchInterval: 5000,
   })
 
   return (
@@ -37,7 +37,7 @@ export default function TimePage() {
         }
       </h1>
       <div className="card">
-        <button onClick={() => refetch()}>Refresh</button>
+        <button onClick={() => refetch()} disabled={isLoading}>Refresh</button>
       </div>
     </>
   )

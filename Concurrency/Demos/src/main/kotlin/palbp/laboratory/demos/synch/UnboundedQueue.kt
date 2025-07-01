@@ -21,13 +21,13 @@ import kotlin.concurrent.withLock
  * Notice that this implementation enforces a FIFO ordering while servicing blocked threads.
  */
 class UnboundedQueue<T> {
-
     /**
      * The actual queue.
      */
     private val items = LinkedList<T>()
 
     private class Request<T>(var item: T? = null, val privateCondition: Condition)
+
     private val pendingRequests = mutableListOf<Request<T>>()
 
     // The monitor's lock. Each waiting thread has its own condition
@@ -63,10 +63,14 @@ class UnboundedQueue<T> {
      * @throws InterruptedException If the blocked thread has been signaled for cancellation.
      */
     @Throws(InterruptedException::class)
-    fun take(timeout: Long, unit: TimeUnit): T? {
+    fun take(
+        timeout: Long,
+        unit: TimeUnit,
+    ): T? {
         mLock.withLock {
-            if (items.isNotEmpty())
+            if (items.isNotEmpty()) {
                 return items.removeFirst()
+            }
 
             val myRequest = Request<T>(privateCondition = mLock.newCondition())
             pendingRequests.add(myRequest)
@@ -75,16 +79,17 @@ class UnboundedQueue<T> {
             while (true) {
                 try {
                     remainingTime = myRequest.privateCondition.awaitNanos(remainingTime)
-                }
-                catch (ie: InterruptedException) {
+                } catch (ie: InterruptedException) {
                     pendingRequests.remove(myRequest)
                 }
 
-                if (myRequest.item != null)
+                if (myRequest.item != null) {
                     return myRequest.item
+                }
 
-                if (remainingTime <= 0)
+                if (remainingTime <= 0) {
                     return null
+                }
             }
         }
     }

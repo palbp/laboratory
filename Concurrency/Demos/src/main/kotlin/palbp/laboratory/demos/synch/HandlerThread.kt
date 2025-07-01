@@ -24,7 +24,6 @@ typealias Action = () -> Unit
  * The Handler implementation
  */
 class HandlerThread(private val capacity: Int) : Thread(), Handler {
-
     private val queue = mutableListOf<Action>()
 
     // The monitor's lock and condition
@@ -46,8 +45,9 @@ class HandlerThread(private val capacity: Int) : Thread(), Handler {
 
     override fun post(action: () -> Unit): Boolean {
         mLock.withLock {
-            if (queue.size == capacity)
+            if (queue.size == capacity) {
                 return false
+            }
 
             queue.add(action)
             mCondition.signal()

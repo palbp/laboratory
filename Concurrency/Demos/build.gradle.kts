@@ -1,8 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.6.10"
-    application
+    kotlin("jvm") version "2.1.10"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 group = "me.palbp"
@@ -23,10 +21,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-application {
-    mainClass.set("palbp.laboratory.demos.MainKt")
+kotlin {
+    jvmToolchain(23)
 }

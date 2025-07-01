@@ -13,7 +13,6 @@ import kotlin.test.Test
 private val logger = LoggerFactory.getLogger("Coroutines 101")
 
 class CoroutinesBasicsTests {
-
     @Test
     fun `coroutines scheduling`() {
         logger.info("Test starts")
@@ -48,20 +47,21 @@ class CoroutinesBasicsTests {
         logger.info("Test ends")
     }
 
-   @Test
-   fun `join with parent waits for children`() {
+    @Test
+    fun `join with parent waits for children`() {
         runBlocking {
-            val parent = launch {
-                logger.info("Parent starts and launches children")
-                repeat(3) {
-                    launch {
-                        logger.info("Child starts")
-                        delay(5000)
-                        logger.info("Child ends")
+            val parent =
+                launch {
+                    logger.info("Parent starts and launches children")
+                    repeat(3) {
+                        launch {
+                            logger.info("Child starts")
+                            delay(5000)
+                            logger.info("Child ends")
+                        }
                     }
+                    logger.info("Parent ends")
                 }
-                logger.info("Parent ends")
-            }
 
             logger.info("runBlocking before parent.join")
             parent.join()
@@ -71,31 +71,33 @@ class CoroutinesBasicsTests {
 
     @Test
     fun `uncaught exception cancels children`() {
-        val job = CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()).launch {
-            val parent = launch {
-                try {
-                    logger.info("Parent starts and launches children")
-                    repeat(3) {
-                        launch {
-                            try {
-                                logger.info("Child starts")
-                                delay(5000)
-                                if (it == 1)
-                                    throw Exception("Booom")
-                                logger.info("Child ends")
-                            } catch (cancelled: CancellationException) {
-                                logger.info("Child cancelled")
+        val job =
+            CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()).launch {
+                val parent =
+                    launch {
+                        try {
+                            logger.info("Parent starts and launches children")
+                            repeat(3) {
+                                launch {
+                                    try {
+                                        logger.info("Child starts")
+                                        delay(5000)
+                                        if (it == 1) {
+                                            throw Exception("Booom")
+                                        }
+                                        logger.info("Child ends")
+                                    } catch (cancelled: CancellationException) {
+                                        logger.info("Child cancelled")
+                                    }
+                                }
                             }
+
+                            delay(10000)
+                        } catch (e: CancellationException) {
+                            logger.info("Parent cancelled")
                         }
                     }
-
-                    delay(10000)
-                }
-                catch (e: CancellationException) {
-                    logger.info("Parent cancelled")
-                }
             }
-        }
 
         runBlocking {
             logger.info("runBlocking before job.join")

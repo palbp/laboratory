@@ -20,7 +20,6 @@ import kotlin.concurrent.withLock
  * Notice that this implementation does not enforce a specific policy for servicing contending threads.
  */
 class UnboundedBuffer<T> {
-
     /**
      * The actual buffer.
      */
@@ -32,28 +31,30 @@ class UnboundedBuffer<T> {
 
     /**
      * Adds the given element to the buffer.
-     * @param elem The element to be added to the buffer
+     * @param item The element to be added to the buffer
      */
     fun put(item: T) {
         mLock.withLock {
             buffer.add(item)
             // Notify a blocked thread.
             // Note that for a thread to be blocked, the buffer can only have one element, the one we just added.
-            if (buffer.size == 1)
+            if (buffer.size == 1) {
                 mCondition.signal()
+            }
         }
     }
 
     /**
      * Adds the given elements to the buffer.
-     * @param elems The elements to be added to the buffer
+     * @param items The elements to be added to the buffer
      */
     fun putAll(items: Iterable<T>) {
         mLock.withLock {
             val wasEmpty = buffer.isEmpty()
             buffer.addAll(items)
-            if (wasEmpty)
-                mCondition.signalAll()      // This can be improved
+            if (wasEmpty) {
+                mCondition.signalAll() // This can be improved
+            }
         }
     }
 
@@ -66,23 +67,28 @@ class UnboundedBuffer<T> {
      * @throws InterruptedException If the blocked thread has been signaled for cancellation.
      */
     @Throws(InterruptedException::class)
-    fun take(timeout: Long, unit: TimeUnit): T? {
+    fun take(
+        timeout: Long,
+        unit: TimeUnit,
+    ): T? {
         mLock.withLock {
-
             // Check if there are any elements in the buffer.
-            if (buffer.isNotEmpty())
+            if (buffer.isNotEmpty()) {
                 return buffer.removeFirst()
+            }
 
             // Otherwise, block calling thread until the required conditions are met
             var remainingTime = unit.toNanos(timeout)
             while (true) {
                 remainingTime = mCondition.awaitNanos(remainingTime)
 
-                if (buffer.isNotEmpty())
-                    return buffer.removeFirst()          // Thread was signaled
+                if (buffer.isNotEmpty()) {
+                    return buffer.removeFirst() // Thread was signaled
+                }
 
-                if (remainingTime <= 0)                 // Timeout
+                if (remainingTime <= 0) {
                     return null
+                }
             }
         }
     }
