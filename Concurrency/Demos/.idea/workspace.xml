@@ -5,70 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7234ad3f-b8b6-4393-9e40-8c258fe22f96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/Main.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/cache/Memoizer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/cache/Memoizer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchanger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchanger.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/suspendingFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeCounter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeCounter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/LockFreeStack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/exercises/Container.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/lockfree/exercises/Container.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Future.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Future.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/HandlerThread.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/HandlerThread.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Latch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Latch.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventFlawed.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventFlawed.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventKS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/ManualResetEventKS.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Promise.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/Promise.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedBuffer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedBuffer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueue.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueueKS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/UnboundedQueueKS.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueue.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/syncFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/synch/exercises/SyncFunctions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ParallelismTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ParallelismTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingBasicsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingBasicsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTestsFixed.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/ThreadingHazardsTestsFixed.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/async/AsyncIOTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/async/AsyncIOTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/cache/MemoizerTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/cache/MemoizerTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/CoroutinesBasicsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/CoroutinesBasicsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/FlowsBasicsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/FlowsBasicsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/SuspendCoroutineTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/SuspendCoroutineTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchangerTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingExchangerTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctionsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctionsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/LockFreeCounterTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/SafeCounterTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/LockFreeStackTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/LockFreeStackTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/exercises/ContainerTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/lockfree/exercises/ContainerTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/mm/MemoryModelTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/mm/MemoryModelTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/AFutureImplTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/AFutureImplTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/HandlerThreadTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/HandlerThreadTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/LatchTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/LatchTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/MonitorSemanticsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/MonitorSemanticsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueueTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/MessageQueueTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/syncFunctionsTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/palbp/laboratory/demos/synch/exercises/SyncFunctionsTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/Query.test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/Query.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimePageV0.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimePageV1.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimeView.test.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Essays/Tech/tanstack-query/react-client/src/time/TimeView.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise5.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise5.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,6 +84,7 @@
     "Gradle.Demos [ktlintFormat].executor": "Run",
     "Gradle.Demos [test].executor": "Run",
     "Gradle.SimpleSafeStackTests.executor": "Run",
+    "Kotlin.Exercise5Kt.executor": "Run",
     "Kotlin.PeriodicMessageKt.executor": "Run",
     "Kotlin.SimpleSafeStackKt.executor": "Run",
     "Kotlin.SuspendingFunctionsKt.executor": "Run",
@@ -172,7 +112,7 @@
       <recent name="palbp.laboratory.demos.coroutines.exercises" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.SuspendingFunctionsKt">
+  <component name="RunManager" selected="Kotlin.Exercise5Kt">
     <configuration name="CyclicCountDownLatchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -221,6 +161,13 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="Exercise5Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="palbp.laboratory.solutions.en2425.Exercise5Kt" />
+      <module name="Demos.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PeriodicMessageKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="palbp.laboratory.demos.coroutines.exercises.PeriodicMessageKt" />
       <module name="Demos.main" />
@@ -237,6 +184,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.Exercise5Kt" />
         <item itemvalue="Kotlin.SuspendingFunctionsKt" />
         <item itemvalue="Kotlin.PeriodicMessageKt" />
         <item itemvalue="Gradle.CyclicCountDownLatchTests" />
@@ -268,7 +216,7 @@
       <workItem from="1750759861311" duration="713000" />
       <workItem from="1750967663029" duration="3474000" />
       <workItem from="1751282612821" duration="13049000" />
-      <workItem from="1751374921421" duration="10234000" />
+      <workItem from="1751374921421" duration="14372000" />
     </task>
     <servers />
   </component>

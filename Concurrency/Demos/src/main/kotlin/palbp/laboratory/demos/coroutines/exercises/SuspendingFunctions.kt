@@ -110,8 +110,16 @@ fun main() = runBlocking {
 }
 
 suspend fun <T1,T2> Executor.otherInvoke(f1: ()->T1, f2: ()->T2): Pair<T1,T2> = coroutineScope {
-    val job1 = async { suspendCoroutine { execute { it.resume(f1()) } } }
-    val job2 = async { suspendCoroutine { execute { it.resume(f2()) } } }
+    val job1 = async {
+        suspendCoroutine {
+            execute { it.resume(f1()) }
+        }
+    }
+    val job2 = async {
+        suspendCoroutine {
+            execute { it.resume(f2()) }
+        }
+    }
     Pair(job1.await(), job2.await())
 }
 
