@@ -51,6 +51,7 @@ class CyclicCountDownLatchBKS(private val initialCount: Int) {
             }
 
             val myRequest = sharedRequest ?: Request()
+            if (sharedRequest == null) sharedRequest = myRequest
             myRequest.batchSize += 1
 
             var remaining = timeout.inWholeNanoseconds
@@ -69,6 +70,7 @@ class CyclicCountDownLatchBKS(private val initialCount: Int) {
                         if (myRequest.batchSize == 0) {
                             sharedRequest = null
                         }
+                        return false
                     }
                 }
             }
