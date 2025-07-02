@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7234ad3f-b8b6-4393-9e40-8c258fe22f96" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise5.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise5.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2a.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2a.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2b.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2b.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +84,7 @@
     "Gradle.Demos [ktlintFormat].executor": "Run",
     "Gradle.Demos [test].executor": "Run",
     "Gradle.SimpleSafeStackTests.executor": "Run",
+    "Kotlin.Exercise4Kt.executor": "Run",
     "Kotlin.Exercise5Kt.executor": "Run",
     "Kotlin.PeriodicMessageKt.executor": "Run",
     "Kotlin.SimpleSafeStackKt.executor": "Run",
@@ -112,7 +113,7 @@
       <recent name="palbp.laboratory.demos.coroutines.exercises" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.Exercise5Kt">
+  <component name="RunManager" selected="Kotlin.Exercise4Kt">
     <configuration name="CyclicCountDownLatchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -137,29 +138,12 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;palbp.laboratory.demos.synch.exercises.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
+    <configuration name="Exercise4Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="palbp.laboratory.solutions.en2425.Exercise4Kt" />
+      <module name="Demos.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Exercise5Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="palbp.laboratory.solutions.en2425.Exercise5Kt" />
@@ -184,11 +168,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.Exercise4Kt" />
         <item itemvalue="Kotlin.Exercise5Kt" />
         <item itemvalue="Kotlin.SuspendingFunctionsKt" />
         <item itemvalue="Kotlin.PeriodicMessageKt" />
         <item itemvalue="Gradle.CyclicCountDownLatchTests" />
-        <item itemvalue="Gradle.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down" />
       </list>
     </recent_temporary>
   </component>
@@ -216,7 +200,8 @@
       <workItem from="1750759861311" duration="713000" />
       <workItem from="1750967663029" duration="3474000" />
       <workItem from="1751282612821" duration="13049000" />
-      <workItem from="1751374921421" duration="14372000" />
+      <workItem from="1751374921421" duration="15063000" />
+      <workItem from="1751452332840" duration="1398000" />
     </task>
     <servers />
   </component>

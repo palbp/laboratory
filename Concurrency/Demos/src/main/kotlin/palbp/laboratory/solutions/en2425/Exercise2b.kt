@@ -38,8 +38,8 @@ class CyclicCountDownLatchBKS(private val initialCount: Int) {
 
     private var count = initialCount
 
-    data class Request(var signalled: Boolean = false, var batchSize: Int = 0)
-    private var sharedRequest: Request? = null
+    data class Request(var signalled: Boolean = false)
+    private var sharedRequest = Request()
 
     @Throws(InterruptedException::class)
     fun countDownAndAwait(timeout: Duration): Boolean {
@@ -50,46 +50,28 @@ class CyclicCountDownLatchBKS(private val initialCount: Int) {
                 return true
             }
 
-            val myRequest = sharedRequest ?: Request()
-            if (sharedRequest == null) sharedRequest = myRequest
-            myRequest.batchSize += 1
-
+            val myRequest = sharedRequest
             var remaining = timeout.inWholeNanoseconds
 
-            try {
-                while (true) {
+            while (true) {
 
-                    remaining = condition.awaitNanos(remaining)
+                remaining = condition.awaitNanos(remaining)
 
-                    if (myRequest.signalled) {
-                        return true
-                    }
-
-                    if (remaining <= 0) {
-                        myRequest.batchSize -= 1
-                        if (myRequest.batchSize == 0) {
-                            sharedRequest = null
-                        }
-                        return false
-                    }
-                }
-            }
-            catch (ie: InterruptedException) {
-                myRequest.batchSize -= 1
-                if (myRequest.batchSize == 0) {
-                    sharedRequest = null
+                if (myRequest.signalled) {
+                    return true
                 }
 
-                Thread.currentThread().interrupt()
-                throw ie
+                if (remaining <= 0) {
+                    return false
+                }
             }
         }
     }
 
     private fun signalAllWaitingThreads() {
         val currentBatch = sharedRequest
-        sharedRequest = null
-        currentBatch?.let { it.signalled = true }
+        currentBatch.signalled = true
+        sharedRequest = Request()
         condition.signalAll()
     }
 }

@@ -72,7 +72,6 @@ class CyclicCountDownLatchKS(private val initialCount: Int) {
             }
             catch (ie: InterruptedException) {
                 waiting.remove(myRequest)
-                Thread.currentThread().interrupt()
                 throw ie
             }
         }
