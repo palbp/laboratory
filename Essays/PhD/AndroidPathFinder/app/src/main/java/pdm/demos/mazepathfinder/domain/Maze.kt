@@ -1,6 +1,5 @@
 package pdm.demos.mazepathfinder.domain
 
-import pdm.demos.mazepathfinder.domain.Maze.Annotation
 import pdm.demos.mazepathfinder.domain.Maze.Wall
 
 /**

@@ -2,10 +2,12 @@ package pdm.demos.mazepathfinder.maze
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import pdm.demos.mazepathfinder.domain.Maze
@@ -24,6 +26,7 @@ sealed interface MazeScreenState {
     val algorithm: Search
 
     data class Idle(override val maze: Maze, override val algorithm: Search) : MazeScreenState
+
     data class SearchingPath(
         override val maze: Maze,
         override val algorithm: Search,
@@ -46,8 +49,7 @@ sealed interface MazeScreenState {
         override val maze: Maze,
         override val algorithm: Search,
         val visited: List<Cell>
-    ) :
-        MazeScreenState
+    ) : MazeScreenState
 }
 
 /**
@@ -98,7 +100,7 @@ class MazeScreenViewModel : ViewModel() {
                                 )
                             }
                         }
-                        //.flowOn(Dispatchers.IO)
+                        .flowOn(Dispatchers.Default)
                         .collect {
                             delay(700)
                             gate.await()

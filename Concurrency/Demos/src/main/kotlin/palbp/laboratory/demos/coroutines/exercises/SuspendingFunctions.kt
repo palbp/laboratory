@@ -3,6 +3,8 @@ package palbp.laboratory.demos.coroutines.exercises
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.lang.IllegalArgumentException
+import java.util.IllegalFormatException
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import java.util.concurrent.locks.ReentrantLock
@@ -99,16 +101,6 @@ suspend fun <T1,T2> Executor.invoke(f1: ()->T1, f2: ()->T2): Pair<T1,T2> = suspe
     execute { with(holder) { setSecond(f2())?.let { continuation.resume(it) } } }
 }
 
-fun main() = runBlocking {
-    val executor = Executors.newCachedThreadPool()
-    val result = executor.invoke(
-        f1 = { Thread.sleep(5000); 42 },
-        f2 = { Thread.sleep(2000); 24 }
-    )
-    println("Result: $result") // Should print: Result: (42, 24)
-    executor.shutdown()
-}
-
 suspend fun <T1,T2> Executor.otherInvoke(f1: ()->T1, f2: ()->T2): Pair<T1,T2> = coroutineScope {
     val job1 = async {
         suspendCoroutine {
@@ -132,3 +124,34 @@ suspend fun <T1,T2> Executor.yetAnotherInvoke(f1: ()->T1, f2: ()->T2): Pair<T1,T
 
     Pair(job1.await(), job2.await())
 }
+
+fun main() = runBlocking {
+    val executor = Executors.newCachedThreadPool()
+    val result = executor.invoke(
+        f1 = { Thread.sleep(5000); 42 },
+        f2 = { Thread.sleep(2000); 24 }
+    )
+    println("Result: $result") // Should print: Result: (42, 24)
+    executor.shutdown()
+}
+
+suspend fun <T,U> both( f1: suspend () -> T, f2: suspend () -> U): Pair<T,U> = coroutineScope {
+
+    var result1: T? = null
+    var result2: U? = null
+
+
+    val job1 = launch {
+        val r1 = f1()
+        result1 = r1
+    }
+
+    val job2 = launch {
+        val r2 = f2()
+        result2 = r2
+    }
+
+    joinAll(job1,job2)
+    Pair(result1 as T, result2 as U)
+}
+

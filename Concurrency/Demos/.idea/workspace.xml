@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7234ad3f-b8b6-4393-9e40-8c258fe22f96" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2a.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2a.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2b.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425/Exercise2b.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/demos/coroutines/exercises/SuspendingFunctions.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,8 +58,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -75,35 +74,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build Demos.executor": "Run",
-    "Gradle.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down.executor": "Run",
-    "Gradle.CyclicCountDownLatchTests.executor": "Run",
-    "Gradle.Demos [ktlintCheck].executor": "Run",
-    "Gradle.Demos [ktlintFormat].executor": "Run",
-    "Gradle.Demos [test].executor": "Run",
-    "Gradle.SimpleSafeStackTests.executor": "Run",
-    "Kotlin.Exercise4Kt.executor": "Run",
-    "Kotlin.Exercise5Kt.executor": "Run",
-    "Kotlin.PeriodicMessageKt.executor": "Run",
-    "Kotlin.SimpleSafeStackKt.executor": "Run",
-    "Kotlin.SuspendingFunctionsKt.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/palbp/Work/Laboratory/Concurrency/Demos/src/main/kotlin/palbp/laboratory/solutions/en2425",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build Demos.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CyclicCountDownLatchTests.countDownAndAwait with initial count of 2 should return true after one count down.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CyclicCountDownLatchTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Demos [ktlintCheck].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Demos [ktlintFormat].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Demos [test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SimpleSafeStackTests.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.Exercise4Kt.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.Exercise5Kt.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.PeriodicMessageKt.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.SimpleSafeStackKt.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.SuspendingFunctionsKt.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/palbp/Work/Laboratory/Concurrency/Demos/src/main/kotlin/palbp/laboratory/solutions/en2425&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/kotlin/palbp/laboratory/solutions/en2425" />
@@ -113,7 +112,7 @@
       <recent name="palbp.laboratory.demos.coroutines.exercises" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.Exercise4Kt">
+  <component name="RunManager" selected="Kotlin.SuspendingFunctionsKt">
     <configuration name="CyclicCountDownLatchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -168,9 +167,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.SuspendingFunctionsKt" />
         <item itemvalue="Kotlin.Exercise4Kt" />
         <item itemvalue="Kotlin.Exercise5Kt" />
-        <item itemvalue="Kotlin.SuspendingFunctionsKt" />
         <item itemvalue="Kotlin.PeriodicMessageKt" />
         <item itemvalue="Gradle.CyclicCountDownLatchTests" />
       </list>
@@ -201,7 +200,12 @@
       <workItem from="1750967663029" duration="3474000" />
       <workItem from="1751282612821" duration="13049000" />
       <workItem from="1751374921421" duration="15063000" />
-      <workItem from="1751452332840" duration="1398000" />
+      <workItem from="1751452332840" duration="2636000" />
+      <workItem from="1751457282129" duration="492000" />
+      <workItem from="1751467276351" duration="3840000" />
+      <workItem from="1751967549331" duration="694000" />
+      <workItem from="1751969593834" duration="203000" />
+      <workItem from="1751988413513" duration="92000" />
     </task>
     <servers />
   </component>
