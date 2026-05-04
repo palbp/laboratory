@@ -3,8 +3,6 @@ package palbp.laboratory.demos.coroutines.exercises
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.lang.IllegalArgumentException
-import java.util.IllegalFormatException
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import java.util.concurrent.locks.ReentrantLock
